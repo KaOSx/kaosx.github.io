@@ -1,0 +1,105 @@
+---
+layout: default
+class: home
+---
+<header class="Intro">
+  <div class="Intro-brand">
+    <object data="img/kaos_logo.svg">
+      <img src="img/fla_logo.png" alt="KaOS" width="300px">
+    </object>
+    <span class="animated fadeIn">
+        <span class="Intro-beta">KaOS</span>
+    </span>
+  </div>
+
+  <div class="animated fadeIn">
+    
+    <h2>A Lean KDE Distribution.</h2>
+    <p>KaOS is an independent, built from scratch distribution, focused on Qt and KDE.</p>
+
+    <div class="Intro-actions">
+      <a href="{{ site.baseurl }}/about/faq" class="Button">Target User</a>
+      <a href="{{ site.baseurl }}/download" class="Button">Download</a>
+      <a href="{{ site.baseurl }}/news" class="Button">Latest News</a>
+    </div>
+  </div>
+</header>
+
+<div class="animated fadeUp">
+  <figure class="Home-screenshot">
+    <img src="{{ site.baseurl }}/img/screenshot_1.png" alt="" width="1151">
+  </figure>
+
+  <div class="Features">
+    <div class="Carousel">
+      <div class="CarouselItem">
+        <div class="CarouselItem-label">KDE and Qt foocused</div>
+      </div>
+      <div class="CarouselItem">
+        <div class="CarouselItem-label">All is built for best integration with KDE and Qt</div>
+      </div>
+      <div class="CarouselItem">
+        <div class="CarouselItem-label">Elegant Simplicity</div>
+      </div>
+      <div class="CarouselItem">
+        <div class="CarouselItem-label">Simple goals, independent decisions bring the power of Plasma 5 to the forefront</div>
+      </div>
+      <div class="CarouselItem">
+        <div class="CarouselItem-label">Splitting of packages is kept to a minimum</div>
+      </div>
+      <div class="CarouselItem">
+        <div class="CarouselItem-label">Primary focus on packaging</div>
+      </div>
+      <div class="CarouselItem">
+        <div class="CarouselItem-label">Using the powerful pacman as package manager</div>
+      </div>
+      <div class="CarouselItem">
+        <div class="CarouselItem-label">Repository layout is simple</div>
+      </div>
+      <div class="CarouselItem">
+        <div class="CarouselItem-label">Every package in every repository is build by and for KaOS</div>
+      </div>
+    </div>
+
+    <p class="Features-text">
+      KaOS follows the latest innovations, always shipping the most up to date there is available
+      for the Plasma Desktop.  Click below to see what is being prepared to move to all users soon.
+    </p>
+
+    <div class="Features-actions">
+      <a href="http://kaosx.tk/packages/index.php?subdir=build&sortby=date&order=descending" class="Button">See the latest builds</a>
+    </div>
+  </div>
+
+  {% include screens.html %}
+  
+  {% include actions.html %}
+  
+  {% include kcp.html %}
+  
+  {% include home_sponsors.html %}
+</div>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>
+  $(function() {
+    var $carousel = $('.Carousel');
+    $carousel.wrapInner($('<div class="CarouselGroup"/>'));
+    var $group = $('.CarouselGroup');
+    var $group2 = $group.clone().appendTo($carousel);
+
+    var animate = function() {
+      $group.css({marginLeft: 0}).animate({marginLeft: -$group.width()}, 70000, 'linear').promise().done(function() {
+        animate();
+      });
+    };
+
+    animate();
+
+    if (window.devicePixelRatio > 1) {
+      var $screenshot = $('.Home-screenshot img');
+
+      $screenshot.attr('src', $screenshot.attr('src').replace('.', '_2x.'));
+    }
+  });
+</script>

@@ -1,0 +1,41 @@
+<head>
+  <meta charset="utf-8">
+  {% if page.url == "/404.html" %}
+  <meta http-equiv="refresh" content="IE=edge">
+  {% endif %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+
+  <link href='https://fonts.googleapis.com/css?family=Raleway:400,500' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
+  <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" />
+
+  <script src="https://use.fontawesome.com/cbedfa5cad.js"></script>
+  <!-- Crunchify's Scroll to Top Script -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+  </script>
+ 
+  <script>            
+	  jQuery(document).ready(function() {
+		  var offset = 220;
+		  var duration = 500;
+		  jQuery(window).scroll(function() {
+		  	  if (jQuery(this).scrollTop() > offset) {
+				  jQuery('.crunchify-top').fadeIn(duration);
+			  } else {
+				  jQuery('.crunchify-top').fadeOut(duration);
+			  }
+		  });
+ 
+		  jQuery('.crunchify-top').click(function(event) {
+			  event.preventDefault();
+			  jQuery('html, body').animate({scrollTop: 0}, duration);
+			  return false;
+		  })
+	  });
+  </script>
+</head>

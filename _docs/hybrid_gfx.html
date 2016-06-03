@@ -1,0 +1,69 @@
+---
+layout: docs
+status: publish
+published: true
+title: Hybrid Graphic Systems
+permalink: /docs/hybrid_gfx/
+author:
+  display_name: demm
+  login: demm
+  email: demm@kaosx.us
+  url: ''
+author_login: demm
+author_email: demm@kaosx.us
+wordpress_id: 3116
+wordpress_url: http://kaosx.us/?page_id=3116
+date: '2015-06-16 19:06:56 -0400'
+date_gmt: '2015-06-16 19:06:56 -0400'
+categories: []
+tags: []
+comments: []
+---
+<p><strong>Hybrid Graphics, what's that?</strong><br />
+Manufacturers developed technologies involving <strong>two graphic cards in a single computer</strong>, enabling both high performance and power saving usages. This technology is well supported on Windows but it's still quite experimental with Linux distributions.<br />
+We call hybrid graphics a set of two graphic cards with different abilities and power consumption. It has nothing to do with other technologies like SLI or CrossFire, intended to improve only the computing power of a system without taking care of power consumption.</p>
+<p>The aim of using two graphic cards is mainly to provide a good compromise between a powerful card whose power is needed only when running demanding programs, and an integrated card, which would not be well suited for those usages. On Windows, the load between the discrete and the integrated card is automatically balanced, when the right drivers are installed.</p>
+<p>For KaOS there are two options to make this technology work, though for ATI/Radeon systems only PRIME is an option.<br />
+[toc]</p>
+<h3>PRIME</h3><br />
+'PRIME GPU offloading' and 'Reverse PRIME' is an attempt to support muxless hybrid graphics in the Linux kernel. All needed requirements, DRI2, updated graphic stack (Kernel, xserver and mesa), GPU drivers are available on a default KaOS install setup with free drivers.</p>
+<p>To check if your system supports PRIME run:<br />
+<code>$ xrandr --listproviders</code><br />
+If the output shows two providers, your system will work with PRIME, example output:<br />
+<code>Provider 0: id: 0x8d cap: 0xb, Source Output, Sink Output,<br />
+Sink Offload crtcs: 4 outputs: 5 associated providers: 0 name:Intel<br />
+Provider 1: id: 0x64 cap: 0x7, Source Output, Sink Output,<br />
+Source Offload crtcs: 4 outputs: 1 associated providers: 0 name:nouveau</code><br />
+To use the Nouveau card in this example for offloading the Intel card:<br />
+<code>xrandr --setprovideroffloadsink nouveau Intel</code><br />
+If you have an ATI/Radeon system, replace nouveau with the output --listproviders showed for your card.</p>
+<p>When this is done, it becomes very easy to select which card should be used. If you want to offload an application to a GPU, use DRI_PRIME=1. When the application is launched, it will use the second card to do its rendering. If you want to use the "regular" GPU, set DRI_PRIME to 0 or omit it. The behavior can be seen in the following example:<br />
+<code>$ DRI_PRIME=0 glxinfo | grep "OpenGL vendor string"<br />
+OpenGL vendor string: Intel Open Source Technology Center<br />
+$ DRI_PRIME=1 glxinfo | grep "OpenGL vendor string"<br />
+OpenGL vendor string: nouveau</code></p>
+<p>The offloading command needs to be redone after each boot or you can add it to systemsettings --> Startup and Shutdown as a start-up script containing "xrandr --setprovideroffloadsink nouveau Intel".</p>
+<p>More info see:<br />
+<a href="http://nouveau.freedesktop.org/wiki/Optimus/">http://nouveau.freedesktop.org/wiki/Optimus/</a></p>
+<h3>Bumblebee for Nvidia cards</h3><br />
+If you prefer to use the non-free Nvidia drivers PRIME is not an option, for those you will need to install all needed bumblebee packages.  As always, make sure your system is fully updated before installing any.<br />
+<code>sudo pacman -Syu<br />
+sudo pacman -S nvidia-bumblebee bumblebee bbswitch</code></p>
+<p>The free driver is no longer needed:<br />
+<code>sudo pacman -R xf86-video-nouveau</code></p>
+<p>Creating an xorg.conf should not be needed, but some users had booting issues without it.  To create an xorg.conf:<br />
+<code>nvidia-xconfig</code></p>
+<p>After all is installed enable the needed systemd service so bumblebee runs on start-up from now on:<br />
+<code>sudo systemctl enable bumblebeed.service</code><br />
+Add your user to the bumblebee group:<br />
+<code>sudo usermod -a -G bumblebee user_name</code><br />
+Substitute user_name with your actual name.</p>
+<p>After rebooting you can check if all works as expected:<br />
+<code>optirun --status</code><br />
+This should show the nvidia card is off.<br />
+Any application can be started with "optirun" to use the nvidia card<br />
+<code>optirun glxgears</code></p>
+<p>More info:<br />
+<a href="https://github.com/Bumblebee-Project/Bumblebee/wiki">https://github.com/Bumblebee-Project/Bumblebee/wiki</a></p>
+<p>There is an option to only run with the proprietary nvidia driver, see this forum post:<br />
+<a href="http://kaosx.us/phpBB3/viewtopic.php?f=8&t=1380&p=7297#p7295">http://kaosx.us/phpBB3/viewtopic.php?f=8&t=1380&p=7297#p7295</a></p>

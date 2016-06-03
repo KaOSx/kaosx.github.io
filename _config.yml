@@ -1,0 +1,20 @@
+markdown: kramdown
+title: KaOS – A Lean KDE Distribution
+email: demm@kaosx.us
+description: "Tightly integrated rolling and transparent distribution for the modern desktop, build from scratch."
+baseurl: ""
+url: "http://kaosx.us"
+kramdown:
+  input: GFM
+
+collections:
+  docs:
+    output: true
+  news:
+    output: true
+  about:
+    output: true
+
+include: ['_pages']
+relative_permalinks: false
+

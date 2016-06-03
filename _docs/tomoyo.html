@@ -1,0 +1,70 @@
+---
+layout: docs
+status: publish
+published: true
+title: Using tomoyo-tools for system security
+permalink: /docs/tomoyo/
+author:
+  display_name: demm
+  login: demm
+  email: demm@kaosx.us
+  url: ''
+author_login: demm
+author_email: demm@kaosx.us
+wordpress_id: 2684
+wordpress_url: http://kaosx.us/?page_id=2684
+date: '2015-03-27 02:30:37 -0400'
+date_gmt: '2015-03-27 02:30:37 -0400'
+categories: []
+tags: []
+comments: []
+---
+<h3>Introduction</h3><br />
+Tomoyo Linux is a Mandatory Access Control (MAC) implementation for Linux, used for system-analysis as well as system restriction for increased security.<br />
+It is not designed to offer protection "out of the box", but instead requires time and an understanding of the concepts and tools involved.<br />
+Focusing on the behavior of the system, where every process has its defined purpose, Tomoyo allows each process to declare the characteristic behavior and the resources it needs to achieve said purpose. With the protection enabled, Tomoyo then restricts each process to that set of behaviors and resources allowed by the administrator.<br />
+The main features of TOMOYO Linux include:</p>
+<ul>
+<li>System analysis</li>
+<li>Increased security through Mandatory Access Control</li>
+<li>Tools to aid in policy generation</li>
+<li>Simple syntax</li>
+<li>Easy to use</li>
+<li>Very few dependencies</li>
+<li>Requires no modification of existing binaries</li><br />
+</ul></p>
+<p><code>/;etc/;tomoyo/;</code><br />
+Is the storage location of all policy information</p>
+<h3>Setup</h3><br />
+Tomoyo, because of the way it works, needs to have some time spent on the system in a &ldquo;learning&rdquo; setup. The more time you allow Tomoyo to learn how and what programs you use, the less likely you are to have it log things that are just normal for the given app and scenario. Tomoyo is primarily CLI based but with a well structured and easy to understand layout. It&rsquo;s not that hard to setup, since the KaOS kernel has Tomoyo support available by default.  Tomoyo is part of a default KaOS install, but in case it was removed, install with:<br />
+<code>sudo pacman -Syu<br />
+sudo pacman -S tomoyo-tools</code></p>
+<h3>Initializing Configuration</h3><br />
+Before you can make use of TOMOYO Linux, an initialization procedure must take place. This prepares the files in which policy information will be stored.<br />
+ <code># /;usr/;lib/;tomoyo/;init_policy</code></p>
+<h3>Configure Bootloader</h3><br />
+To enable Tomoyo, you need to add "security=tomoyo" to the kernel commandline in either grub or gummiboot.<br />
+For grub:<br />
+<code>kdesu kate /;etc/;default/;grub</code><br />
+<code>[...]<br />
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash security=tomoyo"<br />
+[...]</code><br />
+As always, after editing Grub's configuration you need to run:<br />
+<code>sudo grub-mkconfig -o /;boot/;grub/;grub.cfg</code><br />
+For systemd-boot:<br />
+<code>kdesu kate /;boot/;loader/;entries/;KaOS.conf</code><br />
+<code>options root=UUID=XXXXXXX-XXXX-XXXX-XXXX-XXXXXX quiet resume=UUID=XXXX-XXXX-XXXX-XXXX-XXXXXX rw security=tomoyo</code></p>
+<p>and reboot</p>
+<h3>Setting to Learning Mode</h3><br />
+The "Learning Mode" profile is the feature of TOMOYO Linux that makes developing policy very easy. This mode will automatically generate a policy for any domain that has this profile selected.<br />
+In order to set up the policy to "learning mode, you have to open the Domain Transition Editor:<br />
+<code># tomoyo-editpolicy</code></p>
+<p>Now, the only thing that should be listed is the <kernel> domain. Now we need to set Tomoyo to learning mode on the kernel.<br />
+The <kernel> should be highlighted in green (if you don't use the arrow keys to select it). Once it is selected, press &ldquo;S&rdquo; and you will be asked to "enter the profile number".<br />
+To set the <kernel> domain to &ldquo;learning&rdquo; enter "1". The learning profile will also log all the boot time files and operations. There are four setup profiles to use within Tomoyo, but for now we only need to use the policy number 1.<br />
+You will notice the empty <kernel> entry from when we set up is now populated and should have the entries in profile &ldquo;1&Prime; learning mode. Give yourself a pat on the back and go back to using the computer normally. For now you should just go about business as usual and allow Tomoyo to learn the apps you use in your daily routines.</p>
+<h3>Disable Tomoyo Hardening</h3><br />
+If you run into trouble with Tomoyo or just don't want it running anymore you can easily disable it by changing the bootline from "security=tomoyo" to "security=none". If your system is no longer booting due to problems with Tomoyo you can still fix this using the recovery boot option which should not have Tomoyo enabled.</p>
+<h3>More Comprehensive Settings</h3><br />
+This guide is here to explain how to get started with Tomoyo and once the system has gone through  the "learning" it is time to use the very complete official documentation:<br />
+<a href="http:/;/;tomoyo.sourceforge.jp/;2.5/;">Tomoyo Wiki</a></p>

@@ -1,0 +1,86 @@
+---
+layout: docs
+status: publish
+published: true
+title: GPT Partitioning
+permalink: /docs/bios_gpt/
+author:
+  display_name: demm
+  login: demm
+  email: demm@kaosx.us
+  url: ''
+author_login: demm
+author_email: demm@kaosx.us
+wordpress_id: 1563
+wordpress_url: http://kaosx.us/?page_id=1563
+date: '2014-06-18 00:06:36 -0400'
+date_gmt: '2014-06-18 00:06:36 -0400'
+categories: []
+tags: []
+comments: []
+---
+<p>The default partition table in partitionmanager is GPT. This particular partition table has quite some advantages over the more common MS-Dos version, to read more about that please refer <a href="http://www.rodsbooks.com/gdisk" title="GPT">http://www.rodsbooks.com/gdisk</a> One big advantage of GPT is the ability for numerous primary partitions, no need to use extended. However, at this stage of newly introducing the ability to install with GPT in the installer, there are a few extra steps needed to prepare the HDD for this.<br />
+These instructions are for BIOS systems only, setting up with UEFI no special steps are needed.<br />
+</p>
+<h3>Requirements</h3></p>
+<ul>
+<li>Create a completely new partition table. This will remove all existing data, so back-up any needed data before starting</li>
+<li>8 MB partition of unformatted space, has to be the very first partition on the HDD.</li>
+<li>No seperate /boot partition</li><br />
+</ul></p>
+<h4>Steps</h4><br />
+It is best to prepare your HDD before starting the installer at this stage.</p>
+<h3>From a command prompt</h3><br />
+First check if gptfdisk is installed:<br />
+<code>pacman -Q gptfdisk</code><br />
+If not available:<br />
+<code>sudo pacman -S gptfdisk</code><br />
+To setup the GPT partition table, in this example an 8Gb USB-stick on /dev/sde is used (notice, need to be root):<br />
+<code># cgdisk /dev/sde</code><br />
+If no GPT partition table available yet, cgdisk will create one, so hit enter on the warning messages.</p>
+<blockquote><p># cgdisk /dev/sde<br />
+Warning! Non-GPT or damaged disk detected! This program will attempt to<br />
+convert to GPT form or repair damage to GPT data structures, but may not<br />
+succeed. Use gdisk or another disk repair tool if you have a damaged GPT<br />
+disk.                         Press any key to continue....<br />
+Next view:<br />
+                                 cgdisk 0.8.0<br />
+                             Disk Drive: /dev/sde<br />
+                           Size: 15654912, 7.5 GiB<br />
+Part. #     Size        Partition Type            Partition Name<br />
+----------------------------------------------------------------<br />
+  1        7.5 GiB     Microsoft basic data      Microsoft basic data<br />
+   [ Align  ]  [ Backup ]  [ Delete ]  [  Help  ]  [  Info  ]  [  Load  ]<br />
+   [  naMe  ]  [  Quit  ]  [  Type  ]  [ Verify ]  [ Write  ]<br />
+                     Change the filesystem type code GUID</blockquote></p>
+<p>Select "delete", if any similar partition shows. Once your disk shows as "free-space", create the first partition as unallocated space, 8Mb minimum:</p>
+<blockquote><p>First sector (40-15654878, default = 40):<br />
+Size in sectors or {KMGTP} (default = 15654839): 8Mb<br />
+Current type is ef02 (Linux filesystem)<br />
+Hex code or GUID (L to show codes, Enter = 8300): ef02<br />
+Current partition name is </blockquote><br />
+Enter new partition name, or  to use the current name:<br />
+<code>BIOS boot</code><br />
+This example created an 8Mb efi boot partition Next select remaining free space, and that will become a 7.4Gb root partition, for a ext4 filesystem:</p>
+<blockquote><p>First sector (4194344-15654878, default = 4194344):<br />
+Size in sectors or {KMGTP} (default = 15654839): 7400Mb<br />
+Current type is 8300 (Linux filesystem)<br />
+Hex code or GUID (L to show codes, Enter = 8300):<br />
+Current partition name is </blockquote><br />
+Enter new partition name, or  to use the current name:<br />
+<code>Root</code><br />
+The partitions are setup at this point, so next select "write", and type "yes" to make the changes permanent. Then select "quit" to leave cgdisk. This only setup partition, no file systems created yet, so back in the normal console, create an ext4 filesystem for the root partition (sde2 in this example):<br />
+<code># mkfs.ext4 /dev/sde2</code><br />
+Make sure that the first partition is completely empty:<br />
+ <code>sudo dd if=/dev/zero of=/dev/sde1 bs=4M</code><br />
+And last, the 8Mb unallocated space on sde1, needs the bios_grub boot flags set:<br />
+ <code>sudo parted /dev/sde set 1 bios_grub on</code><br />
+Now you are set to start the installer, and of course you can change any disk setup to your liking, just make sure to have a minimum of about 5Gb available for root, with a DVD ISO install.</p>
+<h3>Extra instructions for dual booting with a MacOS</h3></p>
+<p>Remove the Fat partition at the beginning (labelled EFI). - IF for some reasons you can not resize it.<br />
+Create a 32mb partition as the first one, unformatted and with the [b]bios_grub flag[/b]<br />
+Recreate the fat32 partition in the remaining space, labelled EFI as before<br />
+Leave the HFS partitions untouched and partition the rest of the disk to your liking<br />
+Run <code>gpt-sync</code><br />
+Install with the installer normally<br />
+Reboot, then in refit chose the <strong>Partitioning Tool</strong> and confirmed ('y') for the syncing</p>

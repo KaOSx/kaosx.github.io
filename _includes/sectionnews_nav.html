@@ -1,0 +1,35 @@
+{% comment %}
+Map grabs the news sections, giving us an array of arrays. Join, flattens all
+the items to a comma delimited string. Split turns it into an array again.
+{% endcomment %}
+{% assign news = site.data.news | map: 'news' | join: ',' | split: ',' %}
+
+{% comment %}
+Because this is built for every page, lets find where we are in the ordered
+document list by comparing url strings. Then if there's something previous or
+next, lets build a link to it.
+{% endcomment %}
+
+{% for document in news %}
+  {% assign document_url = document | prepend:"/news/" | append:"/" %}
+  
+  {% if document_url == "/news//" %}
+    {% assign document_url = "/news/" %}
+  {% endif %}
+
+  {% if document_url == page.url %}
+    <div class="Docs-sectionNav">
+      {% unless forloop.first %}
+        {% assign previous = forloop.index0 | minus: 1 %}
+        {% assign previous_page = news[previous] | prepend:"/news/" | append:"/" %}
+        <a href="{{ previous_page }}" class="Button">Back</a>
+      {% endunless %}
+      {% unless forloop.last %}
+        {% assign next = forloop.index0 | plus: 1 %}
+        {% assign next_page = news[next] | prepend:"/news/" | append:"/" %}
+        <a href="{{ next_page }}" class="Button">Next</a>
+      {% endunless %}
+    </div>
+    {% break %}
+  {% endif %}
+{% endfor %}

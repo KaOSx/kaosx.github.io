@@ -1,0 +1,41 @@
+- title: Basics
+  docs:
+  - 
+  - pacman
+  - bugs
+  - kernels
+
+- title: ISO & Install
+  docs:
+  - usb_flash
+  - dvd
+  - bios_gpt
+  - btrfs
+
+- title: Hardware Setup
+  docs:
+  - nvidia
+  - hybrid_gfx
+  - moving_home
+  - print
+
+- title: Security
+  docs:
+  - ufw
+  - tomoyo
+
+- title: Packaging & KCP
+  docs:
+  - package
+  - kcp
+  
+- title: Troubleshooting
+  docs:
+  - chrooting
+  - grub
+  - vbox
+  
+- title: Applications
+  docs:
+  - samba
+  - skype

@@ -1,0 +1,65 @@
+---
+layout: docs
+status: publish
+published: true
+title: Install KaOS on SSD using Btrfs
+permalink: /docs/btrfs/
+author:
+  display_name: demm
+  login: demm
+  email: demm@kaosx.us
+  url: ''
+author_login: demm
+author_email: demm@kaosx.us
+wordpress_id: 2648
+wordpress_url: http://kaosx.us/?page_id=2648
+date: '2015-03-26 21:03:17 -0400'
+date_gmt: '2015-03-26 21:03:17 -0400'
+categories: []
+tags: []
+comments: []
+---
+<p>Explanations how and why to use BTRFS [toc]</p>
+<h3>What is Btrfs?</h3></p>
+<blockquote><p>Btrfs is a new copy on write (CoW) filesystem for Linux aimed at implementing advanced features while focusing on fault tolerance, repair and easy administration. Jointly developed at Oracle, Red Hat, Fujitsu, Intel, SUSE, STRATO and many others, Btrfs is licensed under the GPL and open for contribution from anyone.</blockquote></p>
+<h3>Why Btrfs?</h3></p>
+<blockquote><p>It is possible to dynamically resize mounted filesystems<br />
+filesystems can span physical volumes, with optional RAID support<br />
+physical volumes can be added to and removed from mounted filesystems<br />
+compression option<br />
+snapshots (including read-only and read-write) and seeds<br />
+has a mode that is optimized for solid-state drives</blockquote></p>
+<h3>Format as BTRFS</h3></p>
+<p>Current installer is ready to create Btrfs partitions so you can use it without any further instructions.</p>
+<h3>Edit fstab</h3><br />
+In case you want to fine tune the default setting used by the installer for fstab, you can use the following example:<br />
+<code>$ kdesu kate /etc/fstab</code></p>
+<p>And edit until it looks like this.</p>
+<p><code>UUID=YOUROWNUUID / btrfs rw,noatime,compress=lzo,ssd,discard,space_cache,inode_cache 0 1</p>
+<p>tmpfs   /tmp       tmpfs   defaults,noatime,mode=1777   0  0<br />
+tmpfs   /var/spool tmpfs   defaults,noatime,mode=1777   0  0<br />
+tmpfs   /var/tmp   tmpfs   defaults,noatime,mode=1777   0  0</code></p>
+<p>Where:<br />
+rw - Partition is mounted in read-write mode<br />
+noatime - Don't update inode access times on the filesystem. Can help performance<br />
+compress=lzo - Data compression enable<br />
+Discard - Optional if you already use ssd option, enable TRIM.</p>
+<p>All others options optimize cache and send temps to RAM.</p>
+<h3>Recomendations</h3></p>
+<p>Verify if your SSD is align using  <code>$ sudo blockdev --getalignoff /dev/sda4</code><br />
+if the result is 0 then your SSD is correctly aligned.</p>
+<h3>Creating a snapshot</h3></p>
+<p><code># mount /media/btrfs<br />
+# cd /media/btrfs<br />
+# btrfs subvolume snapshot root root_snapshot_2011_01_11<br />
+# cd ~<br />
+# umount /media/btrfs<br />
+</code></p>
+<h3>Rolling back a snapshot</h3></p>
+<p><code># mount /media/btrfs<br />
+# umount /home<br />
+# mount -o defaults,subvol=home_snapshot_A /dev/sda /home<br />
+# btrfs subvolume delete /media/btrfs/home                   # optional; this is so the<br />
+# mv /media/btrfs/home_snapshot_A /media/btrfs/home          # /etc/fstab need not change.<br />
+# umount /media/btrfs</code></p>
+<p><a href="https://btrfs.wiki.kernel.org/index.php/SysadminGuide#Snapshots" title="btrfs">https://btrfs.wiki.kernel.org/index.php/SysadminGuide#Snapshots</a></p>

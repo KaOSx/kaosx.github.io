@@ -1,0 +1,58 @@
+<footer class="Footer">
+  <div class="container">
+    <div class="Footer-social">
+
+      <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZHFD62TKTTWQN"><img src="{{ site.baseurl }}/img/paypal.png" alt="PayPal - The safer, easier way to pay online!" title="Donate through PayPal" border="0" width="150px"></a>&nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="https://flattr.com/submit/auto?user_id=KaOSx&url=http%3A%2F%2Fkaosx.us" target="_blank"><img src="{{ site.baseurl }}/img/flattr.png" alt="Flattr this" title="Donate through Flattr" border="0" width="150px"></a>
+      
+    </div>
+
+    <div class="Footer-nav">
+      <a href="{{ site.baseurl }}/">Home</a>
+      {% assign current = page.url | downcase | split: '/' %}
+      <a href="{{ site.baseurl }}/about" {% if current[1] == 'about' %}class="active"{% endif %}>About</a>
+      <a href="{{ site.baseurl }}/news">News</a>
+      <a href="{{ site.baseurl }}/download">Download</a>
+      <a href="{{ site.baseurl }}/docs">Documentation</a>
+      <a href="http://kaosx.tk/packages">Packages</a>
+      <a href="{{ site.baseurl }}/bugs">Bugs</a>
+      <a href="http://kaos-community-packages.github.io/">KCP</a>
+      <a href="https://forum.kaosx.us">Forum</a>
+    </div>
+
+    <div class="Footer-copyright">
+      <span class="pull-left">Copyright © 2013-<script language="javascript" type="text/javascript">
+        var today = new Date()
+        var year = today.getFullYear()
+        document.write(year)
+        </script> <a href="{{ site.baseurl }}/">KaOS</a></span>
+      <span class="pull-right">
+        <a href="https://www.facebook.com/groups/kaosx/" target="blank"><i class="fa fa-facebook"></i></a>
+        <a href="https://groups.google.com/forum/?fromgroups#!forum/kaos-general" target="blank"><i class="fa fa-envelope"></i></a>
+        <a href="https://github.com/KaOSx" target="blank"><i class="fa fa-github fa-lg"></i></a>
+        <a href="http://webchat.freenode.net/?channels=kaosx" target="blank"><i class="fa fa-wechat fa-lg"></i></a>
+        <a href="https://plus.google.com/u/0/communities/116669111554447085724" target="blank"><i class="fa fa-google-plus"></i></a>
+        <a href="https://www.transifex.com/organization/kaos/dashboard/kaos" target="blank"><i class="fa fa-language"></i></a>
+        <a href="https://gitter.im/KaOSx/KaOS/" target="blank"><i class="fa fa-tasks fa-lg"></i></a>
+      </span>
+      <a href="#" class="crunchify-top"><i class="fa fa-chevron-up custom" ></i></a>
+    </div>
+  </div>
+</footer>
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+ 
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+ 
+  return t;
+}(document, "script", "twitter-wjs"));</script>
