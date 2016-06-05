@@ -28,18 +28,18 @@ comments: []
 First you need to have a Github account, this is **completely independent from KaOS**. Any account you already have there is usable. To apply for a new account just fill in the form at <a title="Github" href="https://github.com/">Github</a>
 Once you have that, request your membership by filling in this form: 
 
-<form role="form" action="http://formspree.io/veritasfarm@gmail.com" method="POST">
+<form class="form-group" role="form" action="http://formspree.io/veritasfarm@gmail.com" method="POST">
     <div class="form-group">
         <label for="name">Name</label>
-        <input name="name" id="name" placeholder="Name..." class="form-control" type="text">
+        <input name="name" id="name" placeholder="Name..." class="form-control" type="text" required>
     </div>
     <div class="form-group">
         <label for="email">Email</label>
-        <input name="email" id="email" placeholder="Email..." class="form-control" type="email">
+        <input name="email" id="email" placeholder="Email..." class="form-control" type="email" required>
     </div>
     <div class="form-group">
         <label for="subject">Subject</label>
-        <input name="subject" id="subject" placeholder="Subject..." class="form-control" type="text">
+        <input name="subject" id="subject" placeholder="Subject..." class="form-control" type="text" required>
     </div>
     <div class="form-group">
         <label for="message">Message</label>
@@ -47,6 +47,7 @@ Once you have that, request your membership by filling in this form:
     </div>
     <div class="form-group">
         <input value="Send" class="form-control" type="submit">
+        <input type="hidden" name="_next" value="/docs/kcp_submit/" />
     </div>
 </form>
 

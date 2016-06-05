@@ -213,6 +213,18 @@ code {
   }
 }
 
+.news-img-left {
+    width: 350px;
+    margin: 10px 10px 10px auto;
+    float: left;
+}
+
+.news-img-right {
+    width: 350px;
+    margin: 10px auto 10px 10px;
+    float: right;
+}
+
 // scroll to top
 .crunchify-top:hover {
 	color: #fff !important;
