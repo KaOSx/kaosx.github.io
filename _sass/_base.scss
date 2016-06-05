@@ -202,16 +202,6 @@ code {
 #wrapper3 img {
   padding-right: 20px;
 }
-.gallery img {
-   box-shadow: 0 0 20px;
-   width: 800px;
-   margin: 20px auto 20px auto;
-}
-@include respond-to(handhelds) {
-  .gallery img {
-    width: 500px;
-  }
-}
 
 .news-img-left {
     width: 350px;
@@ -253,5 +243,19 @@ code {
 	border-radius: 0.2rem;
 	text-align: center;
 	cursor: pointer;
+}
+
+// Gallery Page 
+.glImg {
+    border-radius: 1px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 300px;
+    height: 200px;
+    text-decoration: none;
+}
+
+.glImg:hover {
+    opacity: 0.7;
 }
 
