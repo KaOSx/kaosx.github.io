@@ -75,17 +75,17 @@ Once you have [build and **TESTED** your package](/docs/package/) locally, it is
 pckcp
 ```
 in the same directory where your PKGBUILD resides, fix any parts that show as non-compliant with KCP. 
-[![](/wp-content/uploads/2014/01/snapshot22.png){: .news-img-right}](/wp-content/uploads/2014/01/snapshot22.png) 
+[![](/wp-content/uploads/2014/01/snapshot22.png){: .kcp-img-right}](/wp-content/uploads/2014/01/snapshot22.png) 
 If you are familiar with git, then most these instructions will not be needed for you, and you might have your own preferred git work-flow, but for this guide, we'll use the Github web-interface as much as possible.
 
 Go to your [main work page](https://github.com/organizations/KaOS-Community-Packages), and select "new repository". Fill in the repository name, by using the Package name, give a short description of your package, it will help users searching for certain type of packages, without having to know the actual package name.
-[![](/wp-content/uploads/2014/01/snapshot31.png){: .news-img-right}](/wp-content/uploads/2014/01/snapshot31.png)
+[![](/wp-content/uploads/2014/01/snapshot31.png){: .kcp-img-right}](/wp-content/uploads/2014/01/snapshot31.png)
 Select "Initialize this repository with a README".
 
 Once you selected "Create Repository", the next page will give you an overview of this.
 
 Now it is time to get this repository as a local git entry. To do so, you need to clone it, here we'll use the https method, since it will just use your github user-name and password, no need to setup a SSH key. Copy the HTTPS address to the clipboard.
-[![](/wp-content/uploads/2014/01/snapshot4.png){: .news-img-right}](/wp-content/uploads/2014/01/snapshot4.png)
+[![](/wp-content/uploads/2014/01/snapshot4.png){: .kcp-img-right}](/wp-content/uploads/2014/01/snapshot4.png)
 
 Next open your favorite terminal, and cd to the directory were you would like to create this, in this example we'll use ~/work:
 
