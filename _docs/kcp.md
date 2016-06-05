@@ -63,7 +63,7 @@ Next:
 ### Submitting a Package
 Only submit packages that were adjusted for KaOS or you created yourself for KaOS. Blindly copying any existing PKGBUILD and submitting it to KCP is not the reason it was created for. If you can find working PKGBUILDs elsewhere, use them.
 
-Once you have <a title="Packaging Guide" href="http://kaosx.us/packaging-guide/">build and <strong>TESTED</strong> your package</a> locally, it is time to upload to KCP.  Before doing so, run the validity checker:
+Once you have <a title="Packaging Guide" href="/docs/package/">build and <strong>TESTED</strong> your package</a> locally, it is time to upload to KCP.  Before doing so, run the validity checker:
 <code>pckcp</code>
 in the same directory where your PKGBUILD resides, fix any parts that show as non-compliant with KCP. <a href="http://kaosx.us/wp-content/uploads/2014/01/snapshot22.png"><img class="alignright size-thumbnail wp-image-1062" src="http://kaosx.us/wp-content/uploads/2014/01/snapshot22-150x150.png" alt="kcp1" width="150" height="150" /></a> If you are familiar with git, then most these instructions will not be needed for you, and you might have your own preferred git work-flow, but for this guide, we'll use the Github web-interface as much as possible.
 
