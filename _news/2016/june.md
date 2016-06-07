@@ -1,7 +1,9 @@
 ---
 layout: news
 title: Early June '16 status
-permalink: /news/2016/
+permalink: /news/2016/june/
+date: '2016-06-05 18:23:31 -0500'
+date_gmt: '2016-06-05 18:23:31 -0500'
 ---
 In contrast to last months status report, this time a much more upbeat announcement with lots of changes that have happened to report.
 
