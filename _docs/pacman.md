@@ -64,7 +64,8 @@ sudo pacman -Rs
 Finally, to remove the package, avoid orphaned dependencies and erase its global configuration, type
 
 ```
-sudo pacman -Rns package_name```
+sudo pacman -Rns package_name
+```
 
 which in most cases is the proper command to remove software.
 
