@@ -124,5 +124,5 @@ optirun glxgears
 More info:
 [https://github.com/Bumblebee-Project/Bumblebee/wiki](https://github.com/Bumblebee-Project/Bumblebee/wiki)
 
-There is an option to only run with the proprietary nvidia driver, see this forum post:
+There is an option to only run with the proprietary nvidia driver, see this forum post at # 8:
 [https://forum.kaosx.us/d/1380-error-switching-between-free-to-non-free-nvidia-drivers#8](https://forum.kaosx.us/d/1380-error-switching-between-free-to-non-free-nvidia-drivers#8)

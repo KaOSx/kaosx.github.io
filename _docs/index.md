@@ -32,7 +32,7 @@ Ctrl-Shift-S
 ```
 
 It will take 10-20 seconds to gather all info and will return with a pop-up window. That window contains a link you can click on and will take you to gist at github. You can check the report there, or directly right click the link to copy and paste it in the forum, a bug report, a G+ post or provide it in IRC.
-<p> <code>
+
 ### Info to provide for Installation Issues
 
 If for any reason you are faced with problems in Live mode or running the installer, first follow this check-list:
@@ -58,7 +58,7 @@ and:
 sudo fdisk -l
 ```
 
-### >Using a Pastebin Service to Provide Info
+### Using a Pastebin Service to Provide Info
 
 All examples so far create text info that often is too large to add to a forum post, not possible supply in an IRC channel or hard to read when added to an email. It is much cleaner and easier to copy the output of any command and paste it into a service like:
 
