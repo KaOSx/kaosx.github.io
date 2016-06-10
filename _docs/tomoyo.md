@@ -27,6 +27,7 @@ It is not designed to offer protection "out of the box", but instead requires ti
 Focusing on the behavior of the system, where every process has its defined purpose, Tomoyo allows each process to declare the characteristic behavior and the resources it needs to achieve said purpose. With the protection enabled, Tomoyo then restricts each process to that set of behaviors and resources allowed by the administrator.
 
 The main features of TOMOYO Linux include:
+
 * System analysis
 * Increased security through Mandatory Access Control
 * Tools to aid in policy generation
