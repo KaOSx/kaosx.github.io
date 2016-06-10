@@ -80,7 +80,7 @@ If you'll be doing anything with GRUB inside the chroot environment, you'll need
 
 ```
 rm /etc/mtab && grep -v rootfs /proc/mounts > /etc/mtab
- ```
+```
 
  If you use bash, your root _$HOME/.bashrc_ will be sourced on login provided your _~/.bash_profile_ specifies it (_source ~/.bashrc_).  To source your chrooted, global bash configuration do:
 
@@ -130,7 +130,7 @@ If you get an error saying that /mnt (or any other partition) is busy, this can 
 * A program was left running inside of the chroot.
 * Or more frequently: a sub-mount still exists. For example, /mnt/kaos/usr within /mnt/kaos.
 
-In the latter case, unmount the sub-mount mount point first. To get a reminder of all the current mount points, run <code>mount</code> with no parameters. If you still are unable to unmount a partition, use the force option:
+In the latter case, unmount the sub-mount mount point first. To get a reminder of all the current mount points, run `mount` with no parameters. If you still are unable to unmount a partition, use the force option:
 
 ```
 umount -f /mnt
