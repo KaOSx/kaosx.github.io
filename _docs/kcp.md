@@ -22,10 +22,11 @@ comments: []
 * This will become a table of contents (this text will be scraped).
 {:toc}
 
-<a title="KaOS-Community-Packages" href="https://github.com/KaOS-Community-Packages">KaOS Community Packages</a> offers users the ability to submit working PKGBUILDs and supporting files in one central location, so all KaOS users can benefit with easy building of packages missing in the official repositories. Instead of writing all new scripts for this, Github is used as frontend. This gives a very powerful and secure interface, with good search functions, complete history for anything submitted and easy cooperation for anyone willing to maintain submitted packages.
+[KaOS-Community-Packages](https://github.com/KaOS-Community-Packages) offers users the ability to submit working PKGBUILDs and supporting files in one central location, so all KaOS users can benefit with easy building of packages missing in the official repositories. Instead of writing all new scripts for this, Github is used as frontend. This gives a very powerful and secure interface, with good search functions, complete history for anything submitted and easy cooperation for anyone willing to maintain submitted packages.
 
 ### Applying for Membership
-First you need to have a Github account, this is **completely independent from KaOS**. Any account you already have there is usable. To apply for a new account just fill in the form at <a title="Github" href="https://github.com/">Github</a>
+
+First you need to have a Github account, this is **completely independent from KaOS**. Any account you already have there is usable. To apply for a new account just fill in the form at [Github](https://github.com/).
 Once you have that, request your membership by filling in this form: 
 
 <form class="form-group" role="form" action="http://formspree.io/veritasfarm@gmail.com" method="POST">
@@ -51,15 +52,17 @@ Once you have that, request your membership by filling in this form:
     </div>
 </form>
 
-As soon as your name is added, you will have access to the <a href="https://github.com/organizations/KaOS-Community-Packages/">organization page</a>
+As soon as your name is added, you will have access to the [organization page](https://github.com/organizations/KaOS-Community-Packages/).
 
 ### Installing git
+
 For this, you will need to have git installed:
 As always, make sure the system is fully up to date before installing any:
 
 ```
 sudo pacman -Syu
 ```
+
 Next:
 
 ```
@@ -67,6 +70,7 @@ sudo pacman -S git
 ```
 
 ### Submitting a Package
+
 Only submit packages that were adjusted for KaOS or you created yourself for KaOS. Blindly copying any existing PKGBUILD and submitting it to KCP is not the reason it was created for. If you can find working PKGBUILDs elsewhere, use them.
 
 Once you have [build and **TESTED** your package](/docs/package/) locally, it is time to upload to KCP.  Before doing so, run the validity checker:
@@ -74,6 +78,7 @@ Once you have [build and **TESTED** your package](/docs/package/) locally, it is
 ```
 pckcp
 ```
+
 in the same directory where your PKGBUILD resides, fix any parts that show as non-compliant with KCP. 
 [![](/wp-content/uploads/2014/01/snapshot22.png){: .kcp-img-right}](/wp-content/uploads/2014/01/snapshot22.png) 
 If you are familiar with git, then most these instructions will not be needed for you, and you might have your own preferred git work-flow, but for this guide, we'll use the Github web-interface as much as possible.
@@ -92,6 +97,7 @@ Next open your favorite terminal, and cd to the directory were you would like to
 ```
 cd ~/work
 ```
+
 Now lets clone, using the copied entry on your clipbaord:
 
 ```
@@ -105,45 +111,54 @@ Back in the terminal, these changes will be seen right away. Presume you still a
 ```
 cd package_name
 ```
+
 now run:
 
 ```
 git status
 ```
+
 This will return the list of packages you just copied.
 Now commit these changes to Github:
 
 ```
 git add PKGBUILD
 ```
+
 and any other file like:
 
 ```
 git add package_name.install
 ```
+
 and/or:
 
 ```
 git add package_name.desktop
 ```
+
 and/or:
 
 ```
 git add some.patch
 ```
+
 Write a short and clear message what and why you are committing:
 
 ```
 git commit -am "initial commit of all files needed for package_name"
 ```
+
 And push your commit:
 
 ```
 git push
 ```
+
 This will ask for your username and password on Github, once pushed, all files will be visible in the repository page on Github.
 
 ### Formatting standards for KCP
+
 To get to a reasonable standard in submitting, maintaining and contributing packages to KCP, use the following guidelines to get to a uniform way of providing PKGBUILD files, readme info and common courtesy in KCP.
 
 
@@ -172,6 +187,7 @@ Download and run makepkg -si in the package directory (with Dolphin and F4):
 ```
 
 ### Using kcp helper package or Octopi
+
 Since May 2014 building, searching or getting the needed files from KaOS Community Packages has been simplified with the addition of the package "kcp". It comes pre-installed on any system that is installed with an ISO from June 2014 or later.
 If not installed yet, get it with:
 
@@ -179,6 +195,7 @@ If not installed yet, get it with:
 sudo pacman -Syu
 sudo pacman -S base-devel kcp
 ```
+
 Select all for the base-devel group.
 
 To use kcp
@@ -187,16 +204,19 @@ searches:
 ```
 kcp -s partial_package_name<
 ```
+
 build and install:
 
 ```
 kcp -i package_name
 ```
+
 to get only the needed files to build the package yourself with makepkg:
 
 ```
 kcp -g package_name
 ```
+
 The kcp helper package is build into Octopi, see this instructional video how to use:
 
 [Hands on with Octopi, part 3 - KCP](http://kaosx.us/media/octopi_kcp.webm)
@@ -204,7 +224,9 @@ The kcp helper package is build into Octopi, see this instructional video how to
 Remember though, simplifying this did not change any to the fact that **you are the one building, installing and maintaining packages not supported by KaOS**. These are all build from files submitted by other users, make sure to check the correctness of any such package, check for updates, and rebuild when changes in the KaOS repositories demands a rebuild of your package(s).
 
 ### Example PKGBUILD for use in KCP
+
 [PKGBUILD.proto](http://kaosx.us/media/kaos-pkgbuild-proto.txt)
 
 ### Video tutorial KCP in Spanish
+
 [KCP video tutorial](https://www.youtube.com/v/4DIMhgZpfqQ&autoplay=1)
