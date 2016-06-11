@@ -58,7 +58,7 @@ Before you can make use of TOMOYO Linux, an initialization procedure must take p
 
 ### Configure Bootloader
 
-To enable Tomoyo, you need to add `security=tomoyo` to the kernel commandline in either grub or gummiboot.
+To enable Tomoyo, you need to add `security=tomoyo` to the kernel commandline in either grub or systemd-boot.
 For grub:
 
 ```
