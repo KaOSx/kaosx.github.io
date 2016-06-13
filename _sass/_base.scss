@@ -262,3 +262,33 @@ code {
 .rss {
     float: right;
 }
+
+//Transifex
+.txlive-langselector { 
+    background-color: #fcfcfc;
+    box-shadow: 0 0 0px #CCD6E4;
+    color: #3c5675;
+}
+.txlive-langselector.txlive-langselector-bottomright .txlive-langselector-toggle { 
+    border:2px solid #CCD6E4;
+    padding:2px 16px;
+}    
+.txlive-langselector-list { 
+    background-color:#EFF2F6;
+    box-shadow: 0 0 4px rgba( 0,0,0,0.3 );
+    color:#666;
+}
+.txlive-langselector-list > li:hover {
+    background-color:#31A3DD;
+    color:#fff;
+    cursor:pointer;
+    cursor:hand;
+}
+.txlive-langselector-bottomright > .txlive-langselector-list {
+    border-top: 1px solid #CCD6E4;
+    border-bottom: 1px solid #CCD6E4;
+    border-left: 1px solid #CCD6E4;
+    border-radius: 0 2px 2px 0;
+    -moz-border-radius: 0 2px 2px 0;
+    -webkit-border-radius: 0 2px 2px 0;
+}

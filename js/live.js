@@ -1501,7 +1501,7 @@
         if (!added_picker_css) {
             added_picker_css = true;
             try {
-                var css = ".txlive-langselector { position:fixed;z-index:999999;min-width: 120px;line-height:32px;background-color:#fcfcfc;box-shadow: 0 0 4px #CCD6E4;color: #3c5675;font-size: 14px;font-family: inherit; }";
+                var css = ".txlive-langselector { position:fixed;z-index:999999;min-width: 120px;line-height:32px;background-color:#fcfcfc;box-shadow: 0 0 0px #CCD6E4;color: #3c5675;font-size: 14px;font-family: inherit; }";
                 css += ".txlive-langselector * { margin: 0;padding: 0;border: 0;font-size: 100%;font: inherit;vertical-align: baseline;border-radius: 0;-moz-border-radius:0;-webkit-border-radius:0;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-border-radius:0;opacity:1; }";
                 css += ".txlive-langselector.txlive-langselector-topleft { top:0;left:0;right:auto;bottom:auto;border-radius: 0 0 2px 0;-moz-border-radius: 0 0 2px 0;-webkit-border-radius: 0 0 2px 0; }";
                 css += ".txlive-langselector.txlive-langselector-topright { top:0;left:auto;right:0;bottom:auto;border-radius: 0 2px 0 0;-moz-border-radius: 0 2px 0 0;-webkit-border-radius: 0 2px 0 0; }";
@@ -1511,23 +1511,23 @@
                 css += ".txlive-langselector.txlive-langselector-topleft .txlive-langselector-toggle { overflow: hidden;display: block;border-top:2px solid #CCD6E4;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
                 css += ".txlive-langselector.txlive-langselector-topright .txlive-langselector-toggle { overflow: hidden;display: block;border-top:2px solid #CCD6E4;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
                 css += ".txlive-langselector.txlive-langselector-bottomleft .txlive-langselector-toggle { overflow: hidden;display: block;border-bottom:2px solid #CCD6E4;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
-                css += ".txlive-langselector.txlive-langselector-bottomright .txlive-langselector-toggle { overflow: hidden;display: block;border-bottom:2px solid #CCD6E4;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
+                css += ".txlive-langselector.txlive-langselector-bottomright .txlive-langselector-toggle { overflow: hidden;display: block;border:2px solid #CCD6E4;border-radius: 6px;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
                 css += ".txlive-langselector .txlive-langselector-current { float: left;padding: 0;max-width: 200px;overflow:hidden;white-space: nowrap;text-overflow:ellipsis; }";
                 css += ".txlive-langselector .txlive-langselector-marker { float: right;display: block;position:relative;width:0;height:0;margin-left:8px;margin-top: 13px;border-right:4px dashed transparent;border-left:4px dashed transparent;}";
                 css += ".txlive-langselector-topright .txlive-langselector-marker,";
                 css += ".txlive-langselector-topleft .txlive-langselector-marker {border-top:4px solid #fff;}";
                 css += ".txlive-langselector-bottomright .txlive-langselector-marker,";
                 css += ".txlive-langselector-bottomleft .txlive-langselector-marker {border-bottom:4px solid #3c5675;}";
-                css += ".txlive-langselector-list { position:absolute;width: 100%;margin:0;padding:10px 0;display:none;background-color:#EFF2F6;box-shadow: 0 0 4px rgba( 0,0,0,0.3 );color:#666;list-style-type:none; }";
+                css += ".txlive-langselector-list { position:absolute;width: 100%;margin:0;padding:10px 0;display:none;background-color:#EFF2F6;box-shadow: 0 0 0px #CCD6E4;color:#666;list-style-type:none; }";
                 css += ".txlive-langselector-list.txlive-langselector-list-opened { display:block; }";
                 css += ".txlive-langselector-list > li {padding:0 16px;width:100%;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;}";
                 css += ".txlive-langselector-list > li:hover {background-color:#31A3DD;color:#fff;cursor:pointer;cursor:hand;}";
                 css += ".txlive-langselector-topright > .txlive-langselector-list {top:40px;left:auto;right:0;bottom:auto;border-bottom: 1px solid #f4f7f9;}";
                 css += ".txlive-langselector-topleft > .txlive-langselector-list {top:40px;left:0;right:auto;bottom:auto;border-bottom: 1px solid #f4f7f9;}";
-                css += ".txlive-langselector-bottomright > .txlive-langselector-list {top:auto;left:auto;right:0;bottom:40px;border-top: 1px solid #f4f7f9;}";
+                css += ".txlive-langselector-bottomright > .txlive-langselector-list {top:auto;left:auto;right:0;bottom:40px;border-top: 2px solid #CCD6E4;border-bottom: 2px solid #CCD6E4;border-left: 2px solid #CCD6E4;}";
                 css += ".txlive-langselector-bottomleft > .txlive-langselector-list {top:auto;left:0;right:auto;bottom:40px;border-top: 1px solid #f4f7f9;}";
                 css += ".txlive-langselector-topright > .txlive-langselector-list,";
-                css += ".txlive-langselector-bottomright > .txlive-langselector-list {border-radius: 2px 0 0 2px;-moz-border-radius: 2px 0 0 2px;-webkit-border-radius: 2px 0 0 2px;}";
+                css += ".txlive-langselector-bottomright > .txlive-langselector-list {border-radius: 6px 0 0 6px;-moz-border-radius: 6px 0 0 6px;-webkit-border-radius: 6px 0 0 6px;}";
                 css += ".txlive-langselector-topleft > .txlive-langselector-list,";
                 css += ".txlive-langselector-bottomleft > .txlive-langselector-list {border-radius: 0 2px 2px 0;-moz-border-radius: 0 2px 2px 0;-webkit-border-radius: 0 2px 2px 0;}";
                 var head = document.head || document.getElementsByTagName("head")[0];
