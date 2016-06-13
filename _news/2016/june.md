@@ -16,7 +16,7 @@ What is not visible is that all has moved to a new server too.  Previous server 
 Normally you never see a company name mentioned in these reports, this time an exception though.
 The second server KaOS uses, this one is the main mirror for all packages runs on a [**Vultr**](https://www.vultr.com/?ref=6828453){:target="_blank"} VPS.  Now that a custom ISO was needed to be able to use KaOS as the main server, it should be pointed out that Vultr is one of the very few that lets you upload any system you like and deploy in a very simple way. Should you be in need of a server and wish to support KaOS then please use the Vultr link above, it will give KaOS credit should you sign up.
 
-Next of the infrastructure move is the forum.  For a long time an alternative was thought for the used forum software, old was a ton of work to maintain, updates meant manually moving roughly 150 files each time, was heavy on resources and slow for lower powered systems. 
+Next of the infrastructure move is the forum.  For a long time an alternative was sought for the used forum software, old was a ton of work to maintain, updates meant manually moving roughly 150 files each time, was heavy on resources and slow for lower powered systems. 
 [![](/img/2016/touch.png){: .news-img-left}](/img/2016/touch.png)
 Reason the move was not done sooner was issues with database migration to preferrer new forum options.
 A brand new option became available though [**Flarum**](https://discuss.flarum.org/){:target="_blank"} is still in Beta, but offers all that was looked for.  Easy database migration, simple maintenance, intuitive extension system, modern use of Tags, unlimited scrolling, floating composer and very fast & light on resources.
