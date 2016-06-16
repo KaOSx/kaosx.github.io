@@ -44,7 +44,9 @@ If for any reason you are faced with problems in Live mode or running the instal
   ```
   compare the result with the md5sum provided on the Download page, make sure they match
 * Are you using a GPT partition table on a BIOS system? If so, follow the instruction to set up properly since the installer cannot create such a setup yet. See [Create GPT on BIOS](http://kaosx.us/docs/gpt)
-* Provide the installation log: `kdesu kate /root/.cache/Calamares/Calamares/Calamares.log`
+* Provide the installation log: 
+  * Live Mode: `~/installation.log`
+  * Installed System: `/var/log/installation.log`
 
 Disk layout info is often needed. Many installation related errors are due to incompatible settings, wrong partition table for chosen settings, selecting an automated partitioning option while only the manual option is viable for a certain layout. To provide that info run:
 
