@@ -97,7 +97,7 @@ The <kernel> should be highlighted in green (if you don't use the arrow keys to 
 
 To set the <kernel> domain to 'learning' enter "1". The learning profile will also log all the boot time files and operations. There are four setup profiles to use within Tomoyo, but for now we only need to use the policy number 1.
 
-You will notice the empty <kernel> entry from when we set up is now populated and should have the entries in profile '1' learning mode. Give yourself a pat on the back and go back to using the computer normally. For now you should just go about business as usual and allow Tomoyo to learn the apps you use in your daily routines.
+You will notice the empty `kernel` entry from when we set up is now populated and should have the entries in profile '1' learning mode. Give yourself a pat on the back and go back to using the computer normally. For now you should just go about business as usual and allow Tomoyo to learn the apps you use in your daily routines.
 
 ### Disable Tomoyo Hardening
 
