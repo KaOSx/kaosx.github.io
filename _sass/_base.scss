@@ -57,16 +57,31 @@ code {
   display: inline-block;
   line-height: 1em;
 }
-
+.fixed {
+  position: fixed;
+  top: 0px;
+  z-index: 1;
+  height: 65px;
+  width: 100%;
+  background: #FFFFFF;
+  opacity: 0.98;
+  border-bottom: 2px solid #EDF0F2;
+}
+@media (max-width: 920px) {
+  .fixed {
+    position: static;
+    border-bottom: 0px solid #EDF0F2;
+  }
+}
 .Header {
   overflow: hidden;
   border-top: 0px solid #34495E;
-  padding-bottom: 20px;
+  padding-bottom: 0px;
 }
 
 .Header-brand {
   float: left;
-  margin: 0;
+  margin: -6px;
 }
 .Header-brand a {
   border: 0;
@@ -126,6 +141,7 @@ code {
   border-width: 2px 0;
   padding: 40px 0;
   color: #7E96B3;
+  margin-top: 55px;
 }
 .Hero h2 {
   color: #536F90;

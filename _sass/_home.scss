@@ -17,6 +17,10 @@
   @extend .animated;
   @extend .fadeDown;
 }
+.home .fixed {
+  position: static;
+  border-bottom: 0px solid #EDF0F2;
+}
 .home .Header-brand {
   display: none;
 }
