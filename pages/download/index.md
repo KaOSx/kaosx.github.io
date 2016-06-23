@@ -28,7 +28,7 @@ KaOS makes regular ISO releases available, so any (new) user is not confronted w
 **MD5SUM KaOS 2016.04:**  `4cd68c9664f8309002dde91cebf333d4`
 
 ### Current Version <a id="Current_Version"></a>
-The March version ships with Plasma 5 as the default desktop, it includes non-free nvidia drivers, all language packs, KDE Applications 16.04.0, linux kernel 4.4.5 (linux-next is in the repo's, following the 4.5 series), glibc 2.23, systemd 229, kmod 22, xorg-server 1.18.3, Qt 5.6.0 &amp; Qt 4.8.7, mesa 11.2.1, calligra 3.0Alpha, Cantata and the latest versions of qupzilla, octopi, kde-telepathy, seafile, gcc 4.9.3.
+The April version ships with Plasma 5 as the default desktop, it includes non-free nvidia drivers, all language packs, KDE Applications 16.04.0, linux kernel 4.4.5 (linux-next is in the repo's, following the 4.5 series), glibc 2.23, systemd 229, kmod 22, xorg-server 1.18.3, Qt 5.6.0 &amp; Qt 4.8.7, mesa 11.2.1, calligra 3.0Alpha, Cantata and the latest versions of qupzilla, octopi, kde-telepathy, seafile, gcc 4.9.3.
 For those wondering about gtk apps, firefox 45.0.2, chrome 51, thunderbird 45.0, ardour 4.7.0 are among the available in their latest version.
 
 ### Known Issues <a id="Known_Issues"></a>
