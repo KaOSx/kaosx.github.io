@@ -35,7 +35,7 @@ For those wondering about gtk apps, firefox 47.0, chrome 53, thunderbird 45.1.1,
 
 * On systems running the Nouveau graphics driver, Qupzilla will not start.  Either install the <a class="fancybox-iframe" href="{{ site.baseurl }}/docs/nvidia/" title="non-free nvidia">non-free nvidia driver</a> or use another browser.  Nouveau is not compatible with QtWebEngine.
 * If you want to use a GPT partition table on a BIOS system, make sure to set it up following <a title="GPT on BIOS" href="{{ site.baseurl }}/docs/bios_gpt/">this Guide</a>, the installer's partitioner can only handle GPT correctly for UEFI
-* Installing on RAIDor LVM is currently not possible
+* Installing on RAID or LVM is currently not possible
 * Hibernate on LUKS enabled swap partitions needs manual intervention, the installer misses some settings to fully support this
 
 To create reliable Media for booting the Live ISO, please select USB or DVD and follow the instructions for either using a USB flash drive or DVD disc.

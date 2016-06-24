@@ -15,6 +15,6 @@ collections:
   about:
     output: true
 
-include: ['_pages']
+include: ['_pages','.htaccess']
 relative_permalinks: false
 
