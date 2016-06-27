@@ -18,7 +18,7 @@ The second server KaOS uses, this one is the main mirror for all packages runs o
 
 Next of the infrastructure move is the forum.  For a long time an alternative was sought for the used forum software, old was a ton of work to maintain, updates meant manually moving roughly 150 files each time, was heavy on resources and slow for lower powered systems. 
 [![](/img/2016/touch.png){: .news-img-left}](/img/2016/touch.png)
-Reason the move was not done sooner was issues with database migration to preferrer new forum options.
+Reason the move was not done sooner was issues with database migration to preferred new forum options.
 A brand new option became available though [**Flarum**](https://discuss.flarum.org/){:target="_blank"} is still in Beta, but offers all that was looked for.  Easy database migration, simple maintenance, intuitive extension system, modern use of Tags, unlimited scrolling, floating composer and very fast & light on resources.
 
 ## Kernel
