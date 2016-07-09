@@ -217,7 +217,6 @@ pre {
     font-size: 9px;
 }
 
-
 // Using numbers instead of bullets for listing
 #markdown-toc ul {
     list-style: decimal;
@@ -232,6 +231,11 @@ pre {
     display: inline-block;
     font-size: 9px;
 }
+//#markdown-toc a {
+//    top: -65px;
+//    padding-top: 10px;
+
+//}
 
 .form-group {
   font-size: 20px;

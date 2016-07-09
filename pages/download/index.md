@@ -40,4 +40,4 @@ For those wondering about gtk apps, firefox 47.0, chrome 53, thunderbird 45.1.1,
 
 To create reliable Media for booting the Live ISO, please select USB or DVD and follow the instructions for either using a USB flash drive or DVD disc.
 Though UEFI booting is supported, **Secure Boot is not at this time**.
-<p><small>KaOS Torrents provided by Prathamesh Deshpande.</small></p>
+
