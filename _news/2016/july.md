@@ -14,7 +14,7 @@ KaOS has waited a year to move to the new major version of GCC.  Last year it wa
 Now a year later all seems ready for GCC 5 and a complete rebuild of almost all packages in the KaOS repositories has started.  This is taking some time, plus all will be tested on some internal test ISOs too..
 This means that after todays move of [**Frameworks 5.24.0**](https://www.kde.org/announcements/kde-frameworks-5.24.0.php){:target="_blank"} to all users, you will not see the regular daily to every other day updates as usual.  No updates have been build on GCC 4.9 for over a week now, all is now build on the GCC 5.4.0/Binutils 2.26.1 based Toolchain.
 
-This is by far the biggest rebuild ever done for KaOS, once all is ready, most users can expect to see some thousnad packages being updated once all is ready to move.
+This is by far the biggest rebuild ever done for KaOS, once all is ready, most users can expect to see some thousand packages being updated.
 
 ## Repositories Updates
 [![](/img/2016/tomahawk.png){: .news-img-right}](/img/2016/tomahawk.png)
