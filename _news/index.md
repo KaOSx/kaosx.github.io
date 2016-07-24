@@ -2,6 +2,7 @@
 layout: news
 title: KaOS News
 permalink: /news/
+feed: false
 ---
 Archive of all KaOS News articles published since its inception in 2013
 

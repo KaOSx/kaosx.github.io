@@ -11,7 +11,8 @@ layout: null
     <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
     <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
     <generator>Jekyll v{{ jekyll.version }}</generator>
-    {% for post in site.news reversed limit:10 offset:48 %}
+    {% for post in site.news reversed %}
+      {% if post.feed != false %}
       <item>
         <title>{{ post.title | xml_escape }}</title>
         <description>{{ post.content | truncatewords:100 | xml_escape }}</description>
@@ -25,6 +26,7 @@ layout: null
         <category>{{ cat | xml_escape }}</category>
         {% endfor %}
       </item>
+      {% endif %}
     {% endfor %}
   </channel>
 </rss>
