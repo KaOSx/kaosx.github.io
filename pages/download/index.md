@@ -39,5 +39,4 @@ For those wondering about gtk apps, firefox 47.0.1, chrome 53, thunderbird 45.2.
 * Hibernate on LUKS enabled swap partitions needs manual intervention, the installer misses some settings to fully support this
 
 To create reliable Media for booting the Live ISO, please select USB or DVD and follow the instructions for either using a USB flash drive or DVD disc.
-Though UEFI booting is supported, **Secure Boot is not at this time**.
-
+Though UEFI booting is supported, **Secure Boot is not at this time**.  See [this link](https://rol.im/securegoldenkeyboot/){:target="_blank"} for more on Secure Boot.

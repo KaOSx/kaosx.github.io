@@ -26,7 +26,7 @@ A list of available social media to get in touch with fellow KaOS users.  Some a
 
 [Github](https://github.com/KaOSx){:target="_blank"} Complete code source for all KaOS projects, fork & create pull request to help
 
-[IRC](http://webchat.freenode.net/?channels=kaosx){:target="_blank"} Main KaOS IRC channel, used for general discussion and development talk
+[IRC](https://kiwiirc.com/client/irc.freenode.net/#kaosx){:target="_blank"} Main KaOS IRC channel, used for general discussion and development talk
 
 [Gitter](https://gitter.im/KaOSx/KaOS/){:target="_blank"} Chat & live stream of all commits related to KaOS & KCP
 
