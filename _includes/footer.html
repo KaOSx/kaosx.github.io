@@ -23,11 +23,7 @@
     </div>
 
     <div class="Footer-copyright">
-      <span class="pull-left">Copyright © 2013-<script language="javascript" type="text/javascript">
-        var today = new Date()
-        var year = today.getFullYear()
-        document.write(year)
-        </script> <a href="{{ site.baseurl }}/">KaOS</a></span>
+      <span class="pull-left">Copyright © 2013-{{ 'now' | date: "%m/%Y" }} <a href="{{ site.baseurl }}/">KaOS</a></span>
       <span class="pull-right">
         <a href="https://www.facebook.com/groups/kaosx/" target="blank"><i class="fa fa-facebook fa-lg"></i></a>
         <a href="https://groups.google.com/forum/?fromgroups#!forum/kaos-general" target="blank"><i class="fa fa-envelope fa-lg"></i></a>
