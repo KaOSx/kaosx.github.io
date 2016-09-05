@@ -39,6 +39,7 @@ If for any reason you are faced with problems in Live mode or running the instal
 
 * How did you create the Live Media? Make sure to follow the tutorials to properly create installation media for KaOS. See [USB](http://kaosx.us/docs/usb) and [DVD](http://kaosx.us/docs/dvd) creation guides.
 * Did you check the md5sum of the downloaded ISO?
+
   ```
   md5sum /path/to/the/downloaded/<kaOS>.iso
   ```

@@ -51,4 +51,4 @@ The used installer framework has moved to the 2.3 series. Highlights of the chan
 * Installing on RAID or LVM is currently not possible
 * Hibernate on LUKS enabled swap partitions needs manual intervention, the installer misses some settings to fully support this
 
-To create **reliable** installation media, please follow the instructions from the [Download](http://kaosx.us/download/){:target="_blank"} page. KaOS's ISO's **do not support unetbootin**, and DVDs need a burn speed **no higher than 4x**.
+To create **reliable** installation media, please follow the instructions from the [Download](http://kaosx.us/download/){:target="_blank"} page. KaOS's ISO's **do not support unetbootin or rufus**, and DVDs need a burn speed **no higher than 4x**.
