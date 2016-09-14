@@ -19,7 +19,11 @@ categories: []
 tags: []
 comments: []
 ---
+* This will become a table of contents (this text will be scraped).
+{:toc}
+
 ### Introduction
+{: .offset}
 
 Tomoyo Linux is a Mandatory Access Control (MAC) implementation for Linux, used for system-analysis as well as system restriction for increased security.
 It is not designed to offer protection "out of the box", but instead requires time and an understanding of the concepts and tools involved.
@@ -40,6 +44,7 @@ The main features of TOMOYO Linux include:
 is the storage location of all policy information.
 
 ### Setup
+{: .offset}
 
 Tomoyo, because of the way it works, needs to have some time spent on the system in a 'learning' setup. The more time you allow Tomoyo to learn how and what programs you use, the less likely you are to have it log things that are just normal for the given app and scenario. Tomoyo is primarily CLI based but with a well structured and easy to understand layout. It's not that hard to setup, since the KaOS kernel has Tomoyo support available by default. Tomoyo is part of a default KaOS install, but in case it was removed, install with:
 
@@ -49,6 +54,7 @@ sudo pacman -S tomoyo-tools
 ```
 
 ### Initializing Configuration
+{: .offset}
 
 Before you can make use of TOMOYO Linux, an initialization procedure must take place. This prepares the files in which policy information will be stored.
 
@@ -57,6 +63,7 @@ Before you can make use of TOMOYO Linux, an initialization procedure must take p
 ```
 
 ### Configure Bootloader
+{: .offset}
 
 To enable Tomoyo, you need to add `security=tomoyo` to the kernel commandline in either grub or systemd-boot.
 For grub:
@@ -84,6 +91,7 @@ options root=UUID=XXXXXXX-XXXX-XXXX-XXXX-XXXXXX quiet resume=UUID=XXXX-XXXX-XXXX
 and reboot.
 
 ### Setting to Learning Mode
+{: .offset}
 
 The "Learning Mode" profile is the feature of TOMOYO Linux that makes developing policy very easy. This mode will automatically generate a policy for any domain that has this profile selected.
 In order to set up the policy to "learning mode, you have to open the Domain Transition Editor:
@@ -100,10 +108,12 @@ To set the <kernel> domain to 'learning' enter "1". The learning profile will al
 You will notice the empty `kernel` entry from when we set up is now populated and should have the entries in profile '1' learning mode. Give yourself a pat on the back and go back to using the computer normally. For now you should just go about business as usual and allow Tomoyo to learn the apps you use in your daily routines.
 
 ### Disable Tomoyo Hardening
+{: .offset}
 
 If you run into trouble with Tomoyo or just don't want it running anymore you can easily disable it by changing the bootline from "security=tomoyo" to "security=none". If your system is no longer booting due to problems with Tomoyo you can still fix this using the recovery boot option which should not have Tomoyo enabled.
 
 ### More Comprehensive Settings
+{: .offset}
 
 This guide is here to explain how to get started with Tomoyo and once the system has gone through the "learning" it is time to use the very complete official documentation:
 

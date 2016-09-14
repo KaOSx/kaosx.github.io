@@ -19,7 +19,11 @@ categories: []
 tags: []
 comments: []
 ---
+* This will become a table of contents (this text will be scraped).
+{:toc}
+
 ### Installing the needed packages
+{: .offset}
 
 First, you'll need as a minimum cups. If you haven't it already installed, do it (with pacman):
 
@@ -52,7 +56,8 @@ And lastly, some printers will need the foomatic-filters package:
 sudo pacman -S foomatic-filters
 ```
 
-### Starting the printer installation
+### Starting the installed printer
+{: .offset}
 
 Once all is installed, **start cups** with:
 
@@ -81,6 +86,7 @@ You might notice after installing hplip, there is mention of "optdepends". To ge
 Now you can open **[http://localhost:631](http://localhost:631)** and add your printer to CUPS. One note about log in, the name is actually "root" (without quotes), not your root username.
 
 ### Troubleshooting
+{: .offset}
 
 **Epson-multi-functional printers**
 
@@ -123,6 +129,7 @@ sudo pacman -S skanlite
 to have an easy GUI for scanning.
 
 ### Extra Troubleshooting for scanning with Epson Stylus cx 5600
+{: .offset}
 
 `/etc/sane.d/epson2.conf` stays the same as in example above
 
@@ -131,6 +138,7 @@ to have an easy GUI for scanning.
 in `/etc/sane.d/dll.conf` uncomment the line epson2 all other lines remains commented
 
 ### Troubleshooting Samsung Printers
+{: .offset}
 
 If the installed printer packages do not result in a working Samsung printer you probably will need to get the proprietary Samsung driver.
 

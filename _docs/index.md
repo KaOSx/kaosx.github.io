@@ -19,11 +19,15 @@ categories: []
 tags: []
 comments: []
 ---
+* This will become a table of contents (this text will be scraped).
+{:toc}
+
 It would be far easier when there are issues or questions, someone could just physically work on your system to see what is running, how it was installed and what hardware is in use.
 But with FOSS that luxury is rarely there, so all need to rely on users providing comprehensive info for any issue they might have found, question they have or problems faced.
 Here we'll try to give as many options as possible to let you ask and report the smart way.
 
 ### Sysinfo Tool in Octopi
+{: .offset}
 
 KaOS provides you with an easy to use option to give very complete info about all of your system. Open Octopi and go to the "Tools" menu, there click on "Sysinfo", or you can use your keyboard in Octopi with shortcut:
 
@@ -34,6 +38,7 @@ Ctrl-Shift-S
 It will take 10-20 seconds to gather all info and will return with a pop-up window. That window contains a link you can click on and will take you to gist at github. You can check the report there, or directly right click the link to copy and paste it in the forum, a bug report, a G+ post or provide it in IRC.
 
 ### Info to provide for Installation Issues
+{: .offset}
 
 If for any reason you are faced with problems in Live mode or running the installer, first follow this check-list:
 
@@ -62,6 +67,7 @@ sudo fdisk -l
 ```
 
 ### Using a Pastebin Service to Provide Info
+{: .offset}
 
 All examples so far create text info that often is too large to add to a forum post, not possible supply in an IRC channel or hard to read when added to an email. It is much cleaner and easier to copy the output of any command and paste it into a service like:
 
@@ -74,6 +80,7 @@ All examples so far create text info that often is too large to add to a forum p
 After pasting in your info, just hit "submit" or "paste", it will return a URL that you can use to link to.
 
 ### Creating a Pacman Log
+{: .offset}
 
 The sysinfo tool in Octopi creates a very complete set of logs, but there are times it is easier to get individual logs or more details are needed.
 
@@ -86,6 +93,7 @@ kate /var/log/pacman.log
 Scroll down to the appropriate date and pastebin the relevant section.
 
 ### Using Systemd for Log Creation
+{: .offset}
 
 Systemd has a very powerful tool called "journalctl" to create all kinds of logs and system info. The tool "systemctl" is not just for starting and stopping services, it can also provide you with valuable info. A few examples:
 

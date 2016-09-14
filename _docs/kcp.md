@@ -25,6 +25,7 @@ comments: []
 [KaOS-Community-Packages](https://github.com/KaOS-Community-Packages) offers users the ability to submit working PKGBUILDs and supporting files in one central location, so all KaOS users can benefit with easy building of packages missing in the official repositories. Instead of writing all new scripts for this, Github is used as frontend. This gives a very powerful and secure interface, with good search functions, complete history for anything submitted and easy cooperation for anyone willing to maintain submitted packages.
 
 ### Applying for Membership
+{: .offset}
 
 First you need to have a Github account, this is **completely independent from KaOS**. Any account you already have there is usable. To apply for a new account just fill in the form at [Github](https://github.com/).
 Once you have that, request your membership by filling in this form: 
@@ -58,6 +59,7 @@ Once you have that, request your membership by filling in this form:
 As soon as your name is added, you will have access to the [organization page](https://github.com/organizations/KaOS-Community-Packages/).
 
 ### Installing git
+{: .offset}
 
 For this, you will need to have git installed:
 As always, make sure the system is fully up to date before installing any:
@@ -73,6 +75,7 @@ sudo pacman -S git
 ```
 
 ### Submitting a Package
+{: .offset}
 
 Only submit packages that were adjusted for KaOS or you created yourself for KaOS. Blindly copying any existing PKGBUILD and submitting it to KCP is not the reason it was created for. If you can find working PKGBUILDs elsewhere, use them.
 
@@ -161,6 +164,7 @@ git push
 This will ask for your username and password on Github, once pushed, all files will be visible in the repository page on Github.
 
 ### Formatting standards for KCP
+{: .offset}
 
 To get to a reasonable standard in submitting, maintaining and contributing packages to KCP, use the following guidelines to get to a uniform way of providing PKGBUILD files, readme info and common courtesy in KCP.
 
@@ -190,6 +194,7 @@ Download and run makepkg -si in the package directory (with Dolphin and F4):
 ```
 
 ### Using kcp helper package or Octopi
+{: .offset}
 
 Since May 2014 building, searching or getting the needed files from KaOS Community Packages has been simplified with the addition of the package "kcp". It comes pre-installed on any system that is installed with an ISO from June 2014 or later.
 If not installed yet, get it with:
@@ -227,9 +232,11 @@ The kcp helper package is build into Octopi, see this instructional video how to
 Remember though, simplifying this did not change any to the fact that **you are the one building, installing and maintaining packages not supported by KaOS**. These are all build from files submitted by other users, make sure to check the correctness of any such package, check for updates, and rebuild when changes in the KaOS repositories demands a rebuild of your package(s).
 
 ### Example PKGBUILD for use in KCP
+{: .offset}
 
 [PKGBUILD.proto](http://kaosx.us/media/kaos-pkgbuild-proto.txt)
 
 ### Video tutorial KCP in Spanish
+{: .offset}
 
 [KCP video tutorial](https://www.youtube.com/v/4DIMhgZpfqQ&autoplay=1)

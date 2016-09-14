@@ -19,11 +19,13 @@ categories: []
 tags: []
 comments: []
 ---
+* This will become a table of contents (this text will be scraped).
 {:toc}
 
 When starting a KaOS live session you are presented with the option to run with free (default) or non-free graphics drivers. The choice made there, carries over to the installed system. There might be times you wish to switch to the other option than the one originally chosen (or if you missed the choice in Live). Please follow the steps needed as explained next (first section explains free to non-free, second the reverse order).
 
 ### Switching from free to non-free
+{: .offset}
 
 As always, before installing or changing packages, make sure your system is fully updated:
 
@@ -66,6 +68,7 @@ This will automatically install nvidia-utils too, which has it's own version of 
 After all is installed, reboot to load the new driver.
 
 ### Switch from non-free to free
+{: .offset}
 
 Especially with the changes coming with linux 3.12, it is strongly recommended to at least try the free nouveau driver. For those on hybrid graphics card, it should now offer as good or better an option as bumblebee.
 

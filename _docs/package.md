@@ -29,6 +29,7 @@ Debian based distributions (for example), offer the option to add PPA's, but tho
 This tutorial will cover how to get the needed package scripts from various GIT archives and community repositories many distributions use.
 
 ### Preparation
+{: .offset}
 
 It is easiest to set up a build directory within /home. Throughout this tutorial we'll be using **GUI options** whenever possible, so for adding the directory, open Dolphin.
 
@@ -46,8 +47,10 @@ sudo pacman -S base-devel
 And select default to install the whole group.
 
 ### Getting package scripts
+{: .offset}
 
 #### KaOS Community Packages
+{: .offset}
 
 [KCP](https://github.com/KaOS-Community-Packages) is where KaOS users can share their created package scripts.
 
@@ -64,6 +67,7 @@ Click the just downloaded package zip, this will open the zip file in Ark. selec
 This will create a folder in the current directory, with the PKGBUILD and needed support files. Back in Dolphin, drag this folder to your "build" directory in the left pane.
 
 #### ABS
+{: .offset}
 
 The package **ABS** (Arch Build System) is available in the KaOS repository:
 
@@ -106,6 +110,7 @@ Going back to dolphin, and the newly created "build" directory, click on **"spli
 For this example, we'll get the "kile" folder from "extra". So in /var/abs, click on "extra", look for the "kile" folder, then drag that folder to you left panel, which is your build folder.
 
 #### AUR &amp; CCR
+{: .offset}
 
 These are user/community maintained repositories, the quality of the packages varies greatly so use **extra precaution when using these**, and always thoroughly check the PKGBUILD.
 
@@ -119,6 +124,7 @@ Search for your desired package, click on "Download tarball" or "Tarball". In do
 Right click the just downloaded package tar, select "Extract" &rarr; "Extract Archive Here". This will create a folder in the current directory, with the PKGBUILD and needed support files. Drag this folder to your "build" directory in the left pane.
 
 #### Git Archives
+{: .offset}
 
 Most distributions have public archives of all package build files in **git** (can be gitorious or github or any other variation). There you can access individual files, or download an entire repositories build files in one zip. For this example we'll use KaOS apps github:
 
@@ -177,6 +183,7 @@ If a depency of a package you are trying to build is not available in the KaOS r
 Different distributions use different names for the same packages as you saw in the example of kile, so check the KdeOS repository if a needed dependency is available under a **different name**, and use that name in the depend= or makedepends= line. KaOS tries to follow **upstream naming as much as possible**, and keeps splitting of packages to a minimum, which ends up introducing many new names in other distributions.
 
 #### Installing the newly build package
+{: .offset}
 
 If you choose not to use makepkg -i, then install your just build package (which is created in the current directory) with:
 
@@ -185,6 +192,7 @@ sudo pacman -U package_name
 ```
 
 ### List of Common Renames
+{: .offset}
 
 In this section you'll find regularly updated, known different package names, and what conversion name to use.
 

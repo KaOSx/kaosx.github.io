@@ -19,9 +19,13 @@ categories: []
 tags: []
 comments: []
 ---
+* This will become a table of contents (this text will be scraped).
+{:toc}
+
 Changing Root (Chroot) is the process of changing of the apparent disk root directory (and the current running process and its children) to another root directory.  When you change root to another directory you cannot access files and commands outside that directory.  This directory is called a "chroot jail".  Changing root is commonly done for system maintenance for such tasks as reinstalling GRUB or resetting a forgotten password. Changing root is often done from from a LiveCD or LiveUSB into a mounted partition that contains an installed system.
 
 ### Requirements
+{: .offset}
 
 * You'll need to boot to another working Linux environment (for example, to a LiveCD or USB flash disk).
 * Root privileges are required in order to chroot.
@@ -30,6 +34,7 @@ Changing Root (Chroot) is the process of changing of the apparent disk root dire
 * If you need any kernel modules loaded in the chroot environment, load them before chrooting. It may also be useful to initialize your swap (`swapon /dev/<device-or-partition-name>`) and to connect to your network before chrooting.
 
 ### Mounting the device
+{: .offset}
 
 The device or partition with the Linux system on it will need to be mounted.  To discover the kernel name of the storage device name, type:
 
@@ -45,6 +50,7 @@ mount /dev/device_or_partition_name /mnt/kaos
 ```
 
 ### Changing Root
+{: .offset}
 
 Mount the temporary filesystems:
 ```
@@ -95,6 +101,7 @@ export PS1="(chroot) $PS1"
 ```
 
 ### Perform System Maintenance
+{: .offset}
 
 At this point you can perform whatever system maintenance you require inside the chroot environment, some common examples being:
 
@@ -105,6 +112,7 @@ At this point you can perform whatever system maintenance you require inside the
 * Reinstall GRUB
 
 ### Exiting chroot
+{: .offset}
 
 When you're finished with system maintenance, exit the chroot shell:
 

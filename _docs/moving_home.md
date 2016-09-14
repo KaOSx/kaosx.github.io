@@ -19,6 +19,9 @@ categories: []
 tags: []
 comments: []
 ---
+* This will become a table of contents (this text will be scraped).
+{:toc}
+
 There are times after installing software, drivers or patches, problems occur which are sometimes hard to figure, what causes them, and hard to solve. Sometimes some lose their beloved configuration which they have spent a long time to tweak and perfectionize. ...Frustrating!
 
 Others end up running out of room for all their data.
@@ -30,10 +33,12 @@ This is what to do:
 Warning: Be careful, do this at your own risk, if you do something wrong you can end up losing files or configuration. Again, if you do this correct, you hopefully never end up losing anything again. And as always when working with partitions, make sure you make a back-up of your important files.
 
 ### Creating the filesystem
+{: .offset}
 
 Use KDE Partition Manager, or any other partitioner you feel comfortable with, and create a partition or format your drive to a Linux filesystem. Ext4 is good, some prefer ReiserFS or Ext3, but this is your own choice. If you don't know the difference, choose Ext4.
 
 ### Finding the exact name and uuid address of the target partition
+{: .offset}
 
 To I.D. the partition correctly, and later on, being able to edit the fstab file, it is important to know the exact info of the chosen partition. For that run:
 
@@ -58,6 +63,7 @@ You will see some output like this (three hard drives in this case):
 In this example, the last line is the partition chosen for the move. Please save this output in a text file, or open a new tab in yakuake for the rest of this tutorial, so you can go back and copy/paste the correct info.
 
 ### Moving the /home
+{: .offset}
 
 In yakuake, type "su" to permanently become root. Then type:
 
@@ -75,12 +81,14 @@ Then you need to copy all the files from your /home directory, this may take a w
 ```
 
 ### Understanding the fstab
+{: .offset}
 
 Before editing the `/etc/fstab` to point the direction to the new home drive, a little about fstab.
 
 `/etc/fstab` is the configuration document that tells KaOS where to find your disks. Next you need to understand the disk structure. If you have one hard drive, that will most likely be named sda, if you have a second hard drive to, that will most likely be named sdb. If you partition your disk, sda will turn into sda1, sda2, sda5 and so on, the number is individual depending how your disk is partitioned. Ex.: /dev/sda1 ...means: dev = the device directory. Your device information is stored in the /dev.
 
 ### Editing /etc/fstab
+{: .offset}
 
 ```
 $ kdesu kate /etc/fstab
@@ -119,6 +127,7 @@ Then rename the old /home, remove the mounted home dir and mount the new /home b
 ```
 
 ### Final steps
+{: .offset}
 
 Check that all your files and configuration is correct in your new /home Log in and see that everything is as it should be, and if it is, you are now ready to delete your old home directory.
 

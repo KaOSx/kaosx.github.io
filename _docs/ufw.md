@@ -19,19 +19,23 @@ categories: []
 tags: []
 comments: []
 ---
+* This will become a table of contents (this text will be scraped).
 {:toc}
 
 ### Introduction
+{: .offset}
 
 One of the first lines of defense in securing your system is a functioning firewall. In the past, this was often done through complicated and arcane utilities. There is a lot of functionality built into these utilities, iptables being the most popular nowadays, but they require a decent effort on behalf of the user to learn and understand them. Firewall rules are not something you want yourself second-guessing.
 
 To this end, UFW is a considerably easier-to-use alternative.
 
 ### What is UFW?
+{: .offset}
 
 UFW, or Uncomplicated Firewall, is a front-end to iptables. Its main goal is to make managing your firewall drop-dead simple and to provide an easy-to-use interface. It's well-supported and popular in the Linux community and installed by default in KaOS. As such, it's a great way to get started securing your system.
 
 ### Check the Status
+{: .offset}
 
 You can check the status of UFW by typing:
 
@@ -49,6 +53,7 @@ To               Action      From
 ```
 
 ### Using IPv6 with UFW
+{: .offset}
 
 If your system is configured for IPv6, ensure that UFW is configured to support IPv6 so that will configure both your IPv4 and IPv6 firewall rules. To do this, open the UFW configuration with this command:
 
@@ -65,6 +70,7 @@ IPV6=yes
 Save and quit.
 
 ### Starting UFW the first time
+{: .offset}
 
 ```
 sudo ufw enable
@@ -78,6 +84,7 @@ sudo systemctl enable ufw
 ```
 
 ### Set Up Defaults
+{: .offset}
 
 One of the things that will make setting up any firewall easier is to define some default rules for allowing and denying connections. UFW's defaults are to deny all incoming connections and allow all outgoing connections. This means anyone trying to reach your system would not be able to connect, while any application within the system would be able to reach the outside world. To set the defaults used by UFW, you would use the following commands:
 
@@ -98,6 +105,7 @@ sudo ufw default deny outgoing
 ```
 
 ### Allow Connections
+{: .offset}
 
 The syntax is pretty simple. You change the firewall rules by issuing commands in the terminal. If we turned on our firewall now, it would deny all incoming connections. If you're connected over SSH to your system, that would be a problem because you would be locked out of your server. Let's enable SSH connections to our system to prevent that from happening:
 
@@ -118,6 +126,7 @@ sudo ufw allow 2222/tcp
 ```
 
 ### Other Connections We Might Need
+{: .offset}
 
 Now is a good time to allow some other connections we might need. If we're securing a web server with FTP access, we might need these commands:
 
@@ -136,6 +145,7 @@ sudo ufw allow 21/tcp
 You mileage will vary on what ports and services you need to open. There will probably be a bit of testing necessary. In addition, you want to make sure you leave your SSH connection allowed.
 
 ### Port Ranges
+{: .offset}
 
 You can also specify port ranges with UFW. To allow ports 1000 through 2000, use the command:
 
@@ -157,6 +167,7 @@ sudo ufw allow 1714:1764/udp
 ```
 
 ### IP Addresses
+{: .offset}
 
 You can also specify IP addresses. For example, if I wanted to allow connections from a specific IP address (say my work or home address), I'd use this command:
 
@@ -165,6 +176,7 @@ sudo ufw allow from 192.168.255.255
 ```
 
 ### Denying Connections
+{: .offset}
 
 Our default set up is to deny all incoming connections. This makes the firewall rules easier to administer since we are only selectively allowing certain ports and IP addresses through. However, if you want to flip it and open up all your systems ports (not recommended), you could allow all connections and then restrictively deny ports you didn't want to give access to by replacing `allow` with `deny` in the commands above. For example:
 
@@ -181,6 +193,7 @@ sudo ufw deny 80/tcp
 would deny access to port 80.
 
 ### Deleting Rules
+{: .offset}
 
 There are two options to delete rules. The most straightforward one is to use the following syntax:
 
@@ -216,6 +229,7 @@ sudo ufw delete [number]
 where `[number]` is the line number from the previous command.
 
 ### Restart
+{: .offset}
 
 After we've gotten UFW to where we want it, we can restart it on using this command (remember: if you're connecting via SSH, make sure you've set your SSH port, commonly port 22, to be allowed to receive connections):
 
@@ -244,6 +258,7 @@ sudo ufw disable
 ```
 
 ### Reset Everything
+{: .offset}
 
 If, for whatever reason, you need to reset your systems' rules to their default settings, you can do this by typing this command:
 
@@ -252,5 +267,6 @@ sudo ufw reset
 ```
 
 ### Conclusion
+{: .offset}
 
 You should now have a system that is configured properly to restrict access to a subset of ports or IP addresses.

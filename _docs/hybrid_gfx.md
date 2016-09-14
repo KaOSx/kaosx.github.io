@@ -19,6 +19,7 @@ categories: []
 tags: []
 comments: []
 ---
+* This will become a table of contents (this text will be scraped).
 {:toc}
 
 **Hybrid Graphics, what's that?**
@@ -32,6 +33,7 @@ The aim of using two graphic cards is mainly to provide a good compromise betwee
 For KaOS there are two options to make this technology work, though for ATI/Radeon systems only PRIME is an option.
 
 ### PRIME
+{: .offset}
 
 'PRIME GPU offloading' and 'Reverse PRIME' is an attempt to support muxless hybrid graphics in the Linux kernel. All needed requirements, DRI2, updated graphic stack (Kernel, xserver and mesa), GPU drivers are available on a default KaOS install setup with free drivers.
 
@@ -73,6 +75,7 @@ More info see:
 [http://nouveau.freedesktop.org/wiki/Optimus/](http://nouveau.freedesktop.org/wiki/Optimus/)
 
 ### Bumblebee for Nvidia cards
+{: .offset}
 
 If you prefer to use the non-free Nvidia drivers PRIME is not an option, for those you will need to install all needed bumblebee packages.  As always, make sure your system is fully updated before installing any.
 

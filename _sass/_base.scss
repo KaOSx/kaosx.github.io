@@ -67,6 +67,14 @@ code {
   opacity: 0.98;
   border-bottom: 2px solid #EDF0F2;
 }
+// correct toc linking for header, 65 offset needed
+.offset:before { 
+    display: block; 
+    content: " "; 
+    height: 65px;      /* height of fixed element */
+        margin-top: -65px; /* negative margin of fixed element */  	
+        visibility: hidden; 
+}
 @media (max-width: 920px) {
   .fixed {
     position: static;

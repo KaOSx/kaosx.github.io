@@ -25,6 +25,7 @@ comments: []
 Some very basic commands.
 
 ### To update the system
+{: .offset}
 ```
 sudo pacman -Syu
 ```
@@ -35,6 +36,7 @@ sudo pacman -Syy
 ```
 
 ### Installing
+{: .offset}
 To install a package (always run pacman -Syu, before installing):
 
 ```
@@ -52,6 +54,7 @@ sudo pacman -Sy $(pacman -Q | cut -d " " -f1 | grep -v "$(pacman -Qm | cut -d " 
 ```
 
 ### Removing Packages
+{: .offset}
 If you want to only remove the package, the following command is sufficient:
 ```
 sudo pacman -R
@@ -70,6 +73,7 @@ sudo pacman -Rns package_name
 which in most cases is the proper command to remove software.
 
 ### Searches/Queries
+{: .offset}
 Info about an installed package:
 
 ```
@@ -87,6 +91,7 @@ pacman -Sii package_nam
 ```
 
 ### Howto
+{: .offset}
 List and Remove Installed Packages that are not in the Official Repositories:
 
 If you want a list of the packages you installed and are not in the official repositories, you can run this script:
@@ -124,6 +129,7 @@ sudo pacman -R $(cat foreignlist.txt)
 ```
 
 ### Pacman is completely broken! How do I reinstall it?
+{: .offset}
 In the case that pacman is broken beyond repair, manually download the necessary packages (openssl, libarchive, and pacman) and extract them. The pacman binary will be restored along with its default configuration file. Afterwards, reinstall these packages with pacman to maintain package database integrity. You can use this command to extract them.
 
 ```

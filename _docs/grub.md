@@ -19,9 +19,13 @@ categories: []
 tags: []
 comments: []
 ---
+* This will become a table of contents (this text will be scraped).
+{:toc}
+
 If you ever get into a situation were you lost grub, due to installing another OS that went wrong or just lost the Grub for KaOS, since another OS installed it's own version, here are some steps to recover.
 
 ### If you completely lost Grub
+{: .offset}
 
 Then first follow the instructions to chroot into your KaOS install:
 
@@ -49,6 +53,7 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 After this, use the chroot tutorial again to properly close the chroot, and rebooting should offer you the correct grub again.
 
 ### If you just lost the grub from KaOS
+{: .offset}
 
 But still can boot into it and would like to have the grub running from KaOS, then the steps are much simpler, just the 2 commands:
 
