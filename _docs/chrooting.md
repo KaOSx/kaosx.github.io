@@ -53,6 +53,7 @@ mount /dev/device_or_partition_name /mnt/kaos
 {: .offset}
 
 Mount the temporary filesystems:
+
 ```
 cd /mnt/kaos
 mount -t proc proc proc/

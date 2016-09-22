@@ -49,7 +49,7 @@ If for any reason you are faced with problems in Live mode or running the instal
   md5sum /path/to/the/downloaded/<kaOS>.iso
   ```
   compare the result with the md5sum provided on the Download page, make sure they match
-* Are you using a GPT partition table on a BIOS system? If so, follow the instruction to set up properly since the installer cannot create such a setup yet. See [Create GPT on BIOS](http://kaosx.us/docs/gpt)
+* Are you using a GPT partition table on a BIOS system? If so, follow the instruction to set up properly since the installer cannot create such a setup yet. See [Create GPT on BIOS](/docs/bios_gpt)
 * Provide the installation log: 
   * Live Mode: `~/installation.log`
   * Installed System: `/var/log/installation.log`

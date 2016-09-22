@@ -29,7 +29,7 @@ If you ever get into a situation were you lost grub, due to installing another O
 
 Then first follow the instructions to chroot into your KaOS install:
 
-[Chrooting](http://kaosx.us/chrooting/)
+[Chrooting](/docs/chrooting/)
 
 Once you have come to the step of "Perform System Maintenance", follow these steps:
 
