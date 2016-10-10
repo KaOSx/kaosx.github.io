@@ -109,13 +109,12 @@ Now you have all the needed files in the /var/abs directory (make sure to run su
 Going back to dolphin, and the newly created "build" directory, click on **"split"**, and navigate in the right, newly opened panel to /var/abs.
 For this example, we'll get the "kile" folder from "extra". So in /var/abs, click on "extra", look for the "kile" folder, then drag that folder to you left panel, which is your build folder.
 
-#### AUR &amp; CCR
+#### AUR
 {: .offset}
 
 These are user/community maintained repositories, the quality of the packages varies greatly so use **extra precaution when using these**, and always thoroughly check the PKGBUILD.
 
 [https://aur.archlinux.org/](https://aur.archlinux.org/)
-[http://chakraos.org/ccr/](http://chakraos.org/ccr/)
 
 Search for your desired package, click on "Download tarball" or "Tarball". In dolphin, have the split pane setup again, and in the right pane navigate to the directory where your downloads go.
 
@@ -126,13 +125,13 @@ Right click the just downloaded package tar, select "Extract" &rarr; "Extract Ar
 #### Git Archives
 {: .offset}
 
-Most distributions have public archives of all package build files in **git** (can be gitorious or github or any other variation). There you can access individual files, or download an entire repositories build files in one zip. For this example we'll use KaOS apps github:
+Most distributions have public archives of all package build files in **git** (can be gitlab or github or any other variation). There you can access individual files, or download an entire repositories build files in one zip. For this example we'll use KaOS apps github:
 
 [https://github.com/kaosx/apps](https://github.com/kaosx/apps)
 
 You can click on an individual package &rarr; click on a file or PKGBUILD &rarr; click on "Raw", then copy/paste the file in kate. Create a folder in your "build" directory with that package name, and save the file in that folder. Repeat for all files from that package.
 
-Or you can download the entire repository by clicking on the "Download zip" button. And repeat the steps for untarring and moving as explained in the [AUR &amp; CCR](#AUR_038_CCR) section.
+Or you can download the entire repository by clicking on the "Download zip" button. And repeat the steps for untarring and moving as explained in the [AUR](#aur) section.
 
 Example links to git(hub):
 
@@ -141,6 +140,7 @@ Example links to git(hub):
 [https://projects.parabolagnulinux.org/](https://projects.parabolagnulinux.org/)
 
 ### Building a package
+{: .offset}
 
 With the sources in place, build tools added, it is time to start building a package. Now we have to leave GUI, and work in the console. Let's use Yakuake for this. Hit F12 to roll out Yakuake, and change directory (cd) to your build folder with the desired package. Let's again use kile.
 
@@ -200,8 +200,7 @@ One big difference to note, not a name change, but file system structure.  KaOS 
 
 KaOS uses versioned names for python, namely python2 and python3, make sure the package you are trying to build does not fall back to just python, since that might mean it needs python3.
 
-Starting with Qt5 KaOS will use unique names for Qt versions, this won't change in Qt4, so make sure to use qt when a PKGBUILD mentions qt4. Also the qmake call for Qt5 needs to be specified, since it is packaged so it does not conflict with Qt4 (or any other Qt version for that matter). Make sure to replace "qmake" with "/usr/lib/qt5/bin/qmake" for any package that needs Qt5 to build.
+Starting with Qt5 KaOS will use unique names for Qt versions. Make sure the qmake call for Qt5 is specified, since it is packaged so it does not conflict with any other Qt version. Replace "qmake" with "/usr/lib/qt5/bin/qmake" for any package that needs Qt5 to build.
 
-Python Qt binding packages are called, "pyqt-python2" or "pyqt-python3" for Qt4 versions, for Qt5 there is "pyqt5-python3".
+Python Qt binding packages are called "pyqt5-python2" or "pyqt5-python3".
 
-KDE developers abandoned the "kdebase" prefix for many of their packages two years ago, instead it is just "kde" as in "kde-workspace", kde-runtime". That naming scheme is followed in KaOS.
