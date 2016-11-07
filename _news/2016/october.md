@@ -15,7 +15,7 @@ With the move to [**Plasma 5.8.0**](https://www.kde.org/announcements/plasma-5.8
 One adjustment all current KaOS users will have to make to be able to run a Wayland session is to move away from any aurorea based window decoration.  Default used has been MidnaFlat for a while, this will no longer be the case.  The only window decoration that is fully Wayland ready is Breeze based, so make sure to switch to that one.  The Midna color scheme has been adjusted so Breeze will fit nicely with the rest of the Midna theme.
 
 ## Repositories
-It is very slow going to get all of  Calligra to a stable kf5 based release.  Parts that were split off from the old Calligra are now kf5 based with a stable release.  Krita was released that way a few months ago, Kexi followed with stable kf5 based 3.0.0 release early this month.  Hopefully, the remaining parts of Calligra will see stable release soon too.
+It is very slow going to get all of  Calligra to a stable kf5 based release.  Parts that were split off from the old Calligra are now kf5 based with a stable release.  Krita was released that way a few months ago, Kexi followed with stable kf5 based 3.0.0 release early this month.  Hopefully, the remaining parts of Calligra will see a stable release soon too.
 
 Packages added include the all new Kio-Gdrive.  This will give you an option to access your Google drive from Dolphin.  Re-added is KShutdown, freshly kf5 ported.  Image shows the new default window decoration too.
 [![](/img/2016/kshutdown.png){: .news-img-right}](/img/2016/kshutdown.png)

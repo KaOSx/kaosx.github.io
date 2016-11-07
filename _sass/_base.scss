@@ -315,3 +315,19 @@ code {
     -moz-border-radius: 0 2px 2px 0;
     -webkit-border-radius: 0 2px 2px 0;
 }
+
+//image caption
+.image-wrapper {
+    text-align: center;
+    width: 300px;
+    margin: 10px auto 10px 10px;
+    float: right;
+
+    .image-caption {
+        color: #777;
+        margin-top: 3px;
+        font-size: 10px;
+        font-weight: 300;
+        font-family: 'Open Sans';
+    }
+}
