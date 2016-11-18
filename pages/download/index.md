@@ -29,7 +29,7 @@ KaOS makes regular ISO releases available, so any (new) user is not confronted w
 
 ### Current Version
 {: .offset}
-The September version ships with Plasma 5 as the default desktop, it includes non-free nvidia drivers, all language packs, KDE Applications 16.08.2, linux kernel 4.8.6 (linux-next is in the repo's, following the 4.8 series), glibc 2.23, systemd 232, kmod 23, xorg-server 1.18.4, Qt 5.7.0, mesa 13.0.0, calligra 3.0Alpha, Cantata and the latest versions of qupzilla, octopi, kde-telepathy, seafile, gcc 5.4.0.
+The November version ships with Plasma 5 as the default desktop, it includes non-free nvidia drivers, all language packs, KDE Applications 16.08.2, linux kernel 4.8.6 (linux-next is in the repo's, following the 4.8 series), glibc 2.23, systemd 232, kmod 23, xorg-server 1.18.4, Qt 5.7.0, mesa 13.0.0, calligra 3.0Alpha, Cantata and the latest versions of qupzilla, octopi, kde-telepathy, seafile, gcc 5.4.0.
 For those wondering about gtk apps, firefox 49.0.2, chrome 56, thunderbird 45.4.0, ardour 5.4.0 are among the available in their latest version.
 
 ### Known Issues

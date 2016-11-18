@@ -31,11 +31,6 @@ Make sure the system where you will boot the USB flash drive from, has USB ports
 ### Windows
 {: .offset}
 
-#### ROSA Image Writer
-{: .offset}
-
-[ROSA Image Writer](http://wiki.rosalab.com/en/index.php/Blog:ROSA_Planet/ROSA_Image_Writer){:target="_blank"} is one option for Windows, follow the instructions from this Wiki, and get the actual application [here](http://wiki.rosalab.com/en/images/6/65/RosaImageWriter-2.6.1-win.zip).
-
 #### SUSE Studio ImageWriter
 {: .offset}
 
@@ -43,6 +38,8 @@ Make sure the system where you will boot the USB flash drive from, has USB ports
 
 Another option for Windows is ImageWriter. Open the SUSE Studio ImageWriter and either drag the KaOS ISO image into it, or press the **Select** button and find the KaOS ISO image.
 Select your USB stick and click the **Write** button.
+
+It might be your Windows version does not support the .iso extension, in that case rename the downloaded KaOS ISO file to .raw.
 
 #### From Windows command line
 {: .offset}
