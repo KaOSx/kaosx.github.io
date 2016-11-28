@@ -35,7 +35,7 @@ Once you have come to the step of "Perform System Maintenance", follow these ste
 
 ```
 sudo pacman -Syu
-sudo pacman -S grub-bios os-prober mtools
+sudo pacman -S grub os-prober mtools
 ```
 
 With those packages in place, it is time to install grub in the /boot section of the used partition for KaOS.  You can open kpartitionmanager to see what the name/number of the used partition is, in this example, we'll presume there is only one disc in use, so the device used will be sda, adjust to whatever disc you actually installed KaOS to.

@@ -15,7 +15,21 @@ class: home
   <div class="animated fadeIn">
     
     <h2>A Lean KDE Distribution.</h2>
-    <p>KaOS is an <strong>independent</strong>, built from scratch distribution, focused on Qt and KDE.</p>
+    KaOS is an
+    <div id="typed-strings">
+    <p>^1000 indepe</p>
+    <p><strong>independent</strong> distribution</p>
+    </div>
+    <span id="typed"></span>
+    <br>
+    <div id="typed2-strings">
+    <p>^3500 built from scratch ^1000</p>
+    <p>focused on Qt and KDE.</p>
+    </div>
+    <span id="typed2"></span>
+        
+        <!--KaOS is an <strong>independent</strong>, built from scratch distribution, focused on Qt and KDE.-->
+    
 
     <div class="Intro-actions">
       <a href="{{ site.baseurl }}#builds" class="Button">Latest Builds</a>
@@ -81,6 +95,23 @@ class: home
 </div>
 
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<!-- typing -->
+<script src="js/typed.js"></script>
+<script>
+  $(function(){
+        $("#typed").typed({
+            stringsElement: $('#typed-strings')
+        });
+    });
+</script>
+<script>
+  $(function(){
+        $("#typed2").typed({
+            stringsElement: $('#typed2-strings')
+        });
+    });
+</script>
+<!-- scrolling text -->
 <script>
   $(function() {
     var $carousel = $('.Carousel');
