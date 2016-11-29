@@ -254,7 +254,9 @@ Include conf/extra/php7_module.conf
 
 When loading php7_module the httpd.service often fails with this error in the journal:
 
->Apache is running a threaded MPM, but your PHP Module is not compiled to be threadsafe.  You need to recompile PHP.
+```
+Apache is running a threaded MPM, but your PHP Module is not compiled to be threadsafe.  You need to recompile PHP.
+```
 
 For this you need to replace mpm_event_module with mpm_prefork_module:
 
@@ -277,7 +279,7 @@ After LAMP is completely installed, we can take a look and see the PHP details b
 To set this up, first create a new blank file:
 
 ```
-sudo nano /srv/http/info.php
+sudo micro /srv/http/info.php
 ```
 
 Add in the following line:
@@ -289,12 +291,6 @@ phpinfo();
 ```
 
 Then Save and Exit.
-
-Restart apache so that all of the changes take effect:
-
-```
-sudo systemctl restart httpd
-```
 
 Visit your php info page (make sure you replace the example ip address with your correct one): http://12.34.56.789/info.php
 
