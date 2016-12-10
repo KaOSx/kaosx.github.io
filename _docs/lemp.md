@@ -2,7 +2,7 @@
 layout: docs
 status: publish
 published: true
-title: Initial Server Setup with LAMP
+title: Initial Server Setup with LEMP
 permalink: /docs/lemp/
 author:
   display_name: demm
