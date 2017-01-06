@@ -28,6 +28,10 @@ In order to put a KaOS ISO image onto an USB flash drive, you will need a drive 
 
 Make sure the system where you will boot the USB flash drive from, has USB ports and can boot USB flash drives.  Before following any steps, make sure the device is plugged in but not mounted.
 
+```fix
+Unetbootin and Rufus are NOT compatible with KaOS.
+```
+
 ### Windows
 {: .offset}
 
@@ -59,7 +63,7 @@ dd.exe if=/path/to/the/downloaded/iso of=/path/to/the/USB/device
 #### IsoWriter
 {: .offset}
 
-The application to use is [IsoWriter](/packages/index.php?act=search&amp;subdir=&amp;sortby=date&amp;order=descending&amp;searchpattern=isowriter){:target="_blank"}, available in the KaOS repository and installed by default. **Unetbootin and Rufus are NOT compatible with KaOS.** After opening IsoWriter:
+The application to use is [IsoWriter](/packages/index.php?act=search&amp;subdir=&amp;sortby=date&amp;order=descending&amp;searchpattern=isowriter){:target="_blank"}, available in the KaOS repository and installed by default. After opening IsoWriter:
 
 * Click the folder icon and browse to the directory containing the ISO
 * Click write
@@ -89,3 +93,5 @@ To check if the creation of the bootable USB stick was successful, use `fdisk` a
 Device Boot Start End Blocks Id System
 /dev/sdb1 * 1 697 713728 17 Hidden HPFS/NTFS
 ```
+
+Again, **Unetbootin and Rufus are NOT compatible with KaOS.**

@@ -23,14 +23,14 @@ KaOS makes regular ISO releases available, so any (new) user is not confronted w
 * This will become a table of contents (this text will be scraped).
 {:toc}
 
-[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2016.11 ISO
+[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2017.01 ISO
 
-**MD5SUM KaOS 2016.11:**  `0f77dd6f579a1f1f62731fed16d14062`
+**MD5SUM KaOS 2017.01:**  `2051d7c0ad3cb24dc95103b291faf987`
 
 ### Current Version
 {: .offset}
-The November version ships with Plasma 5 as the default desktop, it includes non-free nvidia drivers, all language packs, KDE Applications 16.08.2, linux kernel 4.8.6 (linux-next is in the repo's, following the 4.8 series), glibc 2.23, systemd 232, kmod 23, xorg-server 1.18.4, Qt 5.7.0, mesa 13.0.0, calligra 3.0Alpha, Cantata and the latest versions of qupzilla, octopi, kde-telepathy, seafile, gcc 5.4.0.
-For those wondering about gtk apps, firefox 49.0.2, chrome 56, thunderbird 45.4.0, ardour 5.4.0 are among the available in their latest version.
+The January version ships with Plasma 5 as the default desktop, it includes non-free nvidia drivers, all language packs, KDE Applications 16.12.0, linux kernel 4.8.15 (linux-next is in the repo's, following the 4.9 series), glibc 2.23, systemd 232, kmod 23, xorg-server 1.18.4, Qt 5.7.1, mesa 13.0.2, calligra 3.0.0.1, Cantata and the latest versions of qupzilla, octopi, kde-telepathy, seafile, gcc 5.4.0.
+For those wondering about gtk apps, firefox 50.1.0, chrome 57, thunderbird 45.6.0, ardour 5.5.0 are among the available in their latest version.
 
 ### Known Issues
 {: .offset}
