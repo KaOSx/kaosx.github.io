@@ -45,4 +45,7 @@
         picker: "bottom-right"}</script>
   <!-- <script type="text/javascript" src="//cdn.transifex.com/live.js"></script> -->
   <script type="text/javascript" src="/js/live.js"></script>
+{% if site.google_analytics and jekyll.environment == 'production' %}
+{% include analytics.html %}
+{% endif %}
 </head>

@@ -18,3 +18,4 @@ collections:
 include: ['_pages','.htaccess']
 relative_permalinks: false
 
+google_analytics: UA-78543296-1
