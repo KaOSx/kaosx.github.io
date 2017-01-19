@@ -43,6 +43,7 @@ class: home
 
   <div class="Features" id="builds">
     <div class="Carousel">
+    <marquee behavior="scroll" direction="left">
       <div class="CarouselItem">
         <div class="CarouselItem-label">KDE and Qt focused</div>
       </div>
@@ -70,6 +71,7 @@ class: home
       <div class="CarouselItem">
         <div class="CarouselItem-label">Every package in every repository is build by and for KaOS</div>
       </div>
+      </marquee>
     </div>
 
     <p class="Features-text">
@@ -108,28 +110,4 @@ class: home
             stringsElement: $('#typed2-strings')
         });
     });
-</script>
-
-<!-- scrolling text -->
-<script>
-  $(function() {
-    var $carousel = $('.Carousel');
-    $carousel.wrapInner($('<div class="CarouselGroup"/>'));
-    var $group = $('.CarouselGroup');
-    var $group2 = $group.clone().appendTo($carousel);
-
-    var animate = function() {
-      $group.css({marginLeft: 0}).animate({marginLeft: -$group.width()}, 70000, 'linear').promise().done(function() {
-        animate();
-      });
-    };
-
-    animate();
-
-    if (window.devicePixelRatio > 1) {
-      var $screenshot = $('.Home-screenshot img');
-
-      $screenshot.attr('src', $screenshot.attr('src').replace('.', '_2x.'));
-    }
-  });
 </script>

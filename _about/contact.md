@@ -36,9 +36,11 @@ A list of available social media to get in touch with fellow KaOS users.  Some a
 #### Community maintained
 [Facebook](https://www.facebook.com/groups/kaosx/){:target="_blank"}
 
+[Telegram Channel](https://t.me/kaos_channel){:target="_blank"}
+
 [German IRC](http://webchat.freenode.net/?channels=kaosx-de){:target="_blank"}
 
-[Telegram Channel](https://telegram.me/kaos_es){:target="_blank"} Mainly used for Spanish speakers
+[Telegram Group ESPAÑOL](https://telegram.me/kaos_es){:target="_blank"}
 
 [Foro en ESPAÑOL](http://kaoticos.xyz/){:target="_blank"}
 
