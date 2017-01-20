@@ -76,6 +76,15 @@ From Dolphin:
 
 If you are not on KaOS, you can get [IsoWriter here](https://github.com/KaOSx/isowriter){:target="_blank"}, see the [README](https://github.com/KaOSx/isowriter/blob/master/README.md){:target="_blank"} how to build and use. 
 
+#### SUSE Studio ImageWriter
+{: .offset}
+
+[ImageWriter](https://github.com/openSUSE/imagewriter){:target="_blank"}
+
+If your distribution provides Suse Studio ImageWriter, then that one is a well tested alternative GUI to use.
+
+Open the SUSE Studio ImageWriter and either drag the KaOS ISO image into it, or press the Select button and find the KaOS ISO image. Select your USB stick and click the Write button.
+
 #### Using the command line
 {: .offset}
 

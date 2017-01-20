@@ -92,43 +92,18 @@ pacman -Sii package_nam
 
 ### Howto
 {: .offset}
-List and Remove Installed Packages that are not in the Official Repositories:
 
-If you want a list of the packages you installed and are not in the official repositories, you can run this script:
+#### List Installed Packages that are not in the Official Repositories:
+{: .offset}
 
-```
-#! /bin/bash
-
-installed=`pacman -Q | sed -e "s|(.*[^ ]*) .*|1|g" `
-repos=`pacman -Sl | sed -e "s|[^ ]* (.*[^ ]*) .*|1|g"`
-
-for pkg in $installed
-do
-found=`echo $repos | grep $pkg`
-if [ "$found" == "" ]; then
-echo $pkg
-fi
-done
-# end
-```
-
-Save it in a file, give it execution permission (chmod +x file.sh) and run it:
+If you want a list of the packages you build and installed locally or packages that are no longer in the official repositories:
 
 ```
-./file.sh
+sudo pacman -Qm
 ```
-It will print the packages you have installed which are not in the official repositories. You can also send the list to a text file:
+Make sure to check this regularly, preferably monthly but at least every three months.  KaOS repositories are always moving so you don't want to keep unmaintained and possibly conflicting packages in your install.
 
-```
-./file.sh > foreignlist.txt
-```
-Then, you can edit the list (to remove from it the software you still want in your system), and once the list has only software packages you want to remove, you can run this command to remove those:
-
-```
-sudo pacman -R $(cat foreignlist.txt)
-```
-
-### Pacman is completely broken! How do I reinstall it?
+#### Pacman is completely broken! How do I reinstall it?
 {: .offset}
 In the case that pacman is broken beyond repair, manually download the necessary packages (openssl, libarchive, and pacman) and extract them. The pacman binary will be restored along with its default configuration file. Afterwards, reinstall these packages with pacman to maintain package database integrity. You can use this command to extract them.
 
