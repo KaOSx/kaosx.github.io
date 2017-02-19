@@ -13,8 +13,8 @@ author_login: zynex
 author_email: zynex@ezmail.se
 wordpress_id: 
 wordpress_url: 
-date: '2017-02-18 10:58:00 -0100'
-date_gmt: '2017-02-18 10:58:00 -0100'
+date: '2017-02-19 10:58:00 -0100'
+date_gmt: '2017-02-19 10:58:00 -0100'
 categories: []
 tags: []
 comments: []
