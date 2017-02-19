@@ -71,5 +71,3 @@ That's it. Now you can reboot your system and try it out. Note that the passphra
 All you have to do now is restore your previous backup.
 
 Good luck.
-
-0
