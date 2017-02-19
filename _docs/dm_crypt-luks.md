@@ -1,3 +1,24 @@
+---
+layout: docs
+status: publish
+published: true
+title: Encrypt home partition with dm-crypt and LUKS
+permalink: /docs/dm_crypt-luks/
+author:
+  display_name: zynex
+  login: zynex
+  email: zynex@ezmail.se
+  url: ''
+author_login: zynex
+author_email: zynex@ezmail.se
+wordpress_id: 
+wordpress_url: 
+date: '2017-02-18 10:58:00 -0100'
+date_gmt: '2017-02-18 10:58:00 -0100'
+categories: []
+tags: []
+comments: []
+---
 For those of you that haven't encrypted your home partition, but would like to, here's a guide to do so using dm-crypt and LUKS without having to reinstall your entire system. What you have to do thou, is backing up /home before you start this guide. Note that this is block device level encryption, witch means that the entire partition will be encrypted. If you are unsure about the differences between block and filesystem stacked level encryption, google it first.
 
 This guide assumes that you have a separate partition for your home folder.
