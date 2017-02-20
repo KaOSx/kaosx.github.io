@@ -99,7 +99,7 @@ pacman -Sii package_nam
 If you want a list of the packages you build and installed locally or packages that are no longer in the official repositories:
 
 ```
-sudo pacman -Qm
+pacman -Qm
 ```
 Make sure to check this regularly, preferably monthly but at least every three months.  KaOS repositories are always moving so you don't want to keep unmaintained and possibly conflicting packages in your install.
 

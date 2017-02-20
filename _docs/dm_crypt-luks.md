@@ -11,19 +11,21 @@ author:
   url: ''
 author_login: zynex
 author_email: zynex@ezmail.se
-wordpress_id: 
-wordpress_url: 
 date: '2017-02-19 10:58:00 -0100'
 date_gmt: '2017-02-19 10:58:00 -0100'
 categories: []
 tags: []
 comments: []
 ---
+* This will become a table of contents (this text will be scraped).
+{:toc}
+
 For those of you that haven't encrypted your home partition, but would like to, here's a guide to do so using dm-crypt and LUKS without having to reinstall your entire system. What you have to do thou, is backing up /home before you start this guide. Note that this is block device level encryption, witch means that the entire partition will be encrypted. If you are unsure about the differences between block and filesystem stacked level encryption, google it first.
 
 This guide assumes that you have a separate partition for your home folder.
 
 ### Back up home partition
+{: .offset}
 
 While doing this, you have to logout all users and use the terminal. Open a new virtual console by pressing Ctrl+Alt+F2 and login with your root account.
 
@@ -33,6 +35,7 @@ rsync -ah --progress /home <USB DRIVE>
 ```
 
 ### Create the encrypted partition
+{: .offset}
 
 Now it's time to create the encrypted partition. **NOTE! This will erase the entire partition!** You also chose what passphrase to use in this step. Remember it, if you lose it you will not be able to get your stuff back!
 ```
@@ -49,6 +52,7 @@ mkfs.btrfs /dev/mapper/home
 Now your drive is ready to use. If you want to encrypt your USB-stick/hard drive with LUKS, use the same procedure as above. To use the new encrypted partition as /home, you have to make some changes to both fstab and crypttab to make it mount correctly.
 
 ### Make it mount at boot
+{: .offset}
 
 Edit /etc/crypttab and add the following line to it. If you don't want a timeout, remove that option.
 ```

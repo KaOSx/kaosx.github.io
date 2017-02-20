@@ -333,3 +333,12 @@ strong {
         font-family: 'Open Sans';
     }
 }
+//Donors
+.Donors ul {
+  width: 100%;
+}
+.Donors li {
+  width: 50%;
+  float: left;
+  min-width: 20em;
+}

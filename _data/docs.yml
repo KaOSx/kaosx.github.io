@@ -23,6 +23,7 @@
   docs:
   - ufw
   - tomoyo
+  - dm_crypt-luks
 
 - title: Packaging & KCP
   docs:
