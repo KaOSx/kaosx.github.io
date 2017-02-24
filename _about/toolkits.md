@@ -13,6 +13,6 @@ The repository layout is simple, and consists of three groups, Core, Main and Ap
 
 <em>"Main"</em> repository consists of all the needed libraries, extra drivers and firmware needed to make the Desktop and Applications function. Many of these can be fully rolling and will move to the end-user after a seven to ten days testing period. Some more vulnerable packages will enter after enough upstream feedback is available that no regressions have occurred.
 
-<em>"Apps"</em> consists of all packages seen and used by the users, including KDE and any needed tools. It is fully rolling and you can expect updates to reach this repository after a short testing period, unless it needed to be built on newer versions of Core or Main packages, than it will have to wait until those are ready to come out of their testing period.
+<em>"Apps"</em> consists of all packages seen and used by the users, including KDE (Frameworks, Plasma and Applications) and any needed tools. It is fully rolling and you can expect updates to reach this repository after a short testing period unless it needed to be built on newer versions of Core or Main packages, than it will have to wait until those are ready to come out of their testing period.
 
 <em>"Build"</em> is were all packages start, whether it is a rebuild, update or new addition, all goes to build, once gone through the proper testing, than they are moved to their respective repository.

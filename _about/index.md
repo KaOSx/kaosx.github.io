@@ -24,7 +24,7 @@ It simply is not possible to package any and all to work perfect for every Deskt
 
 #### Choices 
 KaOS has made the choice to use the Linux kernel as a base (though the Illumos kernel is under constant evaluation, and a future switch is a wish). After that choice, the best available package manager, most flexible way of package building, repository maintenance is pacman/makepkg for a rolling distro like KaOS.
-As for the Desktop Environment, there will never be a change, whether it is Linux or Illumos based, KDE will be the choice, Qt the Toolkit.
+As for the Desktop Environment, there will never be a change, whether it is Linux or Illumos based, KDE Plasma will be the choice, Qt the Toolkit.
 With those choices in place, April 2013 package building for this independent distribution was started. KaOS is a build from scratch distribution, every package in every repository is build by and for KaOS. By July 2013 the initial goal of about 1500 packages was reached.
 
 

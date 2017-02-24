@@ -7,7 +7,7 @@ KaOS uses several issue trackers for it's used components.  Before reporting an 
 
 - [Core Bugs](http://github.com/KaOSx/core/issues){:target="_blank"} : Report here for issues involving the base of the system, this includes the kernel, systemd, toolchain for building and basic command-line tools
 - [Main Bugs](http://github.com/KaOSx/main/issues){:target="_blank"} : Issues regarding libraries, extra drivers and firmware needed to make the Desktop and Applications function
-- [Apps Bugs](http://github.com/KaOSx/apps/issues){:target="_blank"} : Applications seen and used by the users, including KDE and any needed tools, reporting here is mainly for GUI packages
+- [Apps Bugs](http://github.com/KaOSx/apps/issues){:target="_blank"} : Applications seen and used by the users, including all of KDE and any needed tools, reporting here is mainly for GUI packages
 - [Live ISO Issues](https://github.com/KaOSx/live-uefi/issues){:target="_blank"} : Any issues related to creating the Live Media and running the Live environment
 - [Installer Issues](https://github.com/KaOSx/calamares/issues){:target="_blank"} : Issues regarding using the installer and partitioning the hard-drive for the target install
 
