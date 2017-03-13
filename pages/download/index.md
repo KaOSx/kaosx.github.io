@@ -35,7 +35,7 @@ For those wondering about gtk apps, firefox 51.0.1, chrome 58, thunderbird 45.7.
 ### Known Issues
 {: .offset}
 
-* If you want to use a GPT partition table on a BIOS system, make sure to set it up following <a title="GPT on BIOS" href="{{ site.baseurl }}/docs/bios_gpt/">this Guide</a>, the installer's partitioner can only handle GPT correctly for UEFI
+* If you want to use a GPT partition table on a BIOS system, make sure to use manual partitioning, set it up with 8 MB of unformatted space as the start of your partition layout and set the bios_grub flag to it
 * Installing on RAID or LVM is currently not possible
 * Hibernate on LUKS enabled swap partitions needs manual intervention, the installer misses some settings to fully support this
 
