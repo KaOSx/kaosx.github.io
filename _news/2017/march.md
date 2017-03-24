@@ -24,7 +24,8 @@ Quite a lot of changes to report here for the last five weeks. A new major Syste
 
 For KDE, all the latest is available, that means **Frameworks 5.32.0 and KDE Applications 16.12.3** for all users and [Plasma 5.9.4](https://www.kde.org/announcements/plasma-5.9.4.php){:target="_blank"} entered the build repository today so will move to all in about 3-4 days.
 
-A few packages, mainly libraries no longer needed by any, left the repositories, thus some more was created to have a few additions.  KDE released a new tool, **Heaptrack** traces all memory allocations and annotates these events with stack traces.
+A few packages, mainly libraries no longer needed by any, left the repositories, thus some room was created to have a few additions.
+KDE released a new tool, **Heaptrack** traces all memory allocations and annotates these events with stack traces.
 
 In the search of a just working video/voice/chat client, that is cross-platform,  easy to use, full-featured and secure, another option is now available.
 qTox had been up a while, but development for an android app, for example using tox is not really in a usable state (and not really easy to use either).
