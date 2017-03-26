@@ -105,12 +105,18 @@
   text-align: center;
 }
 .Features-text {
-  font-size: 20px;
+  font-size: 17px;
   color: #3C5675;
   max-width: 590px;
   margin-left: auto;
   margin-right: auto;
   padding: 0 20px;
+}
+.Features iframe {
+  border: #CCD6E4 2px solid;
+  border-radius: 6px;
+  height: 350px;
+  margin-bottom: 20px;
 }
 .Features-actions .Button {
   border-color: #31A3DD;
