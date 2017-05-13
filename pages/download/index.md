@@ -43,3 +43,15 @@ For those wondering about gtk apps, firefox 52.0.2, chrome 59, thunderbird 52.0,
 
 To create reliable Media for booting the Live ISO, please select USB or DVD and follow the instructions for either using a USB flash drive or DVD disc.
 Though UEFI booting is supported, **Secure Boot is not at this time**.  See [this link](https://rol.im/securegoldenkeyboot/){:target="_blank"} for more on Secure Boot.
+
+### Authenticity check
+{: .offset}
+
+Besides checking the integrity of the downloaded ISO, it is adviced to also check the authenticity through the signature of the ISO.  For this download the KaOS Signing Key, linked left under GPG Verification.  Add this key to your keyring:
+```
+gpg --import KaOS.asc
+```
+Next download the ISO GPG Signature to the same directory as where you downloaded the ISO and verify with (adjust for correct year and date):
+```
+gpg --verify KaOS-2017.04-x86_64.iso.sig
+```

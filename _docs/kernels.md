@@ -55,11 +55,9 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 On reboot, linux-next will be the default kernel to boot into, stable kernel is still an available choice. Do not remove the stable kernel, much better to always have two options for kernels to boot into.
 
-For UEFI installs, add a new file to /boot/loader/entries by opening:
+For **UEFI installs**, add a new file to /boot/loader/entries by opening Dolphin and navigate to /boot/loader/entries.
 
-```
-kdesu kate /boot/loader/entries/KaOS.conf
-```
+Right click on `KaOS_<year>.<month>.conf` and select `Root Actions` then select `Edit as Text`
 
 and edit the linux and initrd line to read as:
 
@@ -68,10 +66,10 @@ linux  /vmlinuz-linux-next
 initrd /initramfs-linux-next.img
 ```
 
-Save as **KaOS-next.conf**, and you will have the choice to boot from linux-next in the systemd-boot menu. To make it default, edit:
+Save as **KaOS-next.conf** (or add the <year>.<month> part to it too), and you will have the choice to boot from linux-next in the systemd-boot menu. To make it default, edit:
 
 ```
 kdesu kate /boot/loader/loader.conf
 ```
 
-change KaOS to KaOS-next.
+change KaOS to KaOS-next.  Or highlight the linux-next entry in the bootloader menu and type `d` to make it default.
