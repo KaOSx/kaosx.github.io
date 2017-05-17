@@ -66,62 +66,6 @@ Click the just downloaded package zip, this will open the zip file in Ark. selec
 
 This will create a folder in the current directory, with the PKGBUILD and needed support files. Back in Dolphin, drag this folder to your "build" directory in the left pane.
 
-#### ABS
-{: .offset}
-
-The package **ABS** (Arch Build System) is available in the KaOS repository:
-
-```
-sudo pacman -S abs
-```
-
-This package contains a configuration script, /etc/abs.conf
-
-To edit it you need root access to the file:
-
-```
-kdesu kate /etc/abs.conf
-```
-
-Edit so it shows:
-
-```
-ARCH="x86_64"
-```
-
-and in the **REPOS=** section enable or disable desired repo's by removing or adding "!".
-Next run:
-
-```
-sudo abs core
-```
-
-Followed by:
-
-```
-sudo abs
-```
-
-Now you have all the needed files in the /var/abs directory (make sure to run sudo abs regularly, as to have the latest versions).
-
-[![split](/wp-content/uploads/2013/08/split-150x150.png){: width="150" height="150" .alignright .size-thumbnail}](/wp-content/uploads/2013/08/split.png)
-
-Going back to dolphin, and the newly created "build" directory, click on **"split"**, and navigate in the right, newly opened panel to /var/abs.
-For this example, we'll get the "kile" folder from "extra". So in /var/abs, click on "extra", look for the "kile" folder, then drag that folder to you left panel, which is your build folder.
-
-#### AUR
-{: .offset}
-
-These are user/community maintained repositories, the quality of the packages varies greatly so use **extra precaution when using these**, and always thoroughly check the PKGBUILD.
-
-[https://aur.archlinux.org/](https://aur.archlinux.org/)
-
-Search for your desired package, click on "Download tarball" or "Tarball". In dolphin, have the split pane setup again, and in the right pane navigate to the directory where your downloads go.
-
-[![untar](/wp-content/uploads/2013/08/untar-150x150.png){: width="150" height="150" .alignright .size-thumbnail}](/wp-content/uploads/2013/08/untar.png)
-
-Right click the just downloaded package tar, select "Extract" &rarr; "Extract Archive Here". This will create a folder in the current directory, with the PKGBUILD and needed support files. Drag this folder to your "build" directory in the left pane.
-
 #### Git Archives
 {: .offset}
 
@@ -135,9 +79,24 @@ Or you can download the entire repository by clicking on the "Download zip" butt
 
 Example links to git(hub):
 
+[https://git.archlinux.org/svntogit/packages.git/tree/](https://git.archlinux.org/svntogit/packages.git/tree/)
+[https://git.archlinux.org/svntogit/community.git/tree/](https://git.archlinux.org/svntogit/community.git/tree/)
 [https://github.com/antergos](https://github.com/antergos)<br>
 [http://git.frugalware.org/](http://git.frugalware.org/)<br>
 [https://projects.parabolagnulinux.org/](https://projects.parabolagnulinux.org/)
+
+#### AUR
+{: .offset}
+
+These are user/community maintained repositories, the quality of the packages varies greatly so use **extra precaution when using these**, and always thoroughly check the PKGBUILD.
+
+[https://aur.archlinux.org/](https://aur.archlinux.org/)
+
+Search for your desired package, click on "Download tarball" or "Tarball". In dolphin, have the split pane setup again, and in the right pane navigate to the directory where your downloads go.
+
+[![untar](/wp-content/uploads/2013/08/untar-150x150.png){: width="150" height="150" .alignright .size-thumbnail}](/wp-content/uploads/2013/08/untar.png)
+
+Right click the just downloaded package tar, select "Extract" &rarr; "Extract Archive Here". This will create a folder in the current directory, with the PKGBUILD and needed support files. Drag this folder to your "build" directory in the left pane.
 
 ### Building a package
 {: .offset}
@@ -196,11 +155,11 @@ sudo pacman -U package_name
 
 In this section you'll find regularly updated, known different package names, and what conversion name to use.
 
-One big difference to note, not a name change, but file system structure.  KaOS keeps more in line with most mainstream distributions (and most package development), to have regular files and binaries in /bin, /lib, /sbin, /usr/sbin.  There is no use of thousands of symlinks to try and move all to /usr.  So whenever you see a configuration mentioning "sbin=/usr/bin", remove that line.  Kernel is packaged in /lib, so for linux-kernel packaging, do not use /usr/lib with symlinks back to /lib.
+One big difference to note, not a name change, but file system structure.  KaOS keeps more in line with most mainstream distributions (and most package development), to have regular files and binaries in /bin, /lib, /sbin, /usr/sbin.  There is no use of thousands of symlinks to try and move all to /usr.  So whenever you see a configuration mentioning `sbin=/usr/bin`, remove that line.  Kernel is packaged in /lib, so for linux-kernel packaging, do not use /usr/lib with symlinks back to /lib.
 
 KaOS uses versioned names for python, namely python2 and python3, make sure the package you are trying to build does not fall back to just python, since that might mean it needs python3.
 
-Starting with Qt5 KaOS will use unique names for Qt versions. Make sure the qmake call for Qt5 is specified, since it is packaged so it does not conflict with any other Qt version. Replace "qmake" with "/usr/lib/qt5/bin/qmake" for any package that needs Qt5 to build.
+Starting with Qt5 KaOS will use unique names for Qt versions. Make sure the qmake call for Qt5 is specified, since it is packaged so it does not conflict with any other Qt version. Replace `qmake` with `/usr/lib/qt5/bin/qmake` for any package that needs Qt5 to build.
 
-Python Qt binding packages are called "pyqt5-python2" or "pyqt5-python3".
+Python Qt binding packages are called `pyqt5-python2` or `pyqt5-python3`.
 

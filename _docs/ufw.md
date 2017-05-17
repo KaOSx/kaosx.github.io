@@ -58,7 +58,7 @@ To               Action      From
 If your system is configured for IPv6, ensure that UFW is configured to support IPv6 so that will configure both your IPv4 and IPv6 firewall rules. To do this, open the UFW configuration with this command:
 
 ```
-kdesu kate /etc/default/ufw
+kate /etc/default/ufw
 ```
 
 Then make sure "IPV6" is set to "yes", like so:

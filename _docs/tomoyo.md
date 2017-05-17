@@ -69,7 +69,9 @@ To enable Tomoyo, you need to add `security=tomoyo` to the kernel commandline in
 For grub:
 
 ```
-kdesu kate /etc/default/grub
+kate /etc/default/grub
+```
+```
 [...]
 GRUB_CMDLINE_LINUX_DEFAULT="quiet splash security=tomoyo"
 [...]
@@ -84,7 +86,9 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 For systemd-boot:
 
 ```
-kdesu kate /boot/loader/entries/KaOS.conf
+kate /boot/loader/entries/KaOS.conf
+```
+```
 options root=UUID=XXXXXXX-XXXX-XXXX-XXXX-XXXXXX quiet resume=UUID=XXXX-XXXX-XXXX-XXXX-XXXXXX rw security=tomoyo
 ```
 

@@ -45,7 +45,7 @@ Current installer is ready to create Btrfs partitions so you can use it without 
 In case you want to fine tune the default setting used by the installer for fstab, you can use the following example:
 
 ```
-$ kdesu kate /etc/fstab
+$ kate /etc/fstab
 ```
 
 And edit until it looks like this.

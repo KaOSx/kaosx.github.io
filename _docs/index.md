@@ -71,7 +71,7 @@ sudo fdisk -l
 
 All examples so far create text info that often is too large to add to a forum post, not possible supply in an IRC channel or hard to read when added to an email. It is much cleaner and easier to copy the output of any command and paste it into a service like:
 
-[http://paste.kde.org/](http://paste.kde.org/)
+[https://paste.ee/](https://paste.ee/)
 
 [https://gist.github.com/](https://gist.github.com/)
 

@@ -56,15 +56,3 @@ A new option is the addition to verify the authenticity of downloaded KaOS ISO f
 
 ## KDE-next Repository Reopened
 And finally for this news item, Qt 5.9 beta plus Plasma 5.10 beta are up in the kde-next repository. This to get ready for the release of Qt 5.9.0 later this month. All of Frameworks 5.34.0 has been rebuild on this new Qt version, expect most of KDE Apps 17.04.1 to see a rebuild too. See [the forum]("https://forum.kaosx.us/d/1917-qt-5-9-beta3-and-plasma-5-9-95-up-in-kde-next/3") to participate in testing and getting all in as good a shape as possible before moving to all users in a few weeks.
-
-
-
-
-
-
-
-
-
-
-
-

@@ -91,7 +91,7 @@ Before editing the `/etc/fstab` to point the direction to the new home drive, a 
 {: .offset}
 
 ```
-$ kdesu kate /etc/fstab
+$ kate /etc/fstab
 ```
 
 Will bring up something like this in Kate Text Editor:

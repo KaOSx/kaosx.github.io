@@ -57,7 +57,7 @@ On reboot, linux-next will be the default kernel to boot into, stable kernel is 
 
 For **UEFI installs**, add a new file to /boot/loader/entries by opening Dolphin and navigate to /boot/loader/entries.
 
-Right click on `KaOS_<year>.<month>.conf` and select `Root Actions` then select `Edit as Text`
+Select `KaOS_<year>.<month>.conf` to open in `Kate`
 
 and edit the linux and initrd line to read as:
 
@@ -69,7 +69,7 @@ initrd /initramfs-linux-next.img
 Save as **KaOS-next.conf** (or add the <year>.<month> part to it too), and you will have the choice to boot from linux-next in the systemd-boot menu. To make it default, edit:
 
 ```
-kdesu kate /boot/loader/loader.conf
+kate /boot/loader/loader.conf
 ```
 
 change KaOS to KaOS-next.  Or highlight the linux-next entry in the bootloader menu and type `d` to make it default.
