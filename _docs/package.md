@@ -79,10 +79,10 @@ Or you can download the entire repository by clicking on the "Download zip" butt
 
 Example links to git(hub):
 
-[https://git.archlinux.org/svntogit/packages.git/tree/](https://git.archlinux.org/svntogit/packages.git/tree/)
-[https://git.archlinux.org/svntogit/community.git/tree/](https://git.archlinux.org/svntogit/community.git/tree/)
-[https://github.com/antergos](https://github.com/antergos)<br>
-[http://git.frugalware.org/](http://git.frugalware.org/)<br>
+[https://git.archlinux.org/svntogit/packages.git/tree/](https://git.archlinux.org/svntogit/packages.git/tree/)  
+[https://git.archlinux.org/svntogit/community.git/tree/](https://git.archlinux.org/svntogit/community.git/tree/)  
+[https://github.com/antergos](https://github.com/antergos)  
+[http://git.frugalware.org/](http://git.frugalware.org/)  
 [https://projects.parabolagnulinux.org/](https://projects.parabolagnulinux.org/)
 
 #### AUR
