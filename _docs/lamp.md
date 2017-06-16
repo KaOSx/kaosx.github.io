@@ -174,7 +174,7 @@ Hit enter if it asks you anything, unless you know you don't want the defaults.
 Once you have installed MariaDB, start it by running
 
 ```
-sudo systemctl start mysqld
+sudo systemctl start mariadb
 ```
 
 Finish up by running the MariaDB set up script:
@@ -297,7 +297,7 @@ Visit your php info page (make sure you replace the example ip address with your
 To close out the LAMP installation, add the apache server and MySQL daemons to the list of programs that run upon server startup:
 
 ```
-sudo systemctl enable mysqld httpd
+sudo systemctl enable mariadb httpd
 ```
 
 Congratulations, you have now installed the LAMP server on KaOS!

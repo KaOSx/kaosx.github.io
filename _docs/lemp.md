@@ -259,7 +259,7 @@ Visit your php info page (make sure you replace the example ip address with your
 To close out the LEMP installation, add the Nginx server, php-fpm and MySQL daemons to the list of programs that run upon server startup:
 
 ```
-sudo systemctl enable mysqld php-fpm nginx
+sudo systemctl enable mariadb php-fpm nginx
 ```
 
 Congratulations, you have now installed the LEMP server on KaOS!
