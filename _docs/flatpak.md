@@ -40,7 +40,7 @@ sudo pacman -S flatpak
 ```
 Once installed enable the use of remote repositories by issuing the following command:
 ```
-flatpak remote-list
+sudo flatpak remote-list
 ```
 
 ### Installing Flatpak Applications
@@ -61,6 +61,7 @@ After you reboot Skype will be added as a regular menu entry and can be run by j
 
 To see more available applications, here are some links:  
 [flatpak.org](http://flatpak.org/apps.html){:target="_blank"}  
+[flathub.org](https://flathub.org/){:target="_blank"}  
 [liri.io](https://liri.io/blog/2017/04/12/flatpak.html){:target="_blank"}  
 [kde.org](https://community.kde.org/Guidelines_and_HOWTOs/Flatpak){:target="_blank"}  
 [https://firefox-flatpak.mojefedora.cz/](https://firefox-flatpak.mojefedora.cz/){:target="_blank"}  

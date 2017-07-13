@@ -23,14 +23,14 @@ KaOS makes regular ISO releases available, so any (new) user is not confronted w
 * This will become a table of contents (this text will be scraped).
 {:toc}
 
-[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2017.06 ISO
+[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2017.07 ISO
 
-**MD5SUM KaOS 2017.06:**  `595c07cf74e54dc462399a0d59acb08d`
+**MD5SUM KaOS 2017.07:**  `15b1b99d66f6b30f6ad375d6ea90f55f`
 
 ### Current Version
 {: .offset}
-The June version ships with Plasma 5 as the default desktop, it includes non-free nvidia drivers, KDE Applications 17.04.1, linux kernel 4.10.9 (linux-next is in the repo's, following the 4.11 series), glibc 2.25, systemd 233, kmod 24, xorg-server 1.19.3, Qt 5.9.0, mesa 17.0.3, calligra 3.0.1, Babe and the latest versions of qupzilla, octopi, kde-telepathy, seafile, gcc 5.4.1.
-For those wondering about gtk apps, firefox 53.0.2, chrome 60, thunderbird 52.1.1, ardour 5.9.0 are among the available in their latest version.
+The July version ships with Plasma 5 as the default desktop, it includes non-free nvidia drivers, KDE Applications 17.04.3, linux kernel 4.11.9 (linux-next is in the repo's, following the 4.12 series), gcc 6.4.0, glibc 2.25, systemd 233, kmod 24, xorg-server 1.19.3, Qt 5.9.1, mesa 17.1.4, calligra 3.0.1, Babe and the latest versions of qupzilla, octopi, kde-telepathy, seafile.
+For those wondering about gtk apps, firefox 54.0.1, chrome 61, thunderbird 52.2.1, ardour 5.10.0 are among the available in their latest version.
 
 ### Known Issues
 {: .offset}
@@ -49,5 +49,5 @@ gpg --import KaOS.asc
 ```
 Next download the ISO GPG Signature to the same directory as where you downloaded the ISO and verify with (adjust for correct year and date):
 ```
-gpg --verify KaOS-2017.06-x86_64.iso.sig
+gpg --verify KaOS-2017.07-x86_64.iso.sig
 ```
