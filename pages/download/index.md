@@ -18,14 +18,18 @@ categories: []
 tags: []
 comments: []
 ---
-KaOS makes regular ISO releases available, so any (new) user is not confronted with a large or complicated first update. Those who already have KaOS installed do not need to reinstall, a regular `sudo pacman -Syu` will always give you the latest.
 
 * This will become a table of contents (this text will be scraped).
 {:toc}
 
+KaOS makes regular ISO releases available, so any (new) user is not confronted with a large or complicated first update. Those who already have KaOS installed do not need to reinstall, a regular `sudo pacman -Syu` will always give you the latest.
+
 [Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2017.07 ISO
 
-**MD5SUM KaOS 2017.07:**  `15b1b99d66f6b30f6ad375d6ea90f55f`
+<div id="wrapper4">
+<p><b>SHA256SUM KaOS 2017.07:</b> <code>d4c0e8127182e15c3b5fecc0b504435179602c80ebf1bdbd97b6b4b587444639</code></p>
+<p><b>SIZE: 1.7GiB</b></p>
+</div>
 
 ### Current Version
 {: .offset}

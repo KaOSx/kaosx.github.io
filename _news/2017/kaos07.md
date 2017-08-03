@@ -15,7 +15,7 @@ It is with great pleasure to present to you the July release of a new stable ISO
 
 As always with this rolling distribution, you will find the very latest packages for the Plasma Desktop, this includes Frameworks 5.36.0, Plasma 5.10.3, [KDE Applications 17.04.3](https://www.kde.org/announcements/announce-applications-17.04.3.php){:target="_blank"} & **not yet released ports of KDE Applications**. All built on **Qt 5.9.1**.
 
-Systems installed by **Calamares up to and including Calamares 3.1 have a weaker password salt** than they should. This weakness does not weaken the password security for logins on a single system. It does weaken the password if an attacker can obtain the password hash through some other means. With [Calamares 3.1.1](https://calamares.io/calamares-cve/){:target="_blank"} this issue is corrected thus it is vital to get this new ISO out.
+Systems installed by **Calamares up to and including Calamares 3.1 have a weaker password salt** than they should. This weakness does not weaken the password security for logins on a single user system. It does weaken the password if an attacker can obtain the password hash through some other means. With [Calamares 3.1.1](https://calamares.io/calamares-cve/){:target="_blank"} this issue is corrected thus it is vital to get this new ISO out.
 
 {% include image.html
             img="img/2017/kaptan.png"
