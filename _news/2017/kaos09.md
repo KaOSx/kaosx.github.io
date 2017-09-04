@@ -13,11 +13,11 @@ KaOS is proud to announce the availability of the September release of a new sta
             caption="Kate with new preview option"
             url="/img/2017/kate.png" %}
 
-The biggest change to announce is that the kernel has moved to the hardened patch set, which provides an improved implementation of Address Space Layout Randomization for userspace processes. Linux-hardened started after grsecurity was no longer available as an open source option and is a supplement to upstream kernel hardening work by the Kernel Self Protection Project. See the Linux ASLR comparison for more information.            
+The biggest change to announce is that the kernel has moved to the [hardened patch set](https://github.com/copperhead/linux-hardened/){:target="_blank"}, which provides an improved implementation of Address Space Layout Randomization for userspace processes. Linux-hardened started after grsecurity was no longer available as an open source option and is a supplement to upstream kernel hardening work by the Kernel Self Protection Project. See the [Linux ASLR comparison](https://gist.github.com/thestinger/b43b460cfccfade51b5a2220a0550c35){:target="_blank"} for more information.            
 
 As always with this rolling distribution, you will find the very latest packages for the Plasma Desktop, this includes Frameworks 5.37.0, Plasma 5.10.5, [KDE Applications 17.08.0](https://www.kde.org/announcements/announce-applications-17.08.0.php){:target="_blank"} & **not yet released ports of KDE Applications**. All built on **Qt 5.9.1**.  New is the addition of preview plugins to Kate/Kwrite (also usable in KDevelop), which when enabled turns Kate into full fledged Markdown editor.
 
-As requested by KaOS users, the next ISO will also have a custom look for the bash prompt. This can be added to current installs too by installing powerline.  The Midna Splashscreen was rewritten. It now uses a few QML effects instead of just one.
+As requested by KaOS users, the next ISO will also have a custom look for the bash prompt. This can be added to current installs too by installing powerline.  The Midna Splashscreen was rewritten. It now uses several QML effects instead of just one.
 
 {% include image.html
             img="img/2017/nomad.png"
@@ -25,7 +25,7 @@ As requested by KaOS users, the next ISO will also have a custom look for the ba
             caption="Nomad Firewall"
             url="/img/2017/nomad.png" %}
 
-It has been a few years, but finally there is an up to date (Qt5/kf5 based) firewall application available again. **Nomad-firewall** is available on this ISO.  A second scan application is added. **Kooka**, just ported to kf5. This application has quite a few more options than skanlite, so it is nice to be able to add a second (Qt/kf5 based) option for scanning.  Krita 3.2 has the new option to use the **G’MIC plugin**. For that gmic-qt is added to the repositories. With this, the options to add effects to any artwork/image are sheer endless.
+It has been a few years, but finally there is an up to date (Qt5/kf5 based) firewall application available again. **Nomad-firewall** is available on this ISO.  A second scan application is added, **Kooka** (just ported to kf5). This application has quite a few more options than skanlite, so it is nice to be able to add a second (Qt/kf5 based) option for scanning.  Krita 3.2 has the new option to use the **G’MIC plugin**. For that gmic-qt is added to the repositories. With this, the options to add effects to any artwork/image are sheer endless.
 
 A change in how printer packages are packaged makes it that now most printers are automatically recognized and setup, no need any longer to run any print wizard.  This counts for both Live mode and installed system.
             
