@@ -315,7 +315,7 @@ strong {
     background-color:#EFF2F6;
     box-shadow: 0 0 4px rgba( 0,0,0,0.3 );
     color:#666;
-    overflow: scroll !important;
+    overflow: auto;
     max-height: 500px;
 }
 .txlive-langselector-list > li:hover {

@@ -15,7 +15,7 @@ categories: []
 tags: []
 comments: []
 ---
-Thank you for submiiting your account request.  An email has been send to an admin who will add you to the KCP Users Team shortly.
+Thank you for submitting your account request.  An email has been send to an admin who will add you to the KCP Users Team shortly.
 
 <div class="Intro-actions" float="left">
     <a href="/docs/kcp/" class="Button">Go back to the KCP Guide</a>

@@ -42,7 +42,7 @@ For those wondering about gtk apps, firefox 55.0.3, chrome 62, thunderbird 52.3.
 * Installing on RAID or LVM is currently not possible
 
 To create reliable Media for booting the Live ISO, please select USB or DVD and follow the instructions for either using a USB flash drive or DVD disc.
-Though UEFI booting is supported, **Secure Boot is not at this time**.  See [this link](https://rol.im/securegoldenkeyboot/){:target="_blank"} for more on Secure Boot.
+Though UEFI booting is supported, **Secure Boot is not at this time**.  See [this link](https://arstechnica.com/information-technology/2016/08/microsoft-secure-boot-firmware-snafu-leaks-golden-key/){:target="_blank"} for more on Secure Boot.
 
 ### Authenticity check
 {: .offset}
