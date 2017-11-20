@@ -24,17 +24,17 @@ comments: []
 
 KaOS makes regular ISO releases available, so any (new) user is not confronted with a large or complicated first update. Those who already have KaOS installed do not need to reinstall, a regular `sudo pacman -Syu` will always give you the latest.
 
-[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2017.09 ISO
+[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2017.11 ISO
 
 <div id="wrapper4">
-<p><b>SHA256SUM KaOS 2017.09:</b> <code>8943eeef5c5679a95d975256e493b7af3ee6441940d68d213a878436a5d37148</code></p>
+<p><b>SHA256SUM KaOS 2017.11:</b> <code>618ba6a442e3e9f20983514289b05edfdb998fa34aac73babf00d41ce818ee64</code></p>
 <p><b>SIZE: 1.7GiB</b></p>
 </div>
 
 ### Current Version
 {: .offset}
-The September version ships with Plasma 5 as the default desktop, it includes non-free nvidia drivers, KDE Applications 17.08.0, linux kernel 4.12.10 (linux-next is in the repo's, following the 4.13 series), gcc 6.4.0, glibc 2.25, systemd 234, kmod 24, xorg-server 1.19.3, Qt 5.9.1, mesa 17.1.8, calligra 3.0.1, Babe and the latest versions of qupzilla, octopi, kde-telepathy, seafile.
-For those wondering about gtk apps, firefox 55.0.3, chrome 62, thunderbird 52.3.0, ardour 5.10.0 are among the available in their latest version.
+The November version ships with Plasma 5 as the default desktop, it includes non-free nvidia drivers, KDE Applications 17.08.3, linux kernel 4.13.12 (linux-next is in the repo's, following the 4.14 series), gcc 6.4.0, glibc 2.25, systemd 235, kmod 24, xorg-server 1.19.5, Qt 5.9.2, mesa 17.2.5, calligra 3.0.1, Elisa and the latest versions of qupzilla, octopi, kde-telepathy, seafile.
+For those wondering about gtk apps, firefox 57.0, chrome 64, thunderbird 52.4.0, ardour 5.12.0 are among the available in their latest version.
 
 ### Known Issues
 {: .offset}
@@ -53,5 +53,5 @@ gpg --import KaOS.asc
 ```
 Next download the ISO GPG Signature to the same directory as where you downloaded the ISO and verify with (adjust for correct year and date):
 ```
-gpg --verify KaOS-2017.09-x86_64.iso.sig
+gpg --verify KaOS-2017.11-x86_64.iso.sig
 ```
