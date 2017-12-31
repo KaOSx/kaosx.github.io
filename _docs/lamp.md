@@ -57,6 +57,8 @@ sudo systemctl restart sshd
 
 To test the new settings, open a new terminal window and login as your user.
 
+You can find your IP address with hostname -i
+
 Don’t forget to include the new port number.
 
 ```
