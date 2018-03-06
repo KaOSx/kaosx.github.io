@@ -24,17 +24,17 @@ comments: []
 
 KaOS makes regular ISO releases available, so any (new) user is not confronted with a large or complicated first update. Those who already have KaOS installed do not need to reinstall, a regular `sudo pacman -Syu` will always give you the latest.
 
-[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2018.01 ISO
+[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2018.03 ISO
 
 <div id="wrapper4">
-<p><b>SHA256SUM KaOS 2018.01:</b> <code>6a4237041bf4746abbb8392cd91b1545e50c7531ed59696501bb31444667907a</code></p>
+<p><b>SHA256SUM KaOS 2018.03:</b> <code>139b9fc695e16abf0573c45a9a06bf1146faade920c4597ff47c52989a6f3e1a</code></p>
 <p><b>SIZE: 1.8GiB</b></p>
 </div>
 
 ### Current Version
 {: .offset}
-The January version ships with Plasma 5 as the default desktop, it includes non-free nvidia drivers, KDE Applications 17.12.1, linux kernel 4.14.14 (linux-next is in the repo's, following the 4.15 series), gcc 6.4.0, glibc 2.25, systemd 236, kmod 25, xorg-server 1.19.6, Qt 5.10.0, mesa 17.3.3, calligra 3.0.1, Elisa and the latest versions of qupzilla, octopi, kde-telepathy, seafile.
-For those wondering about gtk apps, firefox 58.0, chrome 65, thunderbird 52.5.2, ardour 5.12.0 are among the available in their latest version.
+The March version ships with Plasma 5 as the default desktop, it includes non-free nvidia drivers, KDE Applications 17.12.2, linux kernel 4.15.7 (linux-next is in the repo's, following the 4.15 series), gcc 7.3.0, glibc 2.26, systemd 237, kmod 25, xorg-server 1.19.6, Qt 5.10.1, mesa 17.3.6, calligra 3.1.0, Elisa and the latest versions of falkon, octopi, kde-telepathy, seafile.
+For those wondering about gtk apps, firefox 58.0.2, chrome 66, thunderbird 52.6.0, ardour 5.12.0 are among the available in their latest version.
 
 ### Known Issues
 {: .offset}
@@ -53,5 +53,5 @@ gpg --import KaOS.asc
 ```
 Next download the ISO GPG Signature to the same directory as where you downloaded the ISO and verify with (adjust for correct year and date):
 ```
-gpg --verify KaOS-2018.01-x86_64.iso.sig
+gpg --verify KaOS-2018.03-x86_64.iso.sig
 ```
