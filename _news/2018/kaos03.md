@@ -13,7 +13,7 @@ KaOS is proud to announce the availability of the March release of a new stable 
             caption="Falkon web browser"
             url="/img/2018/falkon.png" %}
 
-A GCC 7.3.0, Glibc 2.26 & Binutils 2.30 based new toolchain has moved to all users. This new toolchain required a rather large rebuild of many packages. Since this also includes new Systemd, Filesystem & Mkinitcpio. it is fair to say the whole base of your system will be replaced. Upstream has combined all the tiny, fully mature proto packages into one, `Xorgproto` package, which for KaOS users means replacing some twenty five proto packages with Xorgproto. There was also a move to Qt 5.10.1 and Plasma 5.12, thus it will be clear a new ISO is due.
+A GCC 7.3.0, Glibc 2.26 & Binutils 2.30 based new toolchain has moved to all users. This new toolchain required a rather large rebuild of many packages. Since this also includes new Systemd, Filesystem & Mkinitcpio it is fair to say the whole base of your system will be replaced. Upstream has combined all the tiny, fully mature proto packages into one, `Xorgproto` package, which for KaOS users means replacing some twenty five proto packages with Xorgproto. There was also a move to Qt 5.10.1 and Plasma 5.12, thus it will be clear a new ISO is due.
 
 [Falkon](http://davidrosca.blogspot.nl/2018/02/falkon-300-released.html){:target="_blank"} has replaced Qupzilla as the default web browser. Falkon is a continuation of Qupzilla, now developed on KDE development infrastructure.
 
