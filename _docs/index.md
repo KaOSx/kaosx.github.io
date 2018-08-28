@@ -35,7 +35,7 @@ KaOS provides you with an easy to use option to give very complete info about al
 Ctrl-Shift-S
 ```
 
-It will take 10-20 seconds to gather all info and will return with a pop-up window. That window contains a link you can click on and will take you to gist at github. You can check the report there, or directly right click the link to copy and paste it in the forum, a bug report, a G+ post or provide it in IRC.
+It will take 10-20 seconds to gather all info and will return a link which will take you to ptpb. You can check the report there, or directly right click the link to copy and paste it in the forum, a bug report, a G+ post or provide it in IRC.
 
 ### Info to provide for Installation Issues
 {: .offset}
@@ -54,7 +54,7 @@ If for any reason you are faced with problems in Live mode or running the instal
   * Live Mode: `~/installation.log`
   * Installed System: `/var/log/installation.log`
 
-Disk layout info is often needed. Many installation related errors are due to incompatible settings, wrong partition table for chosen settings, selecting an automated partitioning option while only the manual option is viable for a certain layout. To provide that info run:
+Disk layout info is often needed. Many installation related errors are due to incompatible settings, wrong partition table for chosen settings. To provide that info run:
 
 ```
 sudo blkid
