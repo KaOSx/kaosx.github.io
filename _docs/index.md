@@ -54,7 +54,7 @@ If for any reason you are faced with problems in Live mode or running the instal
   * Live Mode: `~/installation.log`
   * Installed System: `/var/log/installation.log`
 
-Disk layout info is often needed. Many installation related errors are due to incompatible settings, wrong partition table for chosen settings. To provide that info run:
+Disk layout info is often needed. Many installation related errors are due to incompatible settings, wrong partition table for chosen settings, selecting an automated partitioning option while only the manual option is viable for a certain layout. To provide that info run:
 
 ```
 sudo blkid
