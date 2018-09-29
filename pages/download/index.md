@@ -24,17 +24,17 @@ comments: []
 
 KaOS makes regular ISO releases available, so any (new) user is not confronted with a large or complicated first update. Those who already have KaOS installed do not need to reinstall, a regular `sudo pacman -Syu` will always give you the latest.
 
-[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2018.06 ISO
+[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2018.08 ISO
 
 <div id="wrapper4">
-<p><b>SHA256SUM KaOS 2018.06:</b> <code>765448e3af2a962ebd6b834896280d7b3605d04fbfaa33a19612604bfaa35239</code></p>
-<p><b>SIZE: 1.8GiB</b></p>
+<p><b>SHA256SUM KaOS 2018.08:</b> <code>a84e58f9f6ee88a388ee25d9b259896e264f3a45651384f0317e31405c3ac6d0</code></p>
+<p><b>SIZE: 1.9GiB</b></p>
 </div>
 
 ### Current Version
 {: .offset}
-The June version ships with Plasma 5 as the default desktop, it includes non-free nvidia drivers, KDE Applications 18.04.2, linux kernel 4.16.14 (linux-next is in the repo's, following the 4.17 series), gcc 7.3.0, glibc 2.26, systemd 238, kmod 25, xorg-server 1.19.6, Qt 5.11.1, mesa 18.1.2, calligra 3.1.0, elisa and the latest versions of falkon, octopi, kde-telepathy, seafile.
-For those wondering about gtk apps, firefox 60.0.2, chrome 69, thunderbird 52.8.0, gimp 2.10.2, ardour 5.12.0 are among the available in their latest version.
+The August version ships with Plasma 5 as the default desktop, it includes non-free nvidia drivers, KDE Applications 18.08.0, linux kernel 4.17.17 (linux-next is in the repo's, following the 4.18 series), gcc 7.3.0, glibc 2.26, systemd 239, kmod 25, xorg-server 1.21.1, Qt 5.11.1, mesa 18.1.7, calligra 3.1.0, elisa and the latest versions of falkon, octopi, kde-telepathy, seafile.
+For those wondering about gtk apps, firefox 61.0.2, chrome 70, thunderbird 60.0, gimp 2.10.6, ardour 5.12.0 are among the available in their latest version.
 
 ### Known Issues
 {: .offset}
@@ -53,5 +53,5 @@ gpg --import KaOS.asc
 ```
 Next download the ISO GPG Signature to the same directory as where you downloaded the ISO and verify with (adjust for correct year and date):
 ```
-gpg --verify KaOS-2018.06-x86_64.iso.sig
+gpg --verify KaOS-2018.08-x86_64.iso.sig
 ```
