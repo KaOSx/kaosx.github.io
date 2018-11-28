@@ -24,17 +24,17 @@ comments: []
 
 KaOS makes regular ISO releases available, so any (new) user is not confronted with a large or complicated first update. Those who already have KaOS installed do not need to reinstall, a regular `sudo pacman -Syu` will always give you the latest.
 
-[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2018.08 ISO
+[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2018.10 ISO
 
 <div id="wrapper4">
-<p><b>SHA256SUM KaOS 2018.08:</b> <code>a84e58f9f6ee88a388ee25d9b259896e264f3a45651384f0317e31405c3ac6d0</code></p>
+<p><b>SHA256SUM KaOS 2018.10:</b> <code>327affad3e628e2f51fb8273c549c6b17c10a8e1d5f72c728c44344554795404</code></p>
 <p><b>SIZE: 1.9GiB</b></p>
 </div>
 
 ### Current Version
 {: .offset}
-The August version ships with Plasma 5 as the default desktop, it includes non-free nvidia drivers, KDE Applications 18.08.0, linux kernel 4.17.17 (linux-next is in the repo's, following the 4.18 series), gcc 7.3.0, glibc 2.26, systemd 239, kmod 25, xorg-server 1.21.1, Qt 5.11.1, mesa 18.1.7, calligra 3.1.0, elisa and the latest versions of falkon, octopi, kde-telepathy, seafile.
-For those wondering about gtk apps, firefox 61.0.2, chrome 70, thunderbird 60.0, gimp 2.10.6, ardour 5.12.0 are among the available in their latest version.
+The October version ships with Plasma 5 as the default desktop, it includes non-free nvidia drivers, KDE Applications 18.08.2, linux kernel 4.18.12 (linux-next is in the repo's, following the 4.18 series), gcc 7.3.1, glibc 2.27, systemd 239, kmod 25, xorg-server 1.21.1, Qt 5.11.2, mesa 18.2.2, calligra 3.1.0, elisa and the latest versions of falkon, octopi, kde-telepathy, seafile.
+For those wondering about gtk apps, firefox 62.0.3, chrome 71, thunderbird 60.0, gimp 2.10.6, ardour 5.12.0 are among the available in their latest version.
 
 ### Known Issues
 {: .offset}
