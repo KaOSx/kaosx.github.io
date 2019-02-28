@@ -51,7 +51,7 @@
             <a href="https://kaosx.us/bugs">Bugs</a>
             <a href="http://kaos-community-packages.github.io/">KCP</a>
             <a href="http://forum.kaosx.us/">Forum</a>
-            Copyright © 2013-2018 KaOS
+            Copyright © 2013-<?php echo date('Y'); ?> KaOS
         </div>
     </div>
 </body>
