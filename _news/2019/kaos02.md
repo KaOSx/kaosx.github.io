@@ -16,11 +16,13 @@ It is with great pleasure to present to you a first KaOS ISO for 2019.
 The policy is, once a first pacman -Syu becomes a major update, it is time for a new ISO so new users are not faced with a difficult first update. Major updates included a move to Python 3.7 (3.7.2), Readline 8.0.0, Glib2 2.58.3, Qt 5.12.1, PHP 7.2 besides the usual full Frameworks, Plasma & KDE Applications replacements, so most systems will see 70-80% of their install replaced by new packages so a new ISO is more than due.
             
 [Plasma 5.15](https://kde.org/announcements/plasma-5.15.0.php) is included in this ISO. Highlights of this version include changes to the configuration interfaces, including more options for complex network configurations, integration with third-party technologies like GTK, Wayland now supports virtual desktops, and Firefox 64 can now optionally use native KDE open/save dialogs.
+
 {% include image.html
             img="img/2019/firefox.png"
             title="Firefox with native KDE open/save dialogs"
             caption="Firefox with native KDE open/save dialogs"
             url="/img/2019/firefox.png" %}
+            
 This is a bleeding-edge functionality that is included in KaOS, it can be enabled by installing the xdg-desktop-portal and xdg-desktop-portal-kde packages and setting GTK_USE_PORTAL=1 in Firefox's .desktop file.
             
 With **LibreOffice 6.2.0**, it is now possible to supply this as a pure Qt5/kf5 application. LibreOffice has thus replaced Calligra as the default Office Application on this ISO.
