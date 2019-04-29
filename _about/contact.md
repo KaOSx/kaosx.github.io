@@ -20,10 +20,6 @@ A list of available social media to get in touch with fellow KaOS users.  Some a
 
 [Google Groups](https://groups.google.com/forum/?fromgroups#!forum/kaos-general){:target="_blank"} Mailing list, also used to list flagged packages
 
-[Google Plus](https://plus.google.com/u/0/communities/116669111554447085724){:target="_blank"}
-
-[Google Plus Español](https://plus.google.com/u/0/communities/100774075681090153759){:target="_blank"}
-
 [Github](https://github.com/KaOSx){:target="_blank"} Complete code source for all KaOS projects, fork & create pull request to help
 
 [IRC](https://kiwiirc.com/client/irc.freenode.net/#kaosx){:target="_blank"} Main KaOS IRC channel, used for general discussion and development talk
@@ -42,7 +38,6 @@ A list of available social media to get in touch with fellow KaOS users.  Some a
 
 [Telegram Group ESPAÑOL](https://telegram.me/kaos_es){:target="_blank"}
 
-[Foro en ESPAÑOL](http://kaoticos.xyz/){:target="_blank"}
 
 
 
