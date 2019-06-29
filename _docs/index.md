@@ -42,7 +42,7 @@ It will take 10-20 seconds to gather all info and will return with a pop-up wind
 
 If for any reason you are faced with problems in Live mode or running the installer, first follow this check-list:
 
-* How did you create the Live Media? Make sure to follow the tutorials to properly create installation media for KaOS. See [USB](http://kaosx.us/docs/usb) and [DVD](http://kaosx.us/docs/dvd) creation guides.
+* How did you create the Live Media? Make sure to follow the tutorials to properly create installation media for KaOS. See [USB](http://kaosx.us/docs/usb_flash/) and [DVD](http://kaosx.us/docs/dvd/) creation guides.
 * Did you check the md5sum of the downloaded ISO?
 
   ```
