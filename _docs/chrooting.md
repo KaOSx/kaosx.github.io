@@ -41,7 +41,6 @@ The device or partition with the Linux system on it will need to be mounted.  To
 ```
 fdisk -l
 ```
-If it is a LUKS encrypted device, get the name with:
 
 Create a directory where you would like to mount the device or partition, then mount it:
 
