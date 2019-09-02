@@ -41,12 +41,26 @@ The device or partition with the Linux system on it will need to be mounted.  To
 ```
 fdisk -l
 ```
+If it is a LUKS encrypted device, get the name with:
 
 Create a directory where you would like to mount the device or partition, then mount it:
 
 ```
 mkdir /mnt/kaos
 mount /dev/device_or_partition_name /mnt/kaos
+```
+
+For LUKS encrypted devices, mount won't work, use `udisksctl` instead, first unlock the device (all commands as regular user):
+```
+udisksctl unlock -b /dev/device_or_partition_name
+```
+Get the device mapper name:
+```
+ls - la /dev/mapper
+```
+then mount the returned mapper:
+```
+udiskctl mount -b /dev/mapper/mapper_name
 ```
 
 ### Changing Root
