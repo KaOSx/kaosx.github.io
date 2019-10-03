@@ -16,7 +16,7 @@ date: '2016-05-28'
 A list of available social media to get in touch with fellow KaOS users.  Some are officially maintained, some are user started, community efforts.
 
 #### KaOS supported
-[Forum](https://kaosx.us/forum){:target="_blank"}
+[Forum](https://forum.kaosx.us){:target="_blank"}
 
 [Google Groups](https://groups.google.com/forum/?fromgroups#!forum/kaos-general){:target="_blank"} Mailing list, also used to list flagged packages
 
