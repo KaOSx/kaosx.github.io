@@ -9,7 +9,7 @@ Making the choice for KDE/QT does not mean KaOS loses sight of the importance of
 #### Repositories 
 The repository layout is simple, and consists of three groups, Core, Main and Apps. A regular complete system update will always give you the latest available, without the need for any re-install of the system.
 
-`Core` has the base packages needed for a system to boot-up, communicate with the BIOS connect most hardware and set basic shell options. Example packages are the kernel, systemd, toolchain for building and basic command-line tools. This repository is carefully rolling, since any upstream update not thoroughly tested greatly affects the stability of the system.
+`Core` has the base packages needed for a system to boot-up, communicate with the BIOS, connect most hardware and set basic shell options. Example packages are the kernel, systemd, toolchain for building and basic command-line tools. This repository is carefully rolling, since any upstream update not thoroughly tested greatly affects the stability of the system.
 
 `Main` repository consists of all the needed libraries, extra drivers and firmware needed to make the Desktop and Applications function. Many of these can be fully rolling and will move to the end-user after a seven to ten days testing period. Some more vulnerable packages will enter after enough upstream feedback is available that no regressions have occurred.
 
