@@ -16,17 +16,39 @@
   list-style: none;
   font-size: 14px;
 }
-.Docs-nav h4 + ul {
-        display: none;
-}
-
-.Docs-nav h4.active + ul {
-        display: block;
-}
 .Docs-nav a {
   border: 0;
   font-size: 1.0em;
 }
+// News nav needs it's own css due to expanding/collapsing
+.News-nav {
+  float: left;
+  width: 275px;
+}
+.News-nav h4 {
+  margin: 10px 0;
+  font-family: 'Raleway';
+  cursor: pointer;
+}
+.News-nav ul {
+  margin: 0 0 30px;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+}
+.News-nav h4 + ul {
+        display: none;
+}
+
+.News-nav h4.active + ul {
+        display: block;
+}
+.News-nav a {
+  border: 0;
+  font-size: 1.0em;
+}
+// End News-nav
+
 .Docs article {
   margin-left: 275px;
   color: #777;
