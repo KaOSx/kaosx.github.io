@@ -11,7 +11,7 @@ It is with great pleasure to present to you the October release of a new stable 
             img="img/2019/midna2019.png"
             title="KaOS"
             caption="KaOS"
-            url="img/2019midna2019.png" %}
+            url="/img/2019/midna2019.png" %}
 
 Quite a few big changes for this release, probably the biggest news for this release is for the first time the default install is **python2 free**. Python2 will be depreciated by the end of this year, so it is time to get this distribution ready for this change.  The repositories still contain python2 packages, but those are in the process of being phased out too.
 
@@ -23,7 +23,7 @@ Libarchive gained ZSTD support, a needed feature for upcoming Pacman changes.
             img="img/2019/plasma_5.17.png"
             title="Plasma 5.17"
             caption="Plasma 5.17"
-            url="/img/2019/plasma5.17.png" %} 
+            url="/img/2019/plasma_5.17.png" %} 
             
 You will find [Plasma 5.17](https://kde.org/announcements/plasma-5.17.0.php){:target="_blank"} on this ISO already. Highlights of Plasma 5.17 include start-up scripts have been converted from Bash (a slow, interpreted language) to C++ (a fast, compiled language) and now run asynchronously. Night Color, the color-grading system that relaxes your eyes when the sun sets, has landed for X11. For Wayland, Plasma now comes with fractional scaling, which means that you can adjust the size of all your desktop elements, windows, fonts, and panels perfectly to your HiDPI monitor. The Settings interface itself has been overhauled in general, and the user interfaces for the Displays, Energy, Activities, Boot Splash, Desktop Effects, Screen Locking, Screen Edges, Touch Screen, and Window Behavior configuration dialogs have all been improved and updated. 
 Frameworks is at 5.63.0, Plasma at 5.17.2 and KDE Applications at 19.08.2. All built on Qt 5.13.1.
