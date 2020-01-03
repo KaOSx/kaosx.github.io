@@ -30,12 +30,12 @@ We call hybrid graphics a set of two graphic cards with different abilities and 
 
 The aim of using two graphic cards is mainly to provide a good compromise between a powerful card whose power is needed only when running demanding programs, and an integrated card, which would not be well suited for those usages. On Windows, the load between the discrete and the integrated card is automatically balanced, when the right drivers are installed.
 
-For KaOS there are two options to make this technology work, though for ATI/Radeon systems only PRIME is an option.
+For KaOS there are two options to make this technology work.
 
 ### PRIME
 {: .offset}
 
-'PRIME GPU offloading' and 'Reverse PRIME' is an attempt to support muxless hybrid graphics in the Linux kernel. All needed requirements, DRI2, updated graphic stack (Kernel, xserver and mesa), GPU drivers are available on a default KaOS install setup with free drivers.
+*PRIME GPU offloading* and *Reverse PRIME* is an attempt to support muxless hybrid graphics in the Linux kernel. All needed requirements, DRI2, updated graphic stack (Kernel, xserver and mesa), GPU drivers are available on a default KaOS install setup with free drivers.
 
 To check if your system supports PRIME run:
 
@@ -74,14 +74,14 @@ The offloading command needs to be redone after each boot or you can add it to s
 More info see:
 [http://nouveau.freedesktop.org/wiki/Optimus/](http://nouveau.freedesktop.org/wiki/Optimus/)
 
-### Bumblebee for Nvidia cards
+### PRIME for Nvidia cards
 {: .offset}
 
-If you prefer to use the non-free Nvidia drivers PRIME is not an option, for those you will need to install all needed bumblebee packages.  As always, make sure your system is fully updated before installing any.
+If you prefer to use the non-free Nvidia drivers PRIME is since late 2019 also an option, for those you will need to install all needed Nvidia packages plus prime.  As always, make sure your system is fully updated before installing any.
 
 ```
 sudo pacman -Syu
-sudo pacman -S nvidia-bumblebee bumblebee bbswitch
+sudo pacman -S nvidia prime
 ```
 
 The free driver is no longer needed:
@@ -90,42 +90,12 @@ The free driver is no longer needed:
 sudo pacman -R xf86-video-nouveau
 ```
 
-Creating an xorg.conf should not be needed, but some users had booting issues without it.  To create an xorg.conf:
-
+After reboot you can now select to run an application by simply calling:
 ```
-nvidia-xconfig
+prime glxgears
 ```
+Substitute glxgears with the application you want to run.
 
-After all is installed enable the needed systemd service so bumblebee runs on start-up from now on:
+More info see:  
+[http://download.nvidia.com/XFree86/Linux-x86_64/435.21/README/primerenderoffload.html](http://download.nvidia.com/XFree86/Linux-x86_64/435.21/README/primerenderoffload.html)
 
-```
-sudo systemctl enable bumblebeed.service
-```
-
-Add your user to the bumblebee group:
-
-```
-sudo usermod -a -G bumblebee user_name
-```
-
-Substitute user_name with your actual name.
-
-After rebooting you can check if all works as expected:
-
-```
-optirun --status
-```
-
-This should show the nvidia card is off.
-
-Any application can be started with "optirun" to use the nvidia card
-
-```
-optirun glxgears
-```
-
-More info:
-[https://github.com/Bumblebee-Project/Bumblebee/wiki](https://github.com/Bumblebee-Project/Bumblebee/wiki)
-
-There is an option to only run with the proprietary nvidia driver, see this forum post at # 8:
-[https://forum.kaosx.us/d/1380-error-switching-between-free-to-non-free-nvidia-drivers#8](https://forum.kaosx.us/d/1380-error-switching-between-free-to-non-free-nvidia-drivers#8)

@@ -33,13 +33,7 @@ As always, before installing or changing packages, make sure your system is full
 sudo pacman -Syu
 ```
 
-Next remove libgl, it is needed by many applications, so you need to use -Rdd to avoid dependency checking:
-
-```
-sudo pacman -Rdd libgl
-```
-
-Remove the nouveau package:
+Remove the nouveau package (if installed):
 
 ```
 sudo pacman -R xf86-video-nouveau
@@ -57,33 +51,46 @@ If you use the linux-next kernel:
 sudo pacman -S nvidia nvidia-next
 ```
 
-If you have an older card (G8x, G9x, and GT2xx GPUs or earlier):
+If you have an older card (GeForce 400/500 series cards `NVCx and NVDx` from around 2010-2011):
+
+```
+sudo pacman -S nvidia-390xx-next
+```
+
+If you use the linux-next kernel add:
+
+```
+sudo pacman -S nvidia-390xx
+```
+
+If you have an even older card (G8x, G9x, and GT2xx GPUs or earlier):
 
 ```
 sudo pacman -S nvidia-340xx
 ```
 
-This will automatically install nvidia-utils too, which has it's own version of libgl included. If you want to use the GUI for nvidia, add nvidia-settings to what you install, this pulls in gtk2, so it is packaged separately.
+This will automatically install the needed nvidia-utils version too. If you want to use the GUI for nvidia, add nvidia-settings to what you install, this pulls in gtk2, so it is packaged separately.
 
 After all is installed, reboot to load the new driver.
 
 ### Switch from non-free to free
 {: .offset}
 
-Especially with the changes coming with linux 3.12, it is strongly recommended to at least try the free nouveau driver. For those on hybrid graphics card, it should now offer as good or better an option as bumblebee.
+Especially with the changes in the kernel since 2015, it is strongly recommended to at least try the free Nouveau driver.
 
-Remove the nvidia packages, it needs the `-Rdd` command, since nvidia-utils includes libgl, needed by many packages. Check what nvidia packages you have installed with `pacman -Qs nvidia`.
-
-```
-sudo pacman -Rdd nvidia nvidia-utils
-```
-
-Add nvidia-next or nvidia-settings to the above line if the pacman -Qs nvidia command showed those too.
-
-Install the needed free packages:
+Remove the nvidia packages. Check what nvidia packages you have installed with `pacman -Qs nvidia`.
 
 ```
-sudo pacman -S libgl xf86-video-nouveau
+sudo pacman -R nvidia nvidia-utils
 ```
 
-After those are installed, reboot to load the new drivers.
+Add nvidia-next, nvidia-settings or any other nvidia version to the above line if the pacman -Qs nvidia command showed those too.
+
+Install free Nouveau driver:
+
+```
+sudo pacman -S xf86-video-nouveau
+```
+Though the modesetting driver might be a better option. If you want to try the in-kernel modesetting driver, then there is nothing to install after removing nvidia packages.
+
+Reboot to load the new drivers.
