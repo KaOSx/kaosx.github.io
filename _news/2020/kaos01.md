@@ -13,7 +13,7 @@ A nice way of starting 2020 is to present to you the January release of a new st
             caption="KaOS"
             url="/img/2020/midna2019.png" %}
 
-For the many changes in this release, two stand out. First one is the addition of signed kernel modules for Linux 5.4. All internal modules are now signed automatically during the kernel build, out of tree modules like virtualbox-modules and NVIDIA packages have the signing added too. Building of those modules was adjusted to use the kernel specific signing files during each and every rebuild. You can harden your system by adding `module.sig_enforce=1` to your kernel boot line. To check if your systems contains any unsigned:
+For the many changes in this release, two stand out. First one is the addition of signed kernel modules for Linux 5.4. All internal modules are now automatically signed during the kernel build, out of tree modules like virtualbox-modules and NVIDIA packages have the signing added too. Building of those modules was adjusted to use the kernel specific signing files during each and every rebuild. You can harden your system by adding `module.sig_enforce=1` to your kernel boot line. To check if your systems contains any unsigned:
 ```
 for mod in $(lsmod | tail -n +2 | cut -d' ' -f1); do modinfo ${mod} | grep -q "signature" || echo "no signature for module: ${mod}" ; done
 ```
@@ -24,7 +24,7 @@ for mod in $(lsmod | tail -n +2 | cut -d' ' -f1); do modinfo ${mod} | grep -q "s
             caption="Nvidia PRIME"
             url="/img/2020/prime.png" %} 
             
-Second: To better accommodate **hybrid systems** and non-free NVIDIA, there is now a switch from libgl to vendor neutral libglvnd. This will make the NVIDIA bumblebee packages obsolete. Xorg-server was updated to 1.20.6, so the needed patches to use Prime instead
+Second: To better accommodate **hybrid systems** and non-free NVIDIA, there is now a move from libgl to vendor-neutral libglvnd. This will make the NVIDIA bumblebee packages obsolete. Xorg-server was updated to 1.20.6, so the needed patches to use Prime instead
 of Bumblebee are included. The needed scripts for this are packaged as the *prime* package. The hardware-detection scripts and Calamares installer have their code adjusted to use the new Prime option. The availability of NVIDIA hybrid testing hardware was limited, so you might still encounter some issue with Prime.
             
 Work has also continued last month to further remove python2. This time it was removed as makedepend from as many as possible.
@@ -32,8 +32,8 @@ Work has also continued last month to further remove python2. This time it was r
             img="img/2020/kdenlive.png"
             title="Kdenlive"
             caption="Kdenlive"
-            url="/img/2020/kdenelive.png" %}
-You will find [KDE Applications 19.12](https://kde.org/announcements/releases/2019-12-apps-update/){:target="_blank"} on this ISO. Highlights of 19.12 include Kdenlive now comes with a spectacular new sound mixer. Dolphin redesigned advanced search options and now you can go backwards and forwards in the history of places you have already visited. KDE-Connect implemented a new Kirigami interface which provides new features for desktop-to-desktop users, such as media control, remote input, device ringing, file transfer and running commands. For Elisa, indexing music files has improved and now supports web radios and ships with a few examples for you to try. Frameworks is at 5.65.0, Plasma at 5.17.4 and KDE Applications at 19.12.0. All built on **Qt 5.14.0**.
+            url="/img/2020/kdenlive.png" %}
+You will find [KDE Applications 19.12](https://kde.org/announcements/releases/2019-12-apps-update/){:target="_blank"} on this ISO. Highlights of 19.12 include Kdenlive now comes with a spectacular new sound mixer. Dolphin redesigned advanced search options and now you can go backward and forwards in the history of places you have already visited. KDE-Connect implemented a new Kirigami interface that provides new features for desktop-to-desktop users, such as media control, remote input, device ringing, file transfer and running commands. For Elisa, indexing music files has improved and now supports web radios and ships with a few examples for you to try. Frameworks is at 5.65.0, Plasma at 5.17.4 and KDE Applications at 19.12.0. All built on **Qt 5.14.0**.
 
 For the installer Calamares, support for non-free NVIDIA with Prime has been added.
 
@@ -65,7 +65,7 @@ The artwork includes custom icon themes for light and dark themes. Midna and Mid
 There is an option to verify the authenticity of downloaded KaOS ISO files **through GPG signature verification**, see the [Download page](https://kaosx.us/pages/download/#authenticity-check){:target="_blank"} for further details and instructions.
 
 ## Known issues:
-* Some Intel CPU systems might have an issue kernel’s entropy pool and have a long boot delay, if encountered add **random.trust_cpu=1** to the kernel boot line.
+* Some Intel CPU systems might have an issue kernel’s entropy pool and have a long boot delay if encountered add **random.trust_cpu=1** to the kernel boot line.
 * Installing on RAID is currently not possible
 
 To create **reliable** installation media, please follow the instructions from the [Download](http://kaosx.us/download/){:target="_blank"} page. KaOS ISO's **do not support Unetbootin or Rufus**, and DVDs need a burn speed **no higher than 4x**.

@@ -27,7 +27,7 @@ KaOS makes regular ISO releases available, so any (new) user is not confronted w
 [Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2020.01 ISO
 
 <div id="wrapper4">
-<p><b>SHA256SUM KaOS 2020.01:</b> <code>b22a217add9c11e47bcca6dc5c4cb430cb605a7684c6ca1a3eba50f2c42a4c60</code></p>
+<p><b>SHA256SUM KaOS 2020.01:</b> <code>8a145dfae21ca77b1a6afe656ec0bf5d65bc371b48e392067780cbad159a654d</code></p>
 <p><b>SIZE: 2.1GiB</b></p>
 </div>
 
