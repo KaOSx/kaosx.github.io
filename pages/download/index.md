@@ -24,17 +24,17 @@ comments: []
 
 KaOS makes regular ISO releases available, so any (new) user is not confronted with a large or complicated first update. Those who already have KaOS installed do not need to reinstall, a regular `sudo pacman -Syu` will always give you the latest.
 
-[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2020.02 ISO
+[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2020.05 ISO
 
 <div id="wrapper4">
-<p><b>SHA256SUM KaOS 2020.02:</b> <code>dcf957998f2d2572eb16d61660b8b11aa0a38ab35029e2effdecfb3ae8ed8fce</code></p>
-<p><b>SIZE: 2.1GiB</b></p>
+<p><b>SHA256SUM KaOS 2020.05:</b> <code>33cda20aba7a1c6e04755f0860b053f85e54b5b42779457f4f7d18b5dd8ef214</code></p>
+<p><b>SIZE: 2.2GiB</b></p>
 </div>
 
 ### Current Version
 {: .offset}
-The February version ships with Plasma 5 as the default desktop, it includes non-free Nvidia drivers, KDE Applications 19.12.2, Linux kernel 5.5.6 (Linux-next is in the repo's, following the 5.5 series), GCC 9.2.0, Glibc 2.30, Systemd 244, Kmod 27, Xorg-server 1.21.7, Qt 5.14.1, Mesa 19.3.4, LibreOffice 6.4.1, Elisa and the latest versions of Falkon, Octopi, Kde-Telepathy.
-For those wondering about gtk apps, Firefox 73.0.1, Chrome 82, Thunderbird 68.5, GIMP 2.10.18, Ardour 5.12.0 are among the available in their latest version.
+The May version ships with Plasma 5 as the default desktop, it includes non-free Nvidia drivers, KDE Applications 20.04.0, Linux kernel 5.6.8 (Linux-next is in the repo's, following the 5.6 series), GCC 9.3.0, Glibc 2.31, Systemd 244, Kmod 27, Xorg-server 1.21.8, Qt 5.14.2, Mesa 20.0.6, LibreOffice 6.4.3, Elisa and the latest versions of Falkon, Octopi, Kde-Telepathy.
+For those wondering about gtk apps, Firefox 75.0, Chrome 84, Thunderbird 68.7, GIMP 2.10.18, Ardour 5.12.0 are among the available in their latest version.
 
 ### Known Issues
 {: .offset}
@@ -54,5 +54,5 @@ gpg --import KaOS.asc
 ```
 Next download the ISO GPG Signature to the same directory as where you downloaded the ISO and verify with (adjust for correct year and date):
 ```
-gpg --verify KaOS-2020.02-x86_64.iso.sig
+gpg --verify KaOS-2020.05-x86_64.iso.sig
 ```
