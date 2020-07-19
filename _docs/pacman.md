@@ -47,10 +47,13 @@ To install a local package, or from a website:
 ```
 sudo pacman -U /path/to/the/package
 ```
+
+### Reinstallation
+
 To re-install all packages (those from the repo's), in case of emergency:
 
 ```
-sudo pacman -Sy $(pacman -Q | cut -d " " -f1 | grep -v "$(pacman -Qm | cut -d " " -f1)")
+pacman -Qnq | pacman -S - 
 ```
 
 ### Removing Packages
