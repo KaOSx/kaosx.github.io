@@ -28,7 +28,7 @@ KaOS makes regular ISO releases available, so any (new) user is not confronted w
 
 <div id="wrapper4">
 <p><b>SHA256SUM KaOS 2020.07:</b> <code>4e151b47b2b4a8b0b69d41e317415a91a2f2b5bfb0c6303f1fe61d389067c6a2</code></p>
-<p><b>SIZE: 2.2GiB</b></p>
+<p><b>SIZE: 2.3GiB</b></p>
 </div>
 
 ### Current Version

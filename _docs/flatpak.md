@@ -112,8 +112,8 @@ flatpak remote-delete <REPOSITORY>
 
 **Runtimes** are collections of dependencies that are used by applications. They are provided by repositories, in much the same way as repositories of packages. When installing an application, Flatpak will automatically install any required runtimes if they are available. This does require that the repositories containing those runtimes are added first.
 
-In most cases, the GNOME SDK repository contains all the runtimes you might need. To add it, run:
+In most cases, the Flathub repository contains all the runtimes you might need. To add it, run:
 ```
-flatpak remote-add --if-not-exists gnome https://sdk.gnome.org/gnome.flatpakrepo
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 ```
 `--if-not-exists` means that the repository will only be added if it isn't there already and gnome is the name for the repository.
