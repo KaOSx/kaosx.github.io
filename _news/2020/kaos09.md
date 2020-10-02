@@ -23,7 +23,7 @@ As always with this rolling distribution, you will find the very latest packages
             title="Preview of new Locale module"
             caption="New Locale module for installer"
             url="/img/2020/localeq.png" %}
-For the installer Calamares, KaOS continues to **move modules to QML**. This release now features a complete rewrite Locale module with a real live, accurate map. This module is developed by and for KaOS, but has been accepted upstream. Using a real world map brings far greater accuracy of the location selections.  Coordinates are shown on hover, and translated to locale on click. The new keyboard QML module introduced in the last ISO is improved with better visibility.
+For the installer Calamares, KaOS continues to **move modules to QML**. This release now features a complete rewritten Locale module with a real live, accurate map. This module is developed by and for KaOS, but has been accepted upstream. Using a real world map brings far greater accuracy of the location selections.  Coordinates are shown on hover, and converted to locale on click. The new keyboard QML module introduced in the last ISO is improved with better visibility.
 
 New applications added include Kdiff3 and the Keysmith (for Two-factor authentication).
 {% include image.html
