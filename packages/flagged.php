@@ -16,7 +16,7 @@ function render()
         echo 'Internal servor error';
         return;
     }
-    $flags = $result['data'];
+    $flags = $result['data'] ? $result['data'] : [];
     include __DIR__.'/tpl/flaggedpackages.php';
 };
 

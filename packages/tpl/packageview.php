@@ -78,7 +78,10 @@
             <td>Build date: <?php echo $package['BuildDate']; ?></td>
         </tr>
         <tr>
-            <td>Packages groups: [<?php echo implode(' ', $package['Groups']); ?>]</td>
+            <td>Packages groups: [<?php
+                $groups = is_array($package['Groups']) ? implode(' ', $package['Groups']) : '';
+                echo $groups;
+            ?>]</td>
         </tr>
         <tr><td></td></tr><tr><td></td></tr>
         <tr>
@@ -95,7 +98,7 @@
             <?php endif; ?>
         </tr>
         <tr><td></td></tr>
-        <?php if (count($package['Depends']) > 0): ?>
+        <?php if (is_array($package['Depends']) && count($package['Depends']) > 0): ?>
         <tr>
             <th class="tdhp"><b>Dependencies</b></th>
         </tr>
@@ -107,7 +110,7 @@
         </tr>
         <?php endforeach; ?>
         <?php endif; ?>
-        <?php if (count($package['MakeDepends']) > 0): ?>
+        <?php if (is_array($package['MakeDepends']) && count($package['MakeDepends']) > 0): ?>
         <tr>
             <th class="tdhp"><b>Make Dependencies</b></th>
         </tr>
@@ -119,7 +122,7 @@
         </tr>
         <?php endforeach; ?>
         <?php endif; ?>
-        <?php if (count($package['OptDepends']) > 0): ?>
+        <?php if (is_array($package['OptDepends']) && count($package['OptDepends']) > 0): ?>
         <tr>
             <th class="tdhp"><b>Optional Dependencies</b></th>
         </tr>
