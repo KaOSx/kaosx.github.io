@@ -88,7 +88,7 @@ pacman -Ss package_name
 Queries the repo about a packages, and all that depend on it:
 
 ```
-pacman -Sii package_nam
+pacman -Sii package_name
 ```
 
 ### Howto
@@ -97,7 +97,7 @@ pacman -Sii package_nam
 #### List Installed Packages that are not in the Official Repositories:
 {: .offset}
 
-If you want a list of the packages you build and installed locally or packages that are no longer in the official repositories:
+If you want a list of the packages you built and installed locally or packages that are no longer in the official repositories:
 
 ```
 pacman -Qm
