@@ -41,7 +41,7 @@ The installer Calamares has picked up the transition to QML again. All navigatio
             img="img/2021/kontact.png"
             title="Kontact 21.04"
             caption="Kontact 21.04"
-            url="img/2021/kontact.png" %}
+            url="/img/2021/kontact.png" %}
 
 The default mirror used for all KaOS installs is provided by [Fosshost](https://fosshost.org/){:target="_blank"}. Big change with Fosshost is that with just one mirror users will have access to a worldwide network of mirrors through [Fastly CDN](https://fosshost.org/news/fosshost-mirror-service-changes){:target="_blank"}. No longer is there a need to adjust a mirrorlist, you will always be connected to the fastest mirror in your area.
 
