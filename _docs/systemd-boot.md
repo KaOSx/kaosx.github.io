@@ -24,6 +24,11 @@ comments: []
 
 Systemd-boot is the boot manager that replaces GRUB2 in the UEFI installations of KaOS. 
 In order to configure it, edit the file ```/usr/lib/systemd/boot/loader/loader.conf```
+
+For the complete, official documentation see: https://www.freedesktop.org/wiki/Software/systemd/systemd-boot/
+
+## Short overview
+
 By default, you see two values in this file: "timeout" and "default". 
 
 ### Reducing the timer
