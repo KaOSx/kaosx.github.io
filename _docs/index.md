@@ -43,12 +43,12 @@ That will open a pop-up window, with information on what logs will be gathered a
 If for any reason you are faced with problems in Live mode or running the installer, first follow this check-list:
 
 * How did you create the Live Media? Make sure to follow the tutorials to properly create installation media for KaOS. See [USB](http://kaosx.us/docs/usb_flash/) and [DVD](http://kaosx.us/docs/dvd/) creation guides.
-* Did you check the md5sum of the downloaded ISO?
+* Did you check the sha256sum of the downloaded ISO?
 
   ```
-  md5sum /path/to/the/downloaded/<kaOS>.iso
+  sha256sum /path/to/the/downloaded/<kaOS>.iso
   ```
-  compare the result with the md5sum provided on the Download page, make sure they match
+  compare the result with the sha256sum provided on the Download page, make sure they match
 * Are you using a GPT partition table on a BIOS system? If so, follow the instruction to set up properly since the installer cannot create such a setup yet. See [Create GPT on BIOS](/docs/bios_gpt)
 * Provide the installation log: 
   * Live Mode: `~/installation.log`

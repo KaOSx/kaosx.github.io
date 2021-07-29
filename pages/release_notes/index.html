@@ -19,22 +19,21 @@ categories: []
 tags: []
 comments: []
 ---
-<h3>KaOS - 2021.01</h3>
-    <p>Two weeks into the New Year, KaOS is pleased to present you with a first ISO for 2021</p>
+<h3>KaOS - 2021.06</h3>
+    <p>KaOS is pleased to announce the availability of the June release of a new stable ISO.</p>
             
-    <p>For the many changes in this release, a few stand out. This is a first ISO that ships with <strong>Qt 6</strong>. Not that Plasma is ready for Qt 6, but some are (Poppler, Strawberry, Qsynth, Qtkeychain for example), so to get this distribution in good shape for the eventual Qt 6 move, any that can be built with Qt 6 are done so now.</br>
-    The <strong>KDE Applications release 20.12</strong> saw the addition of almost a dozen new applications, some just moved from standalone releases to now a monthly release, but the addition of Itinerary (an app that provides you with all the information you need while on the road) and Spectacle using Kimageannotator for annotation tool are good improvements.</br>
-    There has been a search for quite some time for a good GUI to handle Systemd services, the used systemd-kcm has not been maintained for years. This replacement is now found and included in the ISO, <strong>Stacer</strong> (it can also be used as a system clean-up tool and handle startup applications).</p>
+    <p>You will find Plasma 5.22 on this ISO. Highlights of this new major version include the big new feature Adaptive Transparency: This means the panel and panel widgets will usually be pleasantly translucent, but will become entirely opaque if there are any maximized window, a transition to Plasma System Monitor from the older KSysguard as the default system monitoring app and Plasma Wayland session now supports Activities: a classic feature unique to the Plasma desktop that allows you to have completely different environments for different aspects of your computing life, other KWin Wayland improvements include the Present Windows effect. New in Plasma 5.22, System Settings opens up on a speed dial page that gives you direct access to the most commonly used settings, as well as to the ones you have accessed most. </p>
     
-    <p>As always with this rolling distribution, you will find the very latest packages for the Plasma Desktop, this includes Frameworks 5.78.0, Plasma 5.20.5, and KDE Applications 20.12.1. All built on Qt 5.15.2.</p>
+    <p>The installer Calamares has two new QML modules.  KaOS has ported the Packagechooser to QML, resulting in a clearer and more consistent layout, and giving the option to fully translate this module in the normal Transifex location.  The offline Locale module is now also ready for QML. The regular Locale module uses an interactive map, needing a network connection, so it is good to have to offline QML option also fully working.</p>
     
-    <p>News for those working on KaOS (probably and hopefully not visible at all to regular users) is the migration to a new, dedicated server. This is a real hardware server, running KaOS, so no longer using a VPS. Advantage is direct access to the hardware and much more powerful specs.</p>
+    <p>As always with this rolling distribution, you will find the very latest packages for the Plasma Desktop, this includes Frameworks 5.83.0, Plasma 5.22.2 and KDE Applications 21.04.2. All built on Qt 5.15.2+.</p>
     
-    <p>For the installer Calamares, there is now preliminary support for “split” encryption, where the boot partition is not encrypted, but the rest of the system is encrypted and the <code>users</code> module now has a more detailed way to specify user groups</p>
+    <p>The default mirror used for all KaOS installs is provided by [Fosshost](https://fosshost.org/){:target="_blank"}. Big change with Fosshost is that with just one mirror users will have access to a worldwide network of mirrors through Fastly CDN. No longer is there a need to adjust a mirrorlist, you will always be connected to the fastest mirror in your area.</p>
     
-    <p>New applications added include the Matrix chat client Neochat (KDE maintained fork of Spectral), and Barrier, allowing the user to use a single keyboard and mouse to control multiple computers. New are also a PyQt 6 stack, including Sip 6, PyQt-Builder, PyQt6-sip, and PyQt 6.0.0.</p>
+    <p>New applications added include Maliit virtualkeyboard packages. Also new is support for <b>JPEG XL</b>, a modern option (and probable future replacement) for JPEG. Integration in the system is provided by <b>qt-jpegxl-image-plugin</b>, this allows you to open & view .jxl files seamlessly in Gwenview.</p>
     
-    <p>Updates to the base of this distribution were numerous and include LLVM/Clang 11 (11.0.1), Python3 3.8.7, ICU 68.2, Boost 1.75.0, Git 2.30.0, Protobuf 3.14, Hdf5 1.12.0, Poppler 21.01.0, Mesa 20.3.3, NetworkManager 1.28.0, Libarchive 3.5.1, Samba 4.13.3. The maintenance of the Linux AUFS patches has started again, so the latest kernel can be included again in the ISO, 5.10.6.</p>
+    <p>Updates to the base of this distribution were numerous and include a new ICU 69.1 & Boost 1.76.0 stack, Systemd 248.3, Glib2 2.68.3 with the whole glib/gobject group updated, Grub 2.06, Git 2.32.0, Hwids 20210613, Protobuf 3.17, Dracut 055, Poppler 21.06.1, Mesa 21.1.3, NetworkManager 1.32.0, ZSTD 1.5.0, Kmod 29.</br>
+    Qt 5.15 does not receive updates or maintenance from the Qt company (only closed source, paid support is available). KDE has stepped up though and published a maintained 5.15 fork https://dot.kde.org/2021/04/06/announcing-kdes-qt-5-patch-collection. KaOS now does a monthly patch update from this fork for all of Qt 5.15, so it basically is now at 5.15.3.</p>
     
     <p>Since LibreOffice 6.2, it is now possible to supply this as a pure Qt5/kf5 application.  LibreOffice has thus replaced Calligra as the default Office Application for KaOS.</p>
     
@@ -56,12 +55,12 @@ comments: []
     
     <p>To avoid any misunderstanding and confusion, KaOS is <b>not based upon, derived of, or inspired by</b> any one particular distribution. It is completely independent, build entirely from scratch with its own repositories. To read more about this see <a href="http://kaosx.us/about/based/">FAQ</a>. A <b>rolling release distribution</b> never has a "final" release, every ISO is merely a snapshot of the current status of the repositories. An idea what is currently available:</p>
     
-    <p>The ISO ships with <b>Frameworks 5.78.0, Plasma 5.20.5, KDE Applications 20.12.1</b>, Linux 5.10.6, Systemd 246, Kmod 28, NetworkManager 1.28.0, LibreOffice 7.0.4, Krita 4.4.1, Elisa, Xorg-Server 1.20.10, Mesa 20.3.3, Glibc 2.32, GCC 10.2.0, non-free Nvidia 460, Pepperflash and Python3 3.8.7 to name a few.</p>
+    <p>The ISO ships with <b>Frameworks 5.83.0, Plasma 5.22.2, KDE Applications 21.04.2</b>, Linux 5.12.13, Systemd 248.3, Kmod 29, NetworkManager 1.32.0, LibreOffice 7.1.4, Krita 4.4.5, Elisa, Xorg-Server 1.20.11, Mesa 21.1.3, Glibc 2.33, GCC 10.3.0, non-free Nvidia 465 and Python3 3.8.10 to name a few.</p>
     
     <p>The package manager is <strong>Pacman 5.2.2</strong>, with the simple but powerful Octopi 0.11 as GUI frontend. Default web browser is Qt based Falkon 3.1.0. <b>GFXboot</b> is included with KaOS artwork, Grub theme is Midna, Look &amp; Feel is a KaOS exclusive version "Midna".</p>
     
-    <p><b>Repositories</b> of KaOS will stay limited in size and expect it to stay at the current maximum of about 2100-2200. A gist of what is available, besides the stable kernel there is Linux-next 5.10, Calligra 3.2.1, VLC, Vokoscreen, Blender, Kodi, Calibre, Sigil, Vulkan packages, a few games like 0ad and Knights.<br />
-    A limited number of the most well-known GTK applications are available, examples Firefox 84.0.2, Chrome 89, Ardour 6.5.0, Inkscape 1.0.1, GIMP 2.10.22 and Thunderbird 78.6.1.<br />
+    <p><b>Repositories</b> of KaOS will stay limited in size and expect it to stay at the current maximum of about 2100-2200. A gist of what is available, besides the stable kernel there is Linux-next 5.13, Calligra 3.2.1, VLC, Vokoscreen, Blender, Kodi, Calibre, Sigil, Vulkan packages, a few games like 0ad and Knights.<br />
+    A limited number of the most well-known GTK applications are available, examples Firefox 89.0.2, Chrome 93, Ardour 6.7.0, Inkscape 1.1, GIMP 2.10.24 and Thunderbird 78.11.0.<br />
     Complete language packs are available for KDE, Calligra, Firefox, LibreOffice and Thunderbird. For IM, Fcitx 4.2.9.6 is available as a rather complete group.</p>
     
     <p><b>Known issues:</b></p>

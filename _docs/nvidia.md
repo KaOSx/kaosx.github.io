@@ -63,12 +63,6 @@ If you use the linux-next kernel add:
 sudo pacman -S nvidia-390xx
 ```
 
-If you have an even older card (G8x, G9x, and GT2xx GPUs or earlier):
-
-```
-sudo pacman -S nvidia-340xx
-```
-
 This will automatically install the needed nvidia-utils version too. If you want to use the GUI for nvidia, add nvidia-settings to what you install, this pulls in gtk2, so it is packaged separately.
 
 After all is installed, reboot to load the new driver.
