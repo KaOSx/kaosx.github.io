@@ -24,17 +24,17 @@ comments: []
 
 KaOS makes regular ISO releases available, so any (new) user is not confronted with a large or complicated first update. Those who already have KaOS installed do not need to reinstall, a regular `sudo pacman -Syu` will always give you the latest.
 
-[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2021.08 ISO
+[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2021.10 ISO
 
 <div id="wrapper4">
-<p><b>SHA256SUM KaOS 2021.08:</b> <code>91df0d2de8eff1dac5b6dc41972d969255920a88b092f6e6c466a9e5bf46f716</code></p>
-<p><b>SIZE: 2.5GiB</b></p>
+<p><b>SHA256SUM KaOS 2021.10:</b> <code>5be82f5a1226520313fd9366748da0dcae329a94546e63e5d6ff2635828aa6c9</code></p>
+<p><b>SIZE: 2.6GiB</b></p>
 </div>
 
 ### Current Version
 {: .offset}
-The August version ships with Plasma 5 as the default desktop, it includes non-free Nvidia drivers, KDE Applications 21.08.0, Linux kernel 5.13.11 (Linux-next is in the repo's, following the 5.13 series), GCC 10.3.0, Glibc 2.33, Systemd 249.3, Kmod 29, Xorg-server 1.21.13, Qt 5.15.2+, Mesa 21.1.7, LibreOffice 7.2.0, Elisa and the latest versions of Falkon, Octopi, Kde-Telepathy.
-For those wondering about gtk apps, Firefox 91.0.1, Chrome 94, Thunderbird 91.0.1, GIMP 2.10.24, Ardour 6.9.0 are among the available in their latest version.
+The October version ships with Plasma 5 as the default desktop, it includes non-free Nvidia drivers, KDE Applications 21.08.2, Linux kernel 5.14.11 (Linux-next is in the repo's, following the 5.14 series), GCC 10.3.0, Glibc 2.33, Systemd 249.4, Kmod 29, Xorg-server 1.21.13, Qt 5.15.2+, Mesa 21.2.3, LibreOffice 7.2.1, Elisa and the latest versions of Falkon, Octopi, Kde-Telepathy.
+For those wondering about gtk apps, Firefox 93.0, Chrome 96, Thunderbird 91.2, GIMP 2.10.28, Ardour 6.9.0 are among the available in their latest version.
 
 ### Known Issues
 {: .offset}
@@ -53,5 +53,5 @@ gpg --import KaOS.asc
 ```
 Next download the ISO GPG Signature to the same directory as where you downloaded the ISO and verify with (adjust for correct year and date):
 ```
-gpg --verify KaOS-2021.08-x86_64.iso.sig
+gpg --verify KaOS-2021.10-x86_64.iso.sig
 ```

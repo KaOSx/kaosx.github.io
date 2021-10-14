@@ -9,7 +9,7 @@
             </h3>
             <ul class="pkglinks">
                 <li>
-                    <a href="<?php echo $package['URL']['Download']; ?>">
+                    <a href="<?= $package['URL']['Download'] ?? '' ?>">
                         Download
                     </a>
                 </li>
@@ -20,7 +20,7 @@
             </h3>
             <ul class="pkglinks">
                 <li>
-                    <a href="<?php echo $package['URL']['Bugs']; ?>">
+                    <a href="<?= $package['URL']['Bugs'] ?? '' ?>">
                         Report Issues
                     </a>
                 </li>
@@ -31,17 +31,17 @@
             </h3>
             <ul class="pkglinks">
                 <li>
-                    <a href="<?php echo $package['URL']['Sources']; ?>">
+                    <a href="<?= $package['URL']['Sources'] ?? '' ?>">
                         Source Files
                     </a>
                 </li>
                 <li>
-                    <a href="<?php echo $package['URL']['PKGBUILD']; ?>">
+                    <a href="<?= $package['URL']['PKGBUILD'] ?? '' ?>">
                         PKGBUILD
                     </a>
                 </li>
                 <li>
-                    <a href="<?php echo $package['URL']['Commits']; ?>">
+                    <a href="<?= $package['URL']['Commits'] ?? '' ?>">
                         Commits
                     </a>
                 </li>
@@ -53,35 +53,32 @@
     <tbody>
         <tr>
             <th class="tdhp">
-                <b><?php echo $package['CompleteName']; ?></b>
+                <b><?= $package['CompleteName'] ?></b>
             </th>
         </tr>
         <tr>
-            <td>Repository: <?php echo $package['Repository']; ?></td>
+            <td>Repository: <?= $package['Repository'] ?></td>
         </tr>
         <tr>
-            <td>Description: <?php echo $package['Description']; ?></td>
+            <td>Description: <?= $package['Description'] ?></td>
         </tr>
         <tr>
-            <td>Upstream URL: <a href="<?php echo $package['URL']['Upstream']; ?>"><?php echo $package['URL']['Upstream']; ?></a></td>
+            <td>Upstream URL: <a href="<?= $package['URL']['Upstream'] ?>"><?= $package['URL']['Upstream'] ?></a></td>
         </tr>
         <tr>
-            <td>License: <?php echo implode(', ', $package['Licenses']); ?></td>
+            <td>License: <?= implode(', ', $package['Licenses']) ?></td>
         </tr>
         <tr>
-            <td>Package size: <?php echo $package['PackageSize']; ?></td>
+            <td>Package size: <?= $package['PackageSize'] ?></td>
         </tr>
         <tr>
-            <td>Installed size: <?php echo $package['InstalledSize']; ?></td>
+            <td>Installed size: <?= $package['InstalledSize'] ?></td>
         </tr>
         <tr>
-            <td>Build date: <?php echo $package['BuildDate']; ?></td>
+            <td>Build date: <?= $package['BuildDate'] ?></td>
         </tr>
         <tr>
-            <td>Packages groups: [<?php
-                $groups = is_array($package['Groups']) ? implode(' ', $package['Groups']) : '';
-                echo $groups;
-            ?>]</td>
+            <td>Packages groups: [<?= implode(' ', $package['Groups'] ?? []) ?>]</td>
         </tr>
         <tr><td></td></tr><tr><td></td></tr>
         <tr>
@@ -89,10 +86,16 @@
             <td class="pkgwarning">
                 <i class="fa fa-flag-checkered text-danger" aria-hidden="true"> This package has been flagged as outdated</i>
             </td>
+            <?php elseif ($package['Build'] ?? false): ?>
+            <td align="center">
+                <div class="Button">
+                    <a href="view.php?name=<?= $package['Build'] ?>">View in build</a>
+                </div>
+            </td>
             <?php else: ?>
             <td align="center">
                 <div class="Button">
-                    <a href="flag.php?repo=<?php echo $package['Repository']; ?>&name=<?php echo $package['CompleteName']; ?>">Flag as outdated</a>
+                    <a href="flag.php?name=<?= $package['FullName'] ?>">Flag as outdated</a>
                 </div>
             </td>
             <?php endif; ?>
@@ -105,7 +108,7 @@
         <?php foreach ($package['Depends'] as $dep): ?>
         <tr>
             <td>
-                <a href="packages.php?exact=1&search=<?php echo $dep; ?>"><?php echo $dep; ?></a>
+                <a href="packages.php?exact=1&search=<?= $dep ?>"><?= $dep ?></a>
             </td>
         </tr>
         <?php endforeach; ?>
@@ -117,7 +120,7 @@
         <?php foreach ($package['MakeDepends'] as $dep): ?>
         <tr>
             <td>
-                <a href="packages.php?exact=1&search=<?php echo $dep; ?>"><?php echo $dep; ?></a>
+                <a href="packages.php?exact=1&search=<?= $dep ?>"><?= $dep ?></a>
             </td>
         </tr>
         <?php endforeach; ?>
@@ -129,7 +132,7 @@
         <?php foreach ($package['OptDepends'] as $dep): ?>
         <tr>
             <td>
-                <a href="packages.php?exact=1&search=<?php echo $dep; ?>"><?php echo $dep; ?></a>
+                <a href="packages.php?exact=1&search=<?= $dep ?>"><?= $dep ?></a>
             </td>
         </tr>
         <?php endforeach; ?>
@@ -139,13 +142,13 @@
         </tr>
         <?php foreach ($package['Files'] as $f): ?>
         <tr>
-            <td><?php echo $f; ?></td>
+            <td><?= $f ?></td>
         </tr>
         <?php endforeach; ?>
         <tr>
             <td align="center">
                 <div class="Button">
-                    <a href="packages.php?sortby=date&sortdir=desc&repo=<?php echo $package['Repository']; ?>">Return to packages</a>
+                    <a href="packages.php?sortby=date&sortdir=desc&repo=<?= $package['Repository'] ?>">Return to packages</a>
                 </div>
             </td>
         </tr>

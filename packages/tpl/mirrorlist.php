@@ -2,7 +2,7 @@
 <div class="box">
     <?php foreach ($countries as $country): ?>
     <p>
-        <b><?php echo $country['Name']; ?></b>
+        <b><?= $country['Name'] ?></b>
         <br>
     <?php foreach ($country['Mirrors'] as $mirror): ?>
         <?php
@@ -19,11 +19,11 @@
             $textSync  = ($c === 0) ? 'Not synced' : (($c === $l) ? 'Fully synced' : 'Partially synced');
             $colorSync = ($c === 0) ? 'red' : (($c === $l) ? 'green' : 'purple');
         ?>
-        <a href="<?php echo $mirror['Name']; ?>"><?php echo $mirror['Name']; ?></a>
+        <a href="<?= $mirror['Name'] ?>"><?= $mirror['Name'] ?></a>
         |
-        <font color="<?php echo $colorOnline; ?>"><?php echo $textOnline; ?></font>
+        <font color="<?= $colorOnline ?>"><?= $textOnline ?></font>
         |
-        <font color="<?php echo $colorSync; ?>"><?php echo $textSync; ?></font>
+        <font color="<?= $colorSync ?>"><?= $textSync ?></font>
         <br>
     <?php endforeach; ?>
     <?php endforeach; ?>
