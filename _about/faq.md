@@ -23,7 +23,7 @@ Here we'll try to address the most commonly encountered questions and issues.
 
 ### What is the target user?
 
-Users who have tried many Operating Systems/Distributions/Desktop Environments and have found they prefer a Distribution that uses all its available resources to work on one DE to make that the best it can be, and know that after their searches, the best for them is KDE.
+Users who have tried many Operating Systems/Distributions/Desktop Environments and have found they prefer a Distribution that uses all its available resources to work on one DE to make that the best it can be, and know that after their searches, the best for them is KDE Plasma.
 
 Their used hardware is from about 2007 or later, so there are no issues with running 64 bit software.
 

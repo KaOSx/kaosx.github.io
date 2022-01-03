@@ -21,7 +21,7 @@
             <td align="right"><?= $package['InstalledSize'] ?></td>
             <td align="right"><?= $package['BuildDate'] ?></td>
             <td align="center">
-                <a href="<?= REPOURL.$package['Repository'].'/'.$package['FileName'] ?>">
+                <a href="<?= REPOURL.$package['Repository'].'/'.$package['Filename'] ?>">
                     <i class="fa fa-linux fa-lg" aria-hidden="true"></i>
                 </a>
             </td>

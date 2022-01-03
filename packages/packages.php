@@ -30,14 +30,15 @@ function render()
     }
     $packages      = $result['data'] ?? [];
     $pagination    = $result['paginate'] ?? [
-        'total' => '',
-        'page'  => '',
-        'last'  => '',
+        'Total'   => '',
+        'Current' => '',
+        'Last'    => '',
+        'Limit'   => '',
     ];
     $totalSize     = $result['size'] ?? '';
-    $totalPackages = $pagination['total'] ?? '';
-    $current       = $pagination['page'] ?? '';
-    $last          = $pagination['last'] ?? '';
+    $totalPackages = $pagination['Total'] ?? '';
+    $current       = $pagination['Current'] ?? '';
+    $last          = $pagination['Last'] ?? '';
     include __DIR__.'/tpl/packagelist.php';
     renderPagination($current, $last, $args);
 };
