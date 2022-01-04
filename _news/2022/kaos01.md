@@ -21,7 +21,7 @@ For the installer Calamares there are three major changes. Biggest one is the ad
             img="img/2021/bootloader.png"
             title="Calamares Bootloader Module"
             caption="Calamares Bootloader Module"
-            url="/img/2021/plasma_5.23" %}
+            url="/img/2021/bootloader.png" %}
 
 Updates to the base of this distribution were numerous and they included a GCC 11.2/Binutils 2.73 based Toolchain (with a move to libxcrypt), complete updated libffi 3.4.2/Glib2 2.70.2 stack, ICU 70.1/Boost 1.77.0 stack, Python 3.9.9, Systemd 249.7, Curl 7.80.0, Mesa 21.3.3, Vulkan packages 1.2.203, Wayland 1.20.0, Sudo 1.9.8p2, and Openldap 2.6.0.  
 Qt 5.15 does not receive updates or maintenance from the Qt company (only closed source, paid support is available). KDE has stepped up though and published [a maintained 5.15 fork](https://dot.kde.org/2021/04/06/announcing-kdes-qt-5-patch-collection). KaOS now does a monthly patch update from this fork for all of Qt 5.15, so it basically is now at 5.15.3.
