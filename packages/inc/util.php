@@ -10,6 +10,7 @@ function getParameters()
         'search'  => $_GET['search'] ?? '',
         'repo'    => $_GET['repo'] ?? '',
         'exact'   => $_GET['exact'] ?? '',
+        'limit'   => $_GET['limit'] ?? '',
     ];
     return $form;
 }
