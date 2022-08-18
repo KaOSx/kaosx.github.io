@@ -359,6 +359,20 @@ strong {
         font-family: 'Open Sans';
     }
 }
+//cala image & caption
+.cala-wrapper {
+    text-align: center;
+    width: 800px;
+    margin: 10px auto 10px 10px;
+
+    .image-caption {
+        color: #777;
+        margin-top: 3px;
+        font-size: 10px;
+        font-weight: 300;
+        font-family: 'Open Sans';
+    }
+}
 //Donors
 .Donors ul {
   width: 100%;
