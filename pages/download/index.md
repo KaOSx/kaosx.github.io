@@ -39,6 +39,7 @@ For those wondering about gtk apps, Firefox 105.0.2, Chrome 108, Thunderbird 102
 ### Known Issues
 {: .offset}
 
+* ZFS filesystems installs will encounter a boot problem once their new installed system regenerates the kernel image. Add `zfs_force=1` to the kernel line to be able to boot, see the [Forum News Post](https://forum.kaosx.us/d/2990-zfs-boot-issue-after-kernel-image-regeneration) for more.
 * Installing on RAID is currently not possible
 
 To create reliable Media for booting the Live ISO, please select USB or DVD and follow the instructions for either using a USB flash drive or DVD disc.

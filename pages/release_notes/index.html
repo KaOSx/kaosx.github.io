@@ -85,6 +85,7 @@ comments: []
     
     <p><b>Known issues:</b></p>
     <ul>
+        <li>ZFS filesystems installs will encounter a boot problem once their new installed system regenerates the kernel image. Add <code>zfs_force=1</code> to the kernel line to be able to boot, see the <a href="https://forum.kaosx.us/d/2990-zfs-boot-issue-after-kernel-image-regeneration">Forum News Post</a> for more.</li>
         <li>Installing on RAID is currently not possible</li>
     </ul>
     
