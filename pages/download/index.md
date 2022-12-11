@@ -24,22 +24,21 @@ comments: []
 
 KaOS makes regular ISO releases available, so any (new) user is not confronted with a large or complicated first update. Those who already have KaOS installed do not need to reinstall, a regular `sudo pacman -Syu` will always give you the latest.
 
-[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2022.10 ISO
+[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2022.12 ISO
 
 <div id="wrapper4">
-<p><b>SHA256SUM KaOS 2022.10:</b> <code>e160e677d7d587de687d057108d762dce32b80a9567c84b6939b527b944f910f</code></p>
-<p><b>SIZE: 2.9GiB</b></p>
+<p><b>SHA256SUM KaOS 2022.12:</b> <code>890786813fd4b91d690ec473406022821d36c4c7809f43119c6bb00fef7e3965</code></p>
+<p><b>SIZE: 3.1GiB</b></p>
 </div>
 
 ### Current Version
 {: .offset}
-The October version ships with Plasma 5 as the default desktop, it includes non-free Nvidia drivers, KDE Applications 22.08.1, Linux kernel 5.19.13 (Linux-next is in the repo's, following the 6.0 series), GCC 11.3.0, Glibc 2.35, Systemd 251.5, Kmod 30, Xorg-server 21.1.4, Qt 5.15.6+, Mesa 22.1.7, LibreOffice 7.4.1, Elisa and the latest versions of Falkon, Octopi, Kde-Telepathy.
-For those wondering about gtk apps, Firefox 105.0.2, Chrome 108, Thunderbird 102.3.2, GIMP 2.99.12, Ardour 6.9.0 are among the available in their latest version.
+The December version ships with Plasma 5 as the default desktop, it includes non-free Nvidia drivers, KDE Applications 22.12.0, Linux kernel 6.0.12 (Linux-next is in the repo's, following the 6.0 series), GCC 12.2.0, Glibc 2.36, Systemd 252.3, Kmod 30, Xorg-server 21.1.4, Qt 5.15.7+, Mesa 22.2.5, LibreOffice 7.4.3, Elisa and the latest versions of Falkon, Octopi, Kde-Telepathy.
+For those wondering about gtk apps, Firefox 107.0.1, Chrome 110, Thunderbird 102.5, GIMP 2.99.14, Ardour 7.1.0 are among the available in their latest version.
 
 ### Known Issues
 {: .offset}
 
-* ZFS filesystems installs will encounter a boot problem once their new installed system regenerates the kernel image. Add `zfs_force=1` to the kernel line to be able to boot, see the [Forum News Post](https://forum.kaosx.us/d/2990-zfs-boot-issue-after-kernel-image-regeneration) for more.
 * Installing on RAID is currently not possible
 
 To create reliable Media for booting the Live ISO, please select USB or DVD and follow the instructions for either using a USB flash drive or DVD disc.
@@ -54,5 +53,5 @@ gpg --import KaOS.asc
 ```
 Next download the ISO GPG Signature to the same directory as where you downloaded the ISO and verify with (adjust for correct year and date):
 ```
-gpg --verify KaOS-2022.10-x86_64.iso.sig
+gpg --verify KaOS-2022.12-x86_64.iso.sig
 ```

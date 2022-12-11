@@ -19,39 +19,28 @@ categories: []
 tags: []
 comments: []
 ---
-            <h3>KaOS - 2022.10</h3>
-            <p>It is with great pleasure to present to you the October release of a new stable ISO.</p>
+            <h3>KaOS - 2022.12</h3>
+            <p>KaOS is pleased to announce the availability of the December release of a new stable ISO.</p>
 
-            <p>Many changes have been implemented to the installer <strong>Calamares</strong> in the last few months, so it is fitting to start with listing all that is new or has changed.</br>
-            It is now possible to do a typical install entirely from a touchpad or mouse, a keyboard is no longer needed. A <strong>virtual keyboard</strong> has been implemented for those modules that need text input.</br>
-            For those who prefer PulseAudio over Pipewire, a module has been added (KaOS only), that gives users the option to select which sound server they prefer (with Pipewire set as default).</br>
-            <strong>Dracutis the new default</strong>  for the initramfs image creation (mkinitcpio is no longer in use for new installs). To accommodate that change, the Dracut module in Calamares had to be adjusted, so it now supports version-less kernels.</br>
-            The slideshow presented during the install had a complete overhaul, no  longer in use are complete different images for each slide, now it has one static background and animated text sliding & fading in & out. Corresponding images for each text are now fading in as slides too. Less jarring transition as was before, so now it is no longer needed to mouse click to advance the slides, it loops automatically.</br>
-            There now also is an option to either view the slideshow with information about the distribution or watch what the installer Calamares is currently doing by selecting the Log View.</br>
-            The layout has also been adjusted, so it is now more intuitive to move through the steps and is more in line visually with the other KaOS application presented in Live mode and first boot into the new system. Gone is the use of a ComboBox in the different modules, Drawer is in use instead (for a more consistent behavior).</p>
+            <p>With over 70% of the distribution rebuilt, a new ISO is more then due. Updates to the base of the system included a new GCC 12.2.0, Glibc 2.36 and binutils 2.39 based toolchain, CLang/LLVM 15.0.6, ICU 72.1, Boost 1.80.0, kernel moved to Linux 6.0.12, Systemd 252.3, Libffi 3.4.4/Glib2 2.74.3 stack, Python 3.10.9, Texlive packages moved to 2022, Bash 5.2, Gawk 5.2, and Shadow 4.13.</p>
+            
+            <p>The move to include ZFS exposed a shortcoming in the installer Calamares.  A generated hostid for ZFS during the installation did not copy over to the installed system, thus the installed system failed to match the hostid on system updates where a new initramfs was created. This is now corrected by adding a new <code>zfshostid</code> module to Calamares. This module was presented to upstream Calamares, but is not included yet in a release, at this point it is a KaOS-only option.</br>
+            It is now also possible to select the EurKEY layout in the keyboard page.</p>
+            
+            <p>To get good logs has always been a bit of a challenge since you have to know what journalctl commands to use. That is now a thing of the past, <strong>Kjournald</strong> gives the option to view the logs from a nice GUI, with all kinds of filter options in the left-hand pane (it is now part of the default install)</p>
 
-            <p>As mentioned above, KaOS has moved to Dracut as the <strong>new initramfs infrastructure</strong>. Unlike other implementations, Dracut hard-codes as little as possible into the initramfs. The initramfs has (basically) one purpose in life -- getting the rootfs mounted so that transitioning to the real rootfs can be done. Dracut is distribution agnostic and used by many (examples Fedora, VOID, OpenSuse, Gentoo), plus the code-base is very actively maintained.</p>
+            <p>For the Plasma desktop, the latest Plasma (5.26.4), KDE Gear (22.12.0), and Frameworks (5.101.0) are included. All built on <b>Qt 5.15.7+</b>. Among the changes included in KDE Gear 22.12 are Dolphin added Selection Mode, you can now click or tap files and folders and quickly and easily select the ones you want to work with, Gwenview now also lets you adjust the brightness, contrast, and gamma of your pictures as you preview them, Kate/Kwrite added the Keyboard Macro tool, with it you can record a long sequence of key presses you need to type often and then hit Ctrl + Alt + K and Kate will type the sequence for you. and Kalendar, the new calendaring app from KDE, now uses pop-up windows for displaying events, making it easier and more convenient to view and manage your schedule.</p>
             
-            <p>With Dracut in place, the move to include <strong>ZFS as a new filesystem option</strong> could also be implemented. Using ZFS has been a goal for KaOS, ever since it started in 2013.  ZFS is not default at this stage since it cannot be used (yet) for BIOS installs.  For UEFI installs, <strong>only the systemd-boot bootloader</strong> is ready for ZFS. rEfind adaptation needs to be done still.</p>
-
-            <p>For the Plasma desktop, the latest Plasma (5.25.90), KDE Gear (22.08.1), and Frameworks (5.78.0) are included. All built on <b>Qt 5.15.6+</b>. Among the changes included in Plasma 5.25.90 is improved Wayland support with the possibilty to select if apps will be scaled by the compositor or by themselves to avoid having blurry apps on Wayland.</p>
-            
-            <p><strong>kcp</strong>, the tool to help to manage Community packages, received a small update to list broken depends.
-            This was needed to make it possible to do a full rewriting of [KCP-Center](https://kaos-community-packages.github.io) (the online Community packages viewer).  
-            The backend of KCP-Center to update the database, <strong>whelp</strong>, was obsolete since Python2 was removed from the KaOS repositories.
-            Plus it took too long to update the database. It has been simplified to directly use the kcp features to get the database and is now Python3-compatible.  
-            The frontend was rewritten too, removing jQuery depends and unmaintained jQuery Plugins, and using the Mithril framework - https://mithril.js.org to create dynamic pages.</p>
-            
-            <p>Updates to the base of this distribution included Gawk 5.2.0, Bash 5.2, kernel moved to Linux 5.19.13, Systemd 251.5, DBus 1.14.4, Git 2.38.0, Mesa 22.1.7, Texlive packages moved to 2022, Openssh 9.1.P1, Libssh 0.10.4, and ZFS 2.1.6.</p>
+            <p>New applications added include <strong>Ghostwriter</strong>, a dedicated Markdown editor. A start is also made to get ready for Plasma 6. For the adventurous, the kde-next repository is used for a complete Qt6-based KDE stack, all Frameworks are built there on Qt6, most of Plasma and a few KDE Applications have also been ported to Qt6.  Plasma 6 does boot but is not usable yet (so, of course not part of this ISO).</p>
             
             <p>A shift has started as to how all Python packages are built.  Historically, just about all were built with setuptools through a setup.py script.  PEP17 is the new standard for building python packages, see https://peps.python.org/pep-0517/.  At this stage, KaOS is testing this transition with different new Python build tools, such as Python-flit & Python-build, with Python-wheel currently in use to install the build packages.</p>
 
-            <p>Qt 5.15 does not receive updates or maintenance from the Qt company (only closed source, paid support is available). KDE has stepped up though and published a maintained 5.15 fork https://dot.kde.org/2021/04/06/announcing-kdes-qt-5-patch-collection. KaOS now regularly does a patch update from this fork for all of Qt 5.15, so it basically is now at 5.15.7.
+            <p>Qt 5.15 does not receive updates or maintenance from the Qt company (only closed source, paid support is available). KDE has stepped up though and published a maintained 5.15 fork https://dot.kde.org/2021/04/06/announcing-kdes-qt-5-patch-collection. KaOS now regularly does a patch update from this fork for all of Qt 5.15, so it basically is now at 5.15.8.
             </p>
             
             <p>For Nvidia, a new longterm support version is included in this ISO, 470xx. The move by Nvidia to 495 meant the end of support for Kepler based cards, thus the need to add a new legacy version.</p>
             
-            <p>Qt 6.4.0 is included and is now far more complete since many more are ported from Qt5, this includes qt6-location and the big one, qt6-webengine (plus all the Qt6 webengine depends on). A few test applications have been build on qt6-webengine, including some web-browsers. Latest applications that are now using Qt6 are Obs-studio & Avidemux. Plus the Kvantum theming has support for Qt6.</p>
+            <p>Qt 6.4.1 is included and is now far more complete since many more are ported from Qt5, this includes qt6-location and the big one, qt6-webengine (plus all the Qt6 webengine depends on). A few test applications have been build on qt6-webengine, including some web-browsers. Latest applications that are now using Qt6 are Obs-studio & Avidemux. Plus the Kvantum theming has support for Qt6.</p>
 
     <p>Big thanks goes to <strong>Fosshost</strong> for not only providing the default mirror (through the <strong>Fastly CDN</strong> mirror network) but also providing a server for KaOS. This server is replacing an eight-year-old server (used for package upload, ZNC bouncer, and the old PHP based package viewer).</p>
     
@@ -75,17 +64,16 @@ comments: []
     
     <p>To avoid any misunderstanding and confusion, KaOS is <b>not based upon, derived of, or inspired by</b> any one particular distribution. It is completely independent, build entirely from scratch with its own repositories. To read more about this see <a href="http://kaosx.us/about/based/">FAQ</a>. A <b>rolling release distribution</b> never has a "final" release, every ISO is merely a snapshot of the current status of the repositories. An idea what is currently available:</p>
     
-    <p>The ISO ships with <b>Frameworks 5.98.0, Plasma 5.25.90, KDE Applications 22.08.1</b>, Linux 5.19.13, Systemd 251.5, Kmod 30, NetworkManager 1.40.0, LibreOffice 7.4.1, Elisa, Xorg-Server 1.21.4, Mesa 22.1.7, Glibc 2.35, GCC 11.3.0, non-free Nvidia 515 and Python3 3.9.14 to name a few.</p>
+    <p>The ISO ships with <b>Frameworks 5.101.0, Plasma 5.26.4, KDE Applications 22.12.0</b>, Linux 6.0.12, Systemd 252.3, Kmod 30, NetworkManager 1.40.6, LibreOffice 7.4.3, Elisa, Xorg-Server 1.21.4, Mesa 22.2.5, Glibc 2.36, GCC 12.2.0, non-free Nvidia 525 and Python3 3.10.9 to name a few.</p>
     
     <p>The package manager is <strong>Pacman 6.0.1</strong>, with the simple but powerful Octopi 0.14 as GUI frontend. Default web browser is Qt based Falkon. <b>GFXboot</b> is included with KaOS artwork, Grub theme is Midna, Look &amp; Feel is a KaOS exclusive version "Midna".</p>
     
     <p><b>Repositories</b> of KaOS will stay limited in size and expect it to stay at the current maximum of about 2100-2200. A gist of what is available, besides the stable kernel there is Linux-next 6.0, Calligra 3.2.1, VLC, Vokoscreen, Blender, Kodi, Calibre, Sigil, Vulkan packages, a few games like 0ad and Knights.<br />
-    A limited number of the most well-known GTK applications are available, examples Firefox 105.0.2, Chrome 108, Ardour 6.9.0, Inkscape 1.2.1, GIMP 2.99.12 and Thunderbird 102.3.<br />
+    A limited number of the most well-known GTK applications are available, examples Firefox 107.0.1, Chrome 110, Ardour 7.1.0, Inkscape 1.2.2, GIMP 2.99.14 and Thunderbird 102.5.<br />
     Complete language packs are available for KDE, Calligra, Firefox, LibreOffice and Thunderbird. For IM, Fcitx 4.2.9.9 is available as a rather complete group.</p>
     
     <p><b>Known issues:</b></p>
     <ul>
-        <li>ZFS filesystems installs will encounter a boot problem once their new installed system regenerates the kernel image. Add <code>zfs_force=1</code> to the kernel line to be able to boot, see the <a href="https://forum.kaosx.us/d/2990-zfs-boot-issue-after-kernel-image-regeneration">Forum News Post</a> for more.</li>
         <li>Installing on RAID is currently not possible</li>
     </ul>
     
