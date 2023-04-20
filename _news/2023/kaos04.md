@@ -35,8 +35,8 @@ Among the many changes included in KDE Gear 23.04 are the option to run Dolphin 
 
 Updates to the base of the system included a new OpenSSL 3.0.8, CLang/LLVM 16.0.1, Libtiff 4.5.0, Sqlite 3.41.2, kernel moved to Linux 6.2.11, Systemd 253.3, Python 3.10.11, Dracut 059, ZFS 2.1.10, Gnupg 2.4.0, and Libarchive 3.6.2.
 
-<video width="800" controls autoplay>
-    <source src="https://invent.kde.org/websites/kde-org/-/blob/master/static/announcements/gear/23.04.0/kdenlive_timelines.mp4" type="video/webm">
+<video width="800" loop="true" muted="true" autoplay="true" controls="false">
+    <source src="https://invent.kde.org/websites/kde-org/-/raw/master/static/announcements/gear/23.04.0/kdenlive_timelines.mp4" type="video/mp4">
     Your browser does not support the video tag.
 </video>
 ###### Kdenlive 23.04
@@ -46,7 +46,7 @@ Big thanks goes to [YourHostingSolutions](https://yourhostingsolutions.com/){:ta
 Getting good logs has always been a bit of a challenge since you have to know what `journalctl` commands to use. That is now a thing of the past, **Kjournald** gives the option to view the logs from a nice GUI, with all kinds of filter options in the left-hand pane (it is now part of the default install)
 
 {% include image.html
-            img="img/2023/tokodon.png"
+            img="../img/2023/tokodon.png"
             title="Tokodon"
             caption="Tokodon"
             url="/img/2023/tokodon.png" %}
