@@ -24,17 +24,17 @@ comments: []
 
 KaOS makes regular ISO releases available, so any (new) user is not confronted with a large or complicated first update. Those who already have KaOS installed do not need to reinstall, a regular `sudo pacman -Syu` will always give you the latest.
 
-[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2023.02 ISO
+[Release Notes]({{ site.baseurl }}/pages/release_notes) for KaOS 2023.04 ISO
 
 <div id="wrapper4">
-<p><b>SHA256SUM KaOS 2023.02:</b> <code>adfcc5ccb1dfe55f2d150dacac722a914ad1a07670ffc3d35709394cd746b56d</code></p>
-<p><b>SIZE: 3.1GiB</b></p>
+<p><b>SHA256SUM KaOS 2023.04:</b> <code>1126895cb8fa11c7acf37d10e82993c52363e1939ed1c53f1fb05a872b454556</code></p>
+<p><b>SIZE: 2.9GiB</b></p>
 </div>
 
 ### Current Version
 {: .offset}
-The February version ships with Plasma 5 as the default desktop, it includes non-free Nvidia drivers, KDE Applications 22.12.2, Linux kernel 6.1.11 (Linux-next is in the repo's, following the 6.1 series), GCC 12.2.0, Glibc 2.36, Systemd 252.5, Kmod 30, Xorg-server 21.1.7, Qt 5.15.8+, Mesa 22.3.5, LibreOffice 7.5.0, Elisa and the latest versions of Falkon, Octopi, Kde-Telepathy.
-For those wondering about gtk apps, Firefox 109.0.1, Chrome 112, Thunderbird 102.7.2, GIMP 2.99.14, Ardour 7.2.0 are among the available in their latest version.
+The April version ships with Plasma 5 as the default desktop, it includes non-free Nvidia drivers, KDE Applications 23.04.0, Linux kernel 6.2.11 (Linux-next is in the repo's, following the 6.2 series), GCC 12.2.0, Glibc 2.36, Systemd 253.3, Kmod 30, Xorg-server 21.1.8, Qt 5.15.9+, Mesa 23.0.2, LibreOffice 7.5.2, Elisa and the latest versions of Falkon, Octopi, Kde-Telepathy.
+For those wondering about gtk apps, Firefox 112.0.1, Chrome 114, Thunderbird 102.10, GIMP 2.99.14, Ardour 7.3.0 are among the available in their latest version.
 
 ### Known Issues
 {: .offset}
@@ -53,5 +53,5 @@ gpg --import KaOS.asc
 ```
 Next download the ISO GPG Signature to the same directory as where you downloaded the ISO and verify with (adjust for correct year and date):
 ```
-gpg --verify KaOS-2023.02-x86_64.iso.sig
+gpg --verify KaOS-2023.04-x86_64.iso.sig
 ```
