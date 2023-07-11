@@ -4,7 +4,7 @@ $repolist = [
     'apps'     => 'KDE SC and applications',
     'build'    => 'Build repository for all updates and rebuilds',
     'core'     => 'The minimal stable base of the system',
-    //'kde-next' => 'KDE SC and applications',
+    'kde-next' => 'KDE SC and applications',
     'main'     => 'Main stable deps, add-ons and drivers',
 ];
 
