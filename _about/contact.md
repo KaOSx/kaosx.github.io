@@ -22,12 +22,9 @@ A list of available social media to get in touch with fellow KaOS users.  Some a
 
 [Github](https://github.com/KaOSx){:target="_blank"} Complete code source for all KaOS projects, fork & create pull request to help
 
-[IRC](https://web.libera.chat/#KaOS){:target="_blank"} Main KaOS IRC channel (on the Libera network), used for general discussion and development talk  
-[IRC Matrix KaOS:libera.chat](https://webchat.kde.org/#/room/#kaos:libera.chat){:target="_blank"} Matrix channel on libera.chat  
-[IRC Matrix KaOS:kde.org](https://webchat.kde.org/#/room/#kaosx:kde.org){:target="_blank"} Matrix channel on matrix.org  
-[IRC](https://kiwiirc.com/client/irc.freenode.net/#kaosx){:target="_blank"} Old KaOS IRC channel (Freenode), used for general discussion and development talk.  
+[Matrix/Gitter](https://webchat.kde.org/#/room/#KaOSx_KaOS:gitter.im){:target="_blank"} Main chat & live stream of all commits related to KaOS
+[Matrix KaOS:libera.chat](https://webchat.kde.org/#/room/#kaos:libera.chat){:target="_blank"} Old Matrix channel on libera.chat, no longer owned by KaOS, bridge no longer possible on Libera IRC  
 
-[Gitter](https://gitter.im/KaOSx/KaOS/){:target="_blank"} Chat & live stream of all commits related to KaOS & KCP
 
 [Telegram](https://t.me/KaOS_telegram){:target="_blank"} KaOS Telegram channel
 
