@@ -35,15 +35,18 @@ Unetbootin and Rufus are NOT compatible with KaOS.
 ### Windows
 {: .offset}
 
-#### SUSE Studio ImageWriter
+#### Universal USB Installer (correct EFI installation for modern hardware)
 {: .offset}
 
-[ImageWriter](https://github.com/downloads/openSUSE/kiwi/ImageWriter.exe){:target="_blank"}
+[Universal USB Installer](https://pendrivelinux.com/downloads/Universal-USB-Installer/Universal-USB-Installer-2.0.2.0.exe){:target="_blank"}
 
-Option for Windows is ImageWriter. Open the SUSE Studio ImageWriter and either drag the KaOS ISO image into it, or press the **Select** button and find the KaOS ISO image.
-Select your USB stick and click the **Write** button.
+Option for Windows is Universal USB Installer. Open the Universal USB Installer executable.
+Step 1, Select your USB disk.
+Step 2, Select the "Reinstall or Update?" tick box, this will initilize the disk.
+Step 3, Select the option that states "Select a Distrubution to put on..." from here select "Try and unlisted ISO..."
+Step 4, Click on the "Browse" button, select your downloaded KaOS ISO file, then Click the "Create" button.
 
-It might be your Windows version does not support the .iso extension, in that case rename the downloaded KaOS ISO file to .raw.
+You can now boot into this USB via the EFI options in your BIOS.
 
 #### From Windows command line
 {: .offset}
