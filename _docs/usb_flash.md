@@ -24,7 +24,7 @@ comments: []
 
 ![USB stick](/wp-content/uploads/2013/07/Drive-USB-150x150.png){: .alignleft .size-thumbnail}
 
-In order to put a KaOS ISO image onto an USB flash drive, you will need a drive capable of storing 1.8 Gb, a system with USB ports and some specialized software.
+In order to put a KaOS ISO image onto an USB flash drive, you will need a drive capable of storing 3.3 Gb, a system with USB ports and some specialized software.
 
 Make sure the system where you will boot the USB flash drive from, has USB ports and can boot USB flash drives.  Before following any steps, make sure the device is plugged in but not mounted.
 
@@ -40,10 +40,10 @@ Unetbootin and Rufus are NOT compatible with KaOS.
 
 [Universal USB Installer](https://pendrivelinux.com/downloads/Universal-USB-Installer/Universal-USB-Installer-2.0.2.0.exe){:target="_blank"}
 
-Option for Windows is Universal USB Installer. Open the Universal USB Installer executable.
-Step 1, Select your USB disk.
-Step 2, Select the "Reinstall or Update?" tick box, this will initilize the disk.
-Step 3, Select the option that states "Select a Distrubution to put on..." from here select "Try and unlisted ISO..."
+Option for Windows is Universal USB Installer. Open the Universal USB Installer executable.  
+Step 1, Select your USB disk.  
+Step 2, Select the "Reinstall or Update?" tick box, this will initilize the disk.  
+Step 3, Select the option that states "Select a Distrubution to put on..." from here select "Try and unlisted ISO..."  
 Step 4, Click on the "Browse" button, select your downloaded KaOS ISO file, then Click the "Create" button.
 
 You can now boot into this USB via the EFI options in your BIOS.
@@ -79,14 +79,15 @@ From Dolphin:
 
 If you are not on KaOS, you can get [IsoWriter here](https://github.com/KaOSx/isowriter){:target="_blank"}, see the [README](https://github.com/KaOSx/isowriter/blob/master/README.md){:target="_blank"} how to build and use. 
 
-#### SUSE Studio ImageWriter
+#### ISO ImageWriter
 {: .offset}
 
-[ImageWriter](https://github.com/openSUSE/imagewriter){:target="_blank"}
+[ISOImageWriter](https://apps.kde.org/isoimagewriter/){:target="_blank"}
 
-If your distribution provides Suse Studio ImageWriter, then that one is a well tested alternative GUI to use.
+If your distribution provides ISOImageWriter then that is a well tested alternative GUI to use.
 
-Open the SUSE Studio ImageWriter and either drag the KaOS ISO image into it, or press the Select button and find the KaOS ISO image. Select your USB stick and click the Write button.
+* Click the folder icon and browse to the directory containing the ISO
+* Select the USB Drive to use and click Create
 
 #### Using the command line
 {: .offset}

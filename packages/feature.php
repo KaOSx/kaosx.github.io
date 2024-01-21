@@ -74,7 +74,7 @@ $packages = isset($result['data']) && is_array($result['data']) ? $result['data'
             <h3><a target=_blank title="View the Build Repository in descending order" href=https://kaosx.us/packages/packages.php?sortby=date&sortdir=desc&repo=build><i class="fa fa-external-link"></i> Full List</a></h3>
             <?php foreach ($packages as $package): ?>
             <span>
-                <a href="view.php?repo=<?= $package['Repository'] ?>&name=<?= $package['CompleteName'] ?>" target="blank">
+                <a href="view.php?name=<?= $package['FullName'] ?>" target="blank">
                     <i class="fa fa-camera"></i>
                     <?= $package['CompleteName']; ?>
                     <span class="b"><?= date('D H:i', strtotime($package['BuildDate'])) ?></span>
