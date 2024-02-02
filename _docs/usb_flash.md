@@ -63,22 +63,6 @@ dd.exe if=/path/to/the/downloaded/iso of=/path/to/the/USB/device
 ### Linux Distributions
 {: .offset}
 
-#### IsoWriter
-{: .offset}
-
-The application to use is [IsoWriter](/packages/index.php?act=search&amp;subdir=&amp;sortby=date&amp;order=descending&amp;searchpattern=isowriter){:target="_blank"}, available in the KaOS repository and installed by default. After opening IsoWriter:
-
-* Click the folder icon and browse to the directory containing the ISO
-* Click write
-
-From Dolphin:
-
-* Right click the ISO file, select **Actions**
-* Select **Write ISO to USB using IsoWriter**
-* Right click again, Actions and select **Compute md5sum** to verify the downloaded ISO, compare the md5sum with the one on the Download page
-
-If you are not on KaOS, you can get [IsoWriter here](https://github.com/KaOSx/isowriter){:target="_blank"}, see the [README](https://github.com/KaOSx/isowriter/blob/master/README.md){:target="_blank"} how to build and use. 
-
 #### ISO ImageWriter
 {: .offset}
 
