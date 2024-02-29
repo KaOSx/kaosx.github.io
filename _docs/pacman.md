@@ -112,4 +112,4 @@ In the case that pacman is broken beyond repair, manually download the necessary
 sudo tar -xwvpf <i>package_name-version.tar.xz</i> -C / --exclude .PKGINFO --exclude .INSTALL
 ```
 
-More info: [http://wiki.archlinux.org/index.php/Pacman](http://wiki.archlinux.org/index.php/Pacman">http://wiki.archlinux.org/index.php/Pacman)
+More info: [https://wiki.archlinux.org/index.php/Pacman](https://wiki.archlinux.org/index.php/Pacman){:target="_blank"}

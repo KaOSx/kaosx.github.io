@@ -1,0 +1,13 @@
+<!-- _includes/image.html -->
+<div class="cala-wrapper" >
+    {% if include.url %}
+    <a href="{{ include.url }}" target="_blank">
+    {% endif %}
+        <img src="/{{ include.img }}" width="800px"/>
+    {% if include.url %}
+    </a>
+    {% endif %}
+    {% if include.caption %}
+        <p class="image-caption"><b>{{ include.caption }}</b></p>
+    {% endif %}
+</div>

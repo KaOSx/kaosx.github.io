@@ -161,7 +161,7 @@ And push your commit:
 git push
 ```
 
-This will ask for your username and password on Github, once pushed, all files will be visible in the repository page on Github.
+This will ask for your username and [PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-token) on Github, once pushed, all files will be visible in the repository page on Github.
 
 ### Formatting standards for KCP
 {: .offset}

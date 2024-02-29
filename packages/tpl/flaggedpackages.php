@@ -10,9 +10,9 @@
             $comment = str_replace('\n', '<br>', $comment);
             ?>
             <p>
-                <b><?php echo $flag['Name']; ?></b> (outdated) :
+                <b><?= $flag['Name'] ?></b> (outdated) :
                 <br>
-                <?php echo $comment; ?>
+                <?= $comment ?>
                 <br>
             </p>
             <?php endforeach; ?>

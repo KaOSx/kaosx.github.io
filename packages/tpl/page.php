@@ -33,7 +33,7 @@
             </div>
         </div>
         <header class="Hero">
-            <h2><?php echo $page_title; ?></h2>
+            <h2><?= $page_title ?></h2>
         </header>
         <div id="primary">
             <div id="content">

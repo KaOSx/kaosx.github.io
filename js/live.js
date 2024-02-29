@@ -1,5 +1,5 @@
 (function() {
-    var LIB_VERSION = 67;
+    var LIB_VERSION = 119;
     window.Transifex = window.Transifex || {};
     window.Transifex.live = window.Transifex.live || {};
     window.Transifex.live._ = window.Transifex.live._ || {};
@@ -8,760 +8,477 @@
     var TXLIVE = window.Transifex.live;
     var TXLIVE_PRIVATE = window.Transifex.live._;
     var TXLIVE_SIDEBAR = window.Transifex.live.sidebar;
-    TXLIVE_PRIVATE.isNotTextual = /^(&nbsp;|\s|\d|[-\/:-?~@#!"^_`\.,\[\]])*$/;
-    if (TXLIVE.loaded && TXLIVE.lib_version &&
-        TXLIVE.lib_version >= LIB_VERSION) return;
+    TXLIVE_PRIVATE.isNotTextualRegex = /^(&nbsp;|\s|\d|[-\/:-?~@#!"^_`\.,\[\]])*$/;
+    TXLIVE_PRIVATE.removeCommentsRegex =
+        /\x3c!--([\s\S]*?)--\x3e/g;
+    TXLIVE_PRIVATE.manifest_ready = false;
+    if (TXLIVE.loaded && TXLIVE.lib_version && TXLIVE.lib_version >= LIB_VERSION) return;
     TXLIVE.loaded = true;
     TXLIVE.ready = false;
     TXLIVE.autocollect_ready = false;
     TXLIVE.load_msec = 0;
     TXLIVE.group = "";
     var benchmark = 0;
-    var AUTOCOLLECT_EXPIRE_MSEC = 8 * 60 * 60 * 1E3;
     var SIDEBAR_URL_TRIGGER = "transifex";
     var console = window.console;
     TXLIVE.lib_version = LIB_VERSION;
-    TXLIVE.raven_extra = {
-        lib_version: TXLIVE.lib_version,
-        url: TXLIVE.editor && TXLIVE.editor.url ? TXLIVE.editor.url : document.location.href,
-        iframe: TXLIVE.editor ? true : false
-    };
     TXLIVE.settings = {
         autocollected: false,
         has_storage: false,
+        has_session: false,
         dynamic: true
     };
 
     function setSettings(options, override) {
         if (!options) return;
+        var k,
+            i;
         if (override)
-            for (var k in options) TXLIVE.settings[k] = options[k];
+            for (k in options) TXLIVE.settings[k] = options[k];
         else
-            for (var k in options)
+            for (k in options)
                 if (window.liveSettings[k] === undefined) TXLIVE.settings[k] = options[k];
         TXLIVE.settings.autocollect = Boolean(TXLIVE.settings.autocollect | 0);
         TXLIVE.settings.prerender = Boolean(TXLIVE.settings.prerender | 0);
         TXLIVE.settings.dynamic = Boolean(TXLIVE.settings.dynamic | 0);
-        TXLIVE.settings.staging = Boolean(TXLIVE.settings.staging | 0);
-        TXLIVE.settings.cdn = TXLIVE.settings.cdn ||
-            "//cdn.transifex.com/";
-        TXLIVE.settings.autocollect_url = TXLIVE.settings.autocollect_url || "//clsrv.transifex.com";
-        TXLIVE.settings.sidebar_base_url = TXLIVE.settings.sidebar_base_url || "https://www.transifex.com";
-        TXLIVE.settings.assets_base_url = TXLIVE.settings.assets_base_url || TXLIVE.settings.sidebar_base_url;
-        TXLIVE.settings.sidebar_lang = TXLIVE.settings.sidebar_lang || "en";
-        if (TXLIVE.settings.detectlang && typeof TXLIVE.settings.detectlang === "string") TXLIVE.settings.detectlang = Boolean(TXLIVE.settings.detectlang |
+        TXLIVE.settings.rtl_layout = Boolean(TXLIVE.settings.rtl_layout | 0);
+        TXLIVE.settings.xss_protect = Boolean(TXLIVE.settings.xss_protect | 0);
+        TXLIVE.settings.manual_init = Boolean(TXLIVE.settings.manual_init |
             0);
+        TXLIVE.settings.translate_urls = Boolean(TXLIVE.settings.translate_urls | 0);
+        TXLIVE.settings.ignore_databind = Boolean(TXLIVE.settings.ignore_databind | 0);
+        TXLIVE.settings.staging = Boolean(TXLIVE.settings.staging | 0);
+        TXLIVE.settings.cdn = TXLIVE.settings.cdn || "//cdn.transifex.com/";
+        TXLIVE.settings.autocollect_url = TXLIVE.settings.autocollect_url || "//live-detector.svc.transifex.net";
+        TXLIVE.settings.sidebar_base_url = TXLIVE.settings.sidebar_base_url || "https://app.transifex.com";
+        TXLIVE.settings.assets_base_url =
+            TXLIVE.settings.assets_base_url || TXLIVE.settings.sidebar_base_url;
+        TXLIVE.settings.sidebar_lang = TXLIVE.settings.sidebar_lang || "en";
+        if (TXLIVE.settings.detectlang && typeof TXLIVE.settings.detectlang === "string") TXLIVE.settings.detectlang = Boolean(TXLIVE.settings.detectlang | 0);
         if (TXLIVE.settings.parse_attr && TXLIVE.settings.parse_attr.length)
-            for (var i = 0; i < TXLIVE.settings.parse_attr.length; ++i) TXLIVE.settings.parse_attr[i] = TXLIVE.settings.parse_attr[i].toLowerCase();
+            for (i = 0; i < TXLIVE.settings.parse_attr.length; ++i) TXLIVE.settings.parse_attr[i] = TXLIVE.settings.parse_attr[i].toLowerCase();
+        if (TXLIVE.settings.enable_tags && TXLIVE.settings.enable_tags.length)
+            for (i =
+                0; i < TXLIVE.settings.enable_tags.length; ++i) TXLIVE.settings.enable_tags[i] = (TXLIVE.settings.enable_tags[i] || "").toUpperCase();
         if (TXLIVE.settings.ignore_tags && TXLIVE.settings.ignore_tags.length)
-            for (var i = 0; i < TXLIVE.settings.ignore_tags.length; ++i) TXLIVE.settings.ignore_tags[i] = (TXLIVE.settings.ignore_tags[i] || "").toUpperCase();
+            for (i = 0; i < TXLIVE.settings.ignore_tags.length; ++i) TXLIVE.settings.ignore_tags[i] = (TXLIVE.settings.ignore_tags[i] || "").toUpperCase();
         if (TXLIVE.settings.ignore_class && TXLIVE.settings.ignore_class.length)
-            for (var i = 0; i < TXLIVE.settings.ignore_class.length; ++i) TXLIVE.settings.ignore_class[i] =
-                (TXLIVE.settings.ignore_class[i] || "").toLowerCase()
-    }
+            for (i = 0; i < TXLIVE.settings.ignore_class.length; ++i) TXLIVE.settings.ignore_class[i] = (TXLIVE.settings.ignore_class[i] ||
+                "").toLowerCase()
+    }(function() {
+        var _prevDOMPurify = window.DOMPurify;
+        ! function(e, t) {
+            "object" == typeof exports && "undefined" != typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define(t) : (e = e || self).DOMPurify = t()
+        }(this, function() {
+            var e = Object.hasOwnProperty,
+                t = Object.setPrototypeOf,
+                n = Object.isFrozen,
+                r = Object.freeze,
+                o = Object.seal,
+                i = Object.create,
+                a = "undefined" != typeof Reflect && Reflect,
+                l = a.apply,
+                c = a.construct;
+            l || (l = function(e, t, n) {
+                return e.apply(t, n)
+            }), r || (r = function(e) {
+                return e
+            }), o || (o =
+                function(e) {
+                    return e
+                }), c || (c = function(e, t) {
+                return new(Function.prototype.bind.apply(e, [null].concat(function(e) {
+                    if (Array.isArray(e)) {
+                        for (var t = 0, n = Array(e.length); t < e.length; t++) n[t] = e[t];
+                        return n
+                    }
+                    return Array.from(e)
+                }(t))))
+            });
+            var s, u = T(Array.prototype.forEach),
+                d = T(Array.prototype.pop),
+                f = T(Array.prototype.push),
+                p = T(String.prototype.toLowerCase),
+                m = T(String.prototype.match),
+                y = T(String.prototype.replace),
+                h = T(String.prototype.indexOf),
+                g = T(String.prototype.trim),
+                v = T(RegExp.prototype.test),
+                b = (s = TypeError,
+                    function() {
+                        for (var e = arguments.length, t = Array(e), n = 0; n < e; n++) t[n] = arguments[n];
+                        return c(s, t)
+                    });
 
-    function wrapError(err) {
-        if (err && err.message) err.message = "TXLive: " + err.message;
-        return err
-    }
-    if (!window.Raven) {
-        ! function(a, b) {
-            function c(a, b) {
-                var c, d;
-                b = b || {}, a = "raven" + a.substr(0, 1).toUpperCase() + a.substr(1), document.createEvent ? (c = document.createEvent("HTMLEvents"), c.initEvent(a, !0, !0)) : (c = document.createEventObject(), c.eventType = a);
-                for (d in b) j(b, d) && (c[d] = b[d]);
-                if (document.createEvent) document.dispatchEvent(c);
-                else try {
-                    document.fireEvent("on" + c.eventType.toLowerCase(),
-                        c)
-                } catch (e$0) {}
+            function T(e) {
+                return function(t) {
+                    for (var n = arguments.length, r = Array(n > 1 ? n - 1 : 0), o = 1; o < n; o++) r[o - 1] = arguments[o];
+                    return l(e, t, r)
+                }
             }
 
-            function d(a) {
-                this.name = "RavenConfigError", this.message = a
+            function A(e, r) {
+                t && t(e, null);
+                for (var o = r.length; o--;) {
+                    var i = r[o];
+                    if ("string" == typeof i) {
+                        var a = p(i);
+                        a !== i && (n(r) || (r[o] = a), i = a)
+                    }
+                    e[i] = !0
+                }
+                return e
             }
 
-            function e(a) {
-                var b = Q.exec(a),
-                    c = {},
-                    e = 7;
+            function x(t) {
+                var n = i(null),
+                    r = void 0;
+                for (r in t) l(e, t, [r]) && (n[r] = t[r]);
+                return n
+            }
+            var S = r(["a", "abbr", "acronym", "address", "area", "article",
+                    "aside", "audio", "b", "bdi", "bdo", "big", "blink", "blockquote", "body", "br", "button", "canvas", "caption", "center", "cite", "code", "col", "colgroup", "content", "data", "datalist", "dd", "decorator", "del", "details", "dfn", "dir", "div", "dl", "dt", "element", "em", "fieldset", "figcaption", "figure", "font", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "head", "header", "hgroup", "hr", "html", "i", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "map", "mark", "marquee", "menu", "menuitem", "meter", "nav", "nobr", "ol", "optgroup",
+                    "option", "output", "p", "picture", "pre", "progress", "q", "rp", "rt", "ruby", "s", "samp", "section", "select", "shadow", "small", "source", "spacer", "span", "strike", "strong", "style", "sub", "summary", "sup", "table", "tbody", "td", "template", "textarea", "tfoot", "th", "thead", "time", "tr", "track", "tt", "u", "ul", "var", "video", "wbr"
+                ]),
+                k = r(["svg", "a", "altglyph", "altglyphdef", "altglyphitem", "animatecolor", "animatemotion", "animatetransform", "audio", "canvas", "circle", "clippath", "defs", "desc", "ellipse", "filter", "font", "g", "glyph",
+                    "glyphref", "hkern", "image", "line", "lineargradient", "marker", "mask", "metadata", "mpath", "path", "pattern", "polygon", "polyline", "radialgradient", "rect", "stop", "style", "switch", "symbol", "text", "textpath", "title", "tref", "tspan", "video", "view", "vkern"
+                ]),
+                _ = r(["feBlend", "feColorMatrix", "feComponentTransfer", "feComposite", "feConvolveMatrix", "feDiffuseLighting", "feDisplacementMap", "feDistantLight", "feFlood", "feFuncA", "feFuncB", "feFuncG", "feFuncR", "feGaussianBlur", "feMerge", "feMergeNode", "feMorphology", "feOffset",
+                    "fePointLight", "feSpecularLighting", "feSpotLight", "feTile", "feTurbulence"
+                ]),
+                D = r(["math", "menclose", "merror", "mfenced", "mfrac", "mglyph", "mi", "mlabeledtr", "mmultiscripts", "mn", "mo", "mover", "mpadded", "mphantom", "mroot", "mrow", "ms", "mspace", "msqrt", "mstyle", "msub", "msup", "msubsup", "mtable", "mtd", "mtext", "mtr", "munder", "munderover"]),
+                E = r(["#text"]),
+                L = r(["accept", "action", "align", "alt", "autocapitalize", "autocomplete", "autopictureinpicture", "autoplay", "background", "bgcolor", "border", "capture", "cellpadding",
+                    "cellspacing", "checked", "cite", "class", "clear", "color", "cols", "colspan", "controls", "controlslist", "coords", "crossorigin", "datetime", "decoding", "default", "dir", "disabled", "disablepictureinpicture", "disableremoteplayback", "download", "draggable", "enctype", "enterkeyhint", "face", "for", "headers", "height", "hidden", "high", "href", "hreflang", "id", "inputmode", "integrity", "ismap", "kind", "label", "lang", "list", "loading", "loop", "low", "max", "maxlength", "media", "method", "min", "minlength", "multiple", "muted", "name",
+                    "noshade", "novalidate", "nowrap", "open", "optimum", "pattern", "placeholder", "playsinline", "poster", "preload", "pubdate", "radiogroup", "readonly", "rel", "required", "rev", "reversed", "role", "rows", "rowspan", "spellcheck", "scope", "selected", "shape", "size", "sizes", "span", "srclang", "start", "src", "srcset", "step", "style", "summary", "tabindex", "title", "translate", "type", "usemap", "valign", "value", "width", "xmlns"
+                ]),
+                w = r(["accent-height", "accumulate", "additive", "alignment-baseline", "ascent", "attributename", "attributetype",
+                    "azimuth", "basefrequency", "baseline-shift", "begin", "bias", "by", "class", "clip", "clippathunits", "clip-path", "clip-rule", "color", "color-interpolation", "color-interpolation-filters", "color-profile", "color-rendering", "cx", "cy", "d", "dx", "dy", "diffuseconstant", "direction", "display", "divisor", "dur", "edgemode", "elevation", "end", "fill", "fill-opacity", "fill-rule", "filter", "filterunits", "flood-color", "flood-opacity", "font-family", "font-size", "font-size-adjust", "font-stretch", "font-style", "font-variant", "font-weight",
+                    "fx", "fy", "g1", "g2", "glyph-name", "glyphref", "gradientunits", "gradienttransform", "height", "href", "id", "image-rendering", "in", "in2", "k", "k1", "k2", "k3", "k4", "kerning", "keypoints", "keysplines", "keytimes", "lang", "lengthadjust", "letter-spacing", "kernelmatrix", "kernelunitlength", "lighting-color", "local", "marker-end", "marker-mid", "marker-start", "markerheight", "markerunits", "markerwidth", "maskcontentunits", "maskunits", "max", "mask", "media", "method", "mode", "min", "name", "numoctaves", "offset", "operator", "opacity",
+                    "order", "orient", "orientation", "origin", "overflow", "paint-order", "path", "pathlength", "patterncontentunits", "patterntransform", "patternunits", "points", "preservealpha", "preserveaspectratio", "primitiveunits", "r", "rx", "ry", "radius", "refx", "refy", "repeatcount", "repeatdur", "restart", "result", "rotate", "scale", "seed", "shape-rendering", "specularconstant", "specularexponent", "spreadmethod", "startoffset", "stddeviation", "stitchtiles", "stop-color", "stop-opacity", "stroke-dasharray", "stroke-dashoffset", "stroke-linecap",
+                    "stroke-linejoin", "stroke-miterlimit", "stroke-opacity", "stroke", "stroke-width", "style", "surfacescale", "systemlanguage", "tabindex", "targetx", "targety", "transform", "text-anchor", "text-decoration", "text-rendering", "textlength", "type", "u1", "u2", "unicode", "values", "viewbox", "visibility", "version", "vert-adv-y", "vert-origin-x", "vert-origin-y", "width", "word-spacing", "wrap", "writing-mode", "xchannelselector", "ychannelselector", "x", "x1", "x2", "xmlns", "y", "y1", "y2", "z", "zoomandpan"
+                ]),
+                M = r(["accent", "accentunder",
+                    "align", "bevelled", "close", "columnsalign", "columnlines", "columnspan", "denomalign", "depth", "dir", "display", "displaystyle", "encoding", "fence", "frame", "height", "href", "id", "largeop", "length", "linethickness", "lspace", "lquote", "mathbackground", "mathcolor", "mathsize", "mathvariant", "maxsize", "minsize", "movablelimits", "notation", "numalign", "open", "rowalign", "rowlines", "rowspacing", "rowspan", "rspace", "rquote", "scriptlevel", "scriptminsize", "scriptsizemultiplier", "selection", "separator", "separators", "stretchy",
+                    "subscriptshift", "supscriptshift", "symmetric", "voffset", "width", "xmlns"
+                ]),
+                O = r(["xlink:href", "xml:id", "xlink:title", "xml:space", "xmlns:xlink"]),
+                N = o(/\{\{[\s\S]*|[\s\S]*\}\}/gm),
+                R = o(/<%[\s\S]*|[\s\S]*%>/gm),
+                F = o(/^data-[\-\w.\u00B7-\uFFFF]/),
+                C = o(/^aria-[\-\w]+$/),
+                H = o(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i),
+                z = o(/^(?:\w+script|data):/i),
+                I = o(/[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g),
+                j = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ?
+                function(e) {
+                    return typeof e
+                } : function(e) {
+                    return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
+                };
+
+            function U(e) {
+                if (Array.isArray(e)) {
+                    for (var t = 0, n = Array(e.length); t < e.length; t++) n[t] = e[t];
+                    return n
+                }
+                return Array.from(e)
+            }
+            var P = function() {
+                    return "undefined" == typeof window ? null : window
+                },
+                W = function(e, t) {
+                    if ("object" !== (void 0 === e ? "undefined" : j(e)) || "function" != typeof e.createPolicy) return null;
+                    var n = null;
+                    t.currentScript && t.currentScript.hasAttribute("data-tt-policy-suffix") &&
+                        (n = t.currentScript.getAttribute("data-tt-policy-suffix"));
+                    var r = "dompurify" + (n ? "#" + n : "");
+                    try {
+                        return e.createPolicy(r, {
+                            createHTML: function(e) {
+                                return e
+                            }
+                        })
+                    } catch (e$0) {
+                        return console.warn("TrustedTypes policy " + r + " could not be created."), null
+                    }
+                };
+            return function e() {
+                var t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : P(),
+                    n = function(t) {
+                        return e(t)
+                    };
+                if (n.version = "2.1.0", n.removed = [], !t || !t.document || 9 !== t.document.nodeType) return n.isSupported = !1, n;
+                var o = t.document,
+                    i = t.document,
+                    a = t.DocumentFragment,
+                    l = t.HTMLTemplateElement,
+                    c = t.Node,
+                    s = t.NodeFilter,
+                    T = t.NamedNodeMap,
+                    B = void 0 === T ? t.NamedNodeMap || t.MozNamedAttrMap : T,
+                    G = t.Text,
+                    q = t.Comment,
+                    K = t.DOMParser,
+                    V = t.trustedTypes;
+                if ("function" == typeof l) {
+                    var Y = i.createElement("template");
+                    Y.content && Y.content.ownerDocument && (i = Y.content.ownerDocument)
+                }
+                var X = W(V, o),
+                    $ = X && Le ? X.createHTML("") : "",
+                    Z = i,
+                    J = Z.implementation,
+                    Q = Z.createNodeIterator,
+                    ee = Z.getElementsByTagName,
+                    te = Z.createDocumentFragment,
+                    ne = o.importNode,
+                    re = {};
                 try {
-                    for (; e--;) c[P[e]] = b[e] || ""
-                } catch (f$1) {
-                    throw new d("Invalid DSN: " + a);
-                }
-                if (c.pass) throw new d("Do not specify your private key in the DSN!");
-                return c
-            }
-
-            function f(a) {
-                return "undefined" == typeof a
-            }
-
-            function g(a) {
-                return "function" == typeof a
-            }
-
-            function h(a) {
-                return "string" == typeof a
-            }
-
-            function i(a) {
-                for (var b in a) return !1;
-                return !0
-            }
-
-            function j(a, b) {
-                return Object.prototype.hasOwnProperty.call(a, b)
-            }
-
-            function k(a,
-                b) {
-                var c, d;
-                if (f(a.length))
-                    for (c in a) j(a, c) && b.call(null, c, a[c]);
-                else if (d = a.length)
-                    for (c = 0; d > c; c++) b.call(null, c, a[c])
-            }
-
-            function l() {
-                J = "?sentry_version=4&sentry_client=raven-js/" + O.VERSION + "&sentry_key=" + H
-            }
-
-            function m(a, b) {
-                var d = [];
-                a.stack && a.stack.length && k(a.stack, function(a, b) {
-                    var c = n(b);
-                    c && d.push(c)
-                }), c("handle", {
-                    stackInfo: a,
-                    options: b
-                }), p(a.name, a.message, a.url, a.lineno, d, b)
-            }
-
-            function n(a) {
-                if (a.url) {
-                    var b, c = {
-                            filename: a.url,
-                            lineno: a.line,
-                            colno: a.column,
-                            "function": a.func || "?"
-                        },
-                        d = o(a);
-                    if (d) {
-                        var e = ["pre_context", "context_line", "post_context"];
-                        for (b = 3; b--;) c[e[b]] = d[b]
-                    }
-                    return c.in_app = !(!M.includePaths.test(c.filename) || /(Raven|TraceKit)\./.test(c["function"]) || /raven\.(min\.)?js$/.test(c.filename)), c
-                }
-            }
-
-            function o(a) {
-                if (a.context && M.fetchContext) {
-                    for (var b = a.context, c = ~~(b.length / 2), d = b.length, e = !1; d--;)
-                        if (b[d].length > 300) {
-                            e = !0;
-                            break
-                        }
-                    if (e) {
-                        if (f(a.column)) return;
-                        return [
-                            [], b[c].substr(a.column, 50), []
-                        ]
-                    }
-                    return [b.slice(0, c), b[c], b.slice(c + 1)]
-                }
-            }
-
-            function p(a, b, c, d, e, f) {
-                var g, h;
-                b += "", ("Error" !== a || b) &&
-                    (M.ignoreErrors.test(b) || (e && e.length ? (c = e[0].filename || c, e.reverse(), g = {
-                        frames: e
-                    }) : c && (g = {
-                        frames: [{
-                            filename: c,
-                            lineno: d,
-                            in_app: !0
-                        }]
-                    }), b = r(b, 100), M.ignoreUrls && M.ignoreUrls.test(c) || (!M.whitelistUrls || M.whitelistUrls.test(c)) && (h = d ? b + " at " + d : b, t(q({
-                        exception: {
-                            type: a,
-                            value: b
-                        },
-                        stacktrace: g,
-                        culprit: c,
-                        message: h
-                    }, f)))))
-            }
-
-            function q(a, b) {
-                return b ? (k(b, function(b, c) {
-                    a[b] = c
-                }), a) : a
-            }
-
-            function r(a, b) {
-                return a.length <= b ? a : a.substr(0, b) + "\u00e2\u20ac\u00a6"
-            }
-
-            function s() {
-                var a = {
-                    url: document.location.href,
-                    headers: {
-                        "User-Agent": navigator.userAgent
-                    }
-                };
-                return document.referrer && (a.headers.Referer = document.referrer), a
-            }
-
-            function t(a) {
-                v() && (a = q({
-                    project: I,
-                    logger: M.logger,
-                    site: M.site,
-                    platform: "javascript",
-                    request: s()
-                }, a), a.tags = q(M.tags, a.tags), a.extra = q(M.extra, a.extra), i(a.tags) && delete a.tags, i(a.extra) && delete a.extra, G && (a.user = G), g(M.dataCallback) && (a = M.dataCallback(a)), (!g(M.shouldSendCallback) || M.shouldSendCallback(a)) && (E = a.event_id || (a.event_id = x()), u(a)))
-            }
-
-            function u(a) {
-                var b = new Image,
-                    d = F + J + "&sentry_data=" + encodeURIComponent(JSON.stringify(a));
-                b.onload = function() {
-                    c("success", {
-                        data: a,
-                        src: d
-                    })
-                }, b.onerror = b.onabort = function() {
-                    c("failure", {
-                        data: a,
-                        src: d
-                    })
-                }, b.src = d
-            }
-
-            function v() {
-                return L ? F ? !0 : (y("error", "Error: Raven has not been configured."), !1) : !1
-            }
-
-            function w(a) {
-                for (var b, c = [], d = 0, e = a.length; e > d; d++) b = a[d], h(b) ? c.push(b.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1")) : b && b.source && c.push(b.source);
-                return new RegExp(c.join("|"), "i")
-            }
-
-            function x() {
-                return "xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, function(a) {
-                    var b = 16 * Math.random() | 0,
-                        c = "x" ==
-                        a ? b : 3 & b | 8;
-                    return c.toString(16)
-                })
-            }
-
-            function y(b, c) {
-                a.console && console[b] && O.debug && console[b](c)
-            }
-
-            function z() {
-                var b = a.RavenConfig;
-                b && O.config(b.dsn, b.config).install()
-            }
-            var A = {
-                    remoteFetching: !1,
-                    collectWindowErrors: !0,
-                    linesOfContext: 7
-                },
-                B = [].slice,
-                C = "?";
-            A.wrap = function(a) {
-                    function b() {
+                    re = x(i).documentMode ? i.documentMode : {}
+                } catch (e$1) {}
+                var oe = {};
+                n.isSupported = J && void 0 !== J.createHTMLDocument && 9 !== re;
+                var ie = N,
+                    ae = R,
+                    le = F,
+                    ce = C,
+                    se = z,
+                    ue = I,
+                    de = H,
+                    fe = null,
+                    pe = A({}, [].concat(U(S), U(k), U(_), U(D), U(E))),
+                    me = null,
+                    ye = A({}, [].concat(U(L), U(w), U(M), U(O))),
+                    he = null,
+                    ge = null,
+                    ve = !0,
+                    be = !0,
+                    Te = !1,
+                    Ae = !1,
+                    xe = !1,
+                    Se = !1,
+                    ke = !1,
+                    _e = !1,
+                    De = !1,
+                    Ee = !1,
+                    Le = !1,
+                    we = !0,
+                    Me = !0,
+                    Oe = !1,
+                    Ne = {},
+                    Re = A({}, ["annotation-xml", "audio", "colgroup", "desc", "foreignobject", "head", "iframe", "math", "mi", "mn", "mo", "ms", "mtext", "noembed", "noframes", "plaintext", "script", "style", "svg", "template", "thead", "title",
+                        "video", "xmp"
+                    ]),
+                    Fe = null,
+                    Ce = A({}, ["audio", "video", "img", "source", "image", "track"]),
+                    He = null,
+                    ze = A({}, ["alt", "class", "for", "id", "label", "name", "pattern", "placeholder", "summary", "title", "value", "style", "xmlns"]),
+                    Ie = null,
+                    je = i.createElement("form"),
+                    Ue = function(e) {
+                        Ie && Ie === e || (e && "object" === (void 0 === e ? "undefined" : j(e)) || (e = {}), e = x(e), fe = "ALLOWED_TAGS" in e ? A({}, e.ALLOWED_TAGS) : pe, me = "ALLOWED_ATTR" in e ? A({}, e.ALLOWED_ATTR) : ye, He = "ADD_URI_SAFE_ATTR" in e ? A(x(ze), e.ADD_URI_SAFE_ATTR) : ze, Fe = "ADD_DATA_URI_TAGS" in
+                            e ? A(x(Ce), e.ADD_DATA_URI_TAGS) : Ce, he = "FORBID_TAGS" in e ? A({}, e.FORBID_TAGS) : {}, ge = "FORBID_ATTR" in e ? A({}, e.FORBID_ATTR) : {}, Ne = "USE_PROFILES" in e && e.USE_PROFILES, ve = !1 !== e.ALLOW_ARIA_ATTR, be = !1 !== e.ALLOW_DATA_ATTR, Te = e.ALLOW_UNKNOWN_PROTOCOLS || !1, Ae = e.SAFE_FOR_TEMPLATES || !1, xe = e.WHOLE_DOCUMENT || !1, _e = e.RETURN_DOM || !1, De = e.RETURN_DOM_FRAGMENT || !1, Ee = e.RETURN_DOM_IMPORT || !1, Le = e.RETURN_TRUSTED_TYPE || !1, ke = e.FORCE_BODY || !1, we = !1 !== e.SANITIZE_DOM, Me = !1 !== e.KEEP_CONTENT, Oe = e.IN_PLACE || !1, de = e.ALLOWED_URI_REGEXP ||
+                            de, Ae && (be = !1), De && (_e = !0), Ne && (fe = A({}, [].concat(U(E))), me = [], !0 === Ne.html && (A(fe, S), A(me, L)), !0 === Ne.svg && (A(fe, k), A(me, w), A(me, O)), !0 === Ne.svgFilters && (A(fe, _), A(me, w), A(me, O)), !0 === Ne.mathMl && (A(fe, D), A(me, M), A(me, O))), e.ADD_TAGS && (fe === pe && (fe = x(fe)), A(fe, e.ADD_TAGS)), e.ADD_ATTR && (me === ye && (me = x(me)), A(me, e.ADD_ATTR)), e.ADD_URI_SAFE_ATTR && A(He, e.ADD_URI_SAFE_ATTR), Me && (fe["#text"] = !0), xe && A(fe, ["html", "head", "body"]), fe.table && (A(fe, ["tbody"]), delete he.tbody), r && r(e), Ie = e)
+                    },
+                    Pe = function(e) {
+                        f(n.removed, {
+                            element: e
+                        });
                         try {
-                            return a.apply(this, arguments)
-                        } catch (b$2) {
-                            throw A.report(b$2), b$2;
+                            e.parentNode.removeChild(e)
+                        } catch (t$2) {
+                            e.outerHTML = $
                         }
-                    }
-                    return b
-                }, A.report = function() {
-                    function c(a) {
-                        h(), o.push(a)
-                    }
-
-                    function d(a) {
-                        for (var b = o.length - 1; b >= 0; --b) o[b] === a && o.splice(b, 1)
-                    }
-
-                    function e() {
-                        i(), o = []
-                    }
-
-                    function f(a, b) {
-                        var c = null;
-                        if (!b || A.collectWindowErrors) {
-                            for (var d in o)
-                                if (j(o, d)) try {
-                                    o[d].apply(null, [a].concat(B.call(arguments, 2)))
-                                } catch (e$3) {
-                                    c = e$3
-                                }
-                                if (c) throw c;
+                    },
+                    We = function(e, t) {
+                        try {
+                            f(n.removed, {
+                                attribute: t.getAttributeNode(e),
+                                from: t
+                            })
+                        } catch (e$3) {
+                            f(n.removed, {
+                                attribute: null,
+                                from: t
+                            })
                         }
-                    }
-
-                    function g(a, b, c, d, e) {
-                        var g = null;
-                        if (r) A.computeStackTrace.augmentStackTraceWithInitialElement(r, b, c, a), k();
-                        else if (e) g = A.computeStackTrace(e), f(g, !0);
+                        t.removeAttribute(e)
+                    },
+                    Be = function(e) {
+                        var t = void 0,
+                            n = void 0;
+                        if (ke) e = "<remove></remove>" + e;
                         else {
-                            var h = {
-                                url: b,
-                                line: c,
-                                column: d
-                            };
-                            h.func = A.computeStackTrace.guessFunctionName(h.url, h.line), h.context = A.computeStackTrace.gatherContext(h.url, h.line), g = {
-                                message: a,
-                                url: document.location.href,
-                                stack: [h]
-                            }, f(g, !0)
+                            var r = m(e, /^[\r\n\t ]+/);
+                            n = r && r[0]
                         }
-                        return m ? m.apply(this, arguments) : !1
-                    }
-
-                    function h() {
-                        n || (m = a.onerror, a.onerror = g, n = !0)
-                    }
-
-                    function i() {
-                        n && (a.onerror = m, n = !1, m = b)
-                    }
-
-                    function k() {
-                        var a = r,
-                            b = p;
-                        p = null, r = null, q = null, f.apply(null, [a, !1].concat(b))
-                    }
-
-                    function l(b, c) {
-                        var d = B.call(arguments, 1);
-                        if (r) {
-                            if (q === b) return;
-                            k()
-                        }
-                        var e = A.computeStackTrace(b);
-                        if (r = e, q = b, p = d, a.setTimeout(function() {
-                                q === b && k()
-                            }, e.incomplete ? 2E3 : 0), c !== !1) throw b;
-                    }
-                    var m, n, o = [],
-                        p = null,
-                        q = null,
-                        r = null;
-                    return l.subscribe = c, l.unsubscribe = d, l.uninstall = e, l
-                }(), A.computeStackTrace =
-                function() {
-                    function b(b) {
-                        if (!A.remoteFetching) return "";
+                        var o = X ? X.createHTML(e) : e;
                         try {
-                            var c = function() {
-                                    try {
-                                        return new a.XMLHttpRequest
-                                    } catch (b$4) {
-                                        return new a.ActiveXObject("Microsoft.XMLHTTP")
+                            t = (new K).parseFromString(o, "text/html")
+                        } catch (e$4) {}
+                        if (!t || !t.documentElement) {
+                            var a = (t = J.createHTMLDocument("")).body;
+                            a.parentNode.removeChild(a.parentNode.firstElementChild),
+                                a.outerHTML = o
+                        }
+                        return e && n && t.body.insertBefore(i.createTextNode(n), t.body.childNodes[0] || null), ee.call(t, xe ? "html" : "body")[0]
+                    },
+                    Ge = function(e) {
+                        return Q.call(e.ownerDocument || e, e, s.SHOW_ELEMENT | s.SHOW_COMMENT | s.SHOW_TEXT, function() {
+                            return s.FILTER_ACCEPT
+                        }, !1)
+                    },
+                    qe = function(e) {
+                        return !(e instanceof G || e instanceof q) && !("string" == typeof e.nodeName && "string" == typeof e.textContent && "function" == typeof e.removeChild && e.attributes instanceof B && "function" == typeof e.removeAttribute && "function" == typeof e.setAttribute &&
+                            "string" == typeof e.namespaceURI)
+                    },
+                    Ke = function(e) {
+                        return "object" === (void 0 === c ? "undefined" : j(c)) ? e instanceof c : e && "object" === (void 0 === e ? "undefined" : j(e)) && "number" == typeof e.nodeType && "string" == typeof e.nodeName
+                    },
+                    Ve = function(e, t, r) {
+                        oe[e] && u(oe[e], function(e) {
+                            e.call(n, t, r, Ie)
+                        })
+                    },
+                    Ye = function(e) {
+                        var t = void 0;
+                        if (Ve("beforeSanitizeElements", e, null), qe(e)) return Pe(e), !0;
+                        if (m(e.nodeName, /[\u0080-\uFFFF]/)) return Pe(e), !0;
+                        var r = p(e.nodeName);
+                        if (Ve("uponSanitizeElement", e, {
+                                tagName: r,
+                                allowedTags: fe
+                            }), ("svg" ===
+                                r || "math" === r) && 0 !== e.querySelectorAll("p, br").length) return Pe(e), !0;
+                        if (!Ke(e.firstElementChild) && (!Ke(e.content) || !Ke(e.content.firstElementChild)) && v(/<[!/\w]/g, e.innerHTML) && v(/<[!/\w]/g, e.textContent)) return Pe(e), !0;
+                        if (!fe[r] || he[r]) {
+                            if (Me && !Re[r] && "function" == typeof e.insertAdjacentHTML) try {
+                                var o = e.innerHTML;
+                                e.insertAdjacentHTML("AfterEnd", X ? X.createHTML(o) : o)
+                            } catch (e$5) {}
+                            return Pe(e), !0
+                        }
+                        return "noscript" !== r && "noembed" !== r || !v(/<\/no(script|embed)/i, e.innerHTML) ? (Ae && 3 === e.nodeType && (t = e.textContent,
+                            t = y(t, ie, " "), t = y(t, ae, " "), e.textContent !== t && (f(n.removed, {
+                                element: e.cloneNode()
+                            }), e.textContent = t)), Ve("afterSanitizeElements", e, null), !1) : (Pe(e), !0)
+                    },
+                    Xe = function(e, t, n) {
+                        if (we && ("id" === t || "name" === t) && (n in i || n in je)) return !1;
+                        if (be && v(le, t));
+                        else if (ve && v(ce, t));
+                        else {
+                            if (!me[t] || ge[t]) return !1;
+                            if (He[t]);
+                            else if (v(de, y(n, ue, "")));
+                            else if ("src" !== t && "xlink:href" !== t && "href" !== t || "script" === e || 0 !== h(n, "data:") || !Fe[e])
+                                if (Te && !v(se, y(n, ue, "")));
+                                else {
+                                    if (n) return !1
+                                }
+                            else;
+                        }
+                        return !0
+                    },
+                    $e = function(e) {
+                        var t =
+                            void 0,
+                            r = void 0,
+                            o = void 0,
+                            i = void 0;
+                        Ve("beforeSanitizeAttributes", e, null);
+                        var a = e.attributes;
+                        if (a) {
+                            var l = {
+                                attrName: "",
+                                attrValue: "",
+                                keepAttr: !0,
+                                allowedAttributes: me
+                            };
+                            for (i = a.length; i--;) {
+                                var c = t = a[i],
+                                    s = c.name,
+                                    u = c.namespaceURI;
+                                if (r = g(t.value), o = p(s), l.attrName = o, l.attrValue = r, l.keepAttr = !0, l.forceKeepAttr = void 0, Ve("uponSanitizeAttribute", e, l), r = l.attrValue, !l.forceKeepAttr && (We(s, e), l.keepAttr))
+                                    if (v(/\/>/i, r)) We(s, e);
+                                    else {
+                                        Ae && (r = y(r, ie, " "), r = y(r, ae, " "));
+                                        var f = e.nodeName.toLowerCase();
+                                        if (Xe(f, o, r)) try {
+                                            u ?
+                                                e.setAttributeNS(u, s, r) : e.setAttribute(s, r), d(n.removed)
+                                        } catch (e$6) {}
                                     }
-                                },
-                                d = c();
-                            return d.open("GET", b, !1), d.send(""), d.responseText
-                        } catch (e$5) {
-                            return ""
-                        }
-                    }
-
-                    function c(a) {
-                        if (!h(a)) return [];
-                        if (!j(v, a)) {
-                            var c = ""; - 1 !== a.indexOf(document.domain) && (c = b(a)), v[a] = c ? c.split("\n") : []
-                        }
-                        return v[a]
-                    }
-
-                    function d(a, b) {
-                        var d, e = /function ([^(]*)\(([^)]*)\)/,
-                            g = /['"]?([0-9A-Za-z$_]+)['"]?\s*[:=]\s*(function|eval|new Function)/,
-                            h = "",
-                            i = 10,
-                            j = c(a);
-                        if (!j.length) return C;
-                        for (var k = 0; i > k; ++k)
-                            if (h = j[b - k] + h, !f(h)) {
-                                if (d = g.exec(h)) return d[1];
-                                if (d = e.exec(h)) return d[1]
                             }
-                        return C
-                    }
-
-                    function e(a, b) {
-                        var d = c(a);
-                        if (!d.length) return null;
-                        var e = [],
-                            g = Math.floor(A.linesOfContext / 2),
-                            h = g + A.linesOfContext % 2,
-                            i = Math.max(0, b - g - 1),
-                            j = Math.min(d.length, b + h - 1);
-                        b -= 1;
-                        for (var k = i; j > k; ++k) f(d[k]) || e.push(d[k]);
-                        return e.length > 0 ? e : null
-                    }
-
-                    function g(a) {
-                        return a.replace(/[\-\[\]{}()*+?.,\\\^$|#]/g, "\\$&")
-                    }
-
-                    function i(a) {
-                        return g(a).replace("<", "(?:<|&lt;)").replace(">",
-                            "(?:>|&gt;)").replace("&", "(?:&|&amp;)").replace('"', '(?:"|&quot;)').replace(/\s+/g, "\\s+")
-                    }
-
-                    function k(a, b) {
-                        for (var d, e, f = 0, g = b.length; g > f; ++f)
-                            if ((d = c(b[f])).length && (d = d.join("\n"), e = a.exec(d))) return {
-                                url: b[f],
-                                line: d.substring(0, e.index).split("\n").length,
-                                column: e.index - d.lastIndexOf("\n", e.index) - 1
-                            };
-                        return null
-                    }
-
-                    function l(a, b, d) {
-                        var e, f = c(b),
-                            h = new RegExp("\\b" + g(a) + "\\b");
-                        return d -= 1, f && f.length > d && (e = h.exec(f[d])) ? e.index : null
-                    }
-
-                    function m(b) {
-                        for (var c, d, e, f, h = [a.location.href], j = document.getElementsByTagName("script"),
-                                l = "" + b, m = /^function(?:\s+([\w$]+))?\s*\(([\w\s,]*)\)\s*\{\s*(\S[\s\S]*\S)\s*\}\s*$/, n = /^function on([\w$]+)\s*\(event\)\s*\{\s*(\S[\s\S]*\S)\s*\}\s*$/, o = 0; o < j.length; ++o) {
-                            var p = j[o];
-                            p.src && h.push(p.src)
+                            Ve("afterSanitizeAttributes", e, null)
                         }
-                        if (e = m.exec(l)) {
-                            var q = e[1] ? "\\s+" + e[1] : "",
-                                r = e[2].split(",").join("\\s*,\\s*");
-                            c = g(e[3]).replace(/;$/, ";?"), d = new RegExp("function" + q + "\\s*\\(\\s*" + r + "\\s*\\)\\s*{\\s*" + c + "\\s*}")
-                        } else d = new RegExp(g(l).replace(/\s+/g, "\\s+"));
-                        if (f = k(d, h)) return f;
-                        if (e = n.exec(l)) {
-                            var s = e[1];
-                            if (c = i(e[2]), d = new RegExp("on" +
-                                    s + "=[\\'\"]\\s*" + c + "\\s*[\\'\"]", "i"), f = k(d, h[0])) return f;
-                            if (d = new RegExp(c), f = k(d, h)) return f
-                        }
-                        return null
+                    },
+                    Ze = function e(t) {
+                        var n = void 0,
+                            r = Ge(t);
+                        for (Ve("beforeSanitizeShadowDOM", t, null); n = r.nextNode();) Ve("uponSanitizeShadowNode", n, null), Ye(n) || (n.content instanceof a && e(n.content), $e(n));
+                        Ve("afterSanitizeShadowDOM", t, null)
+                    };
+                return n.sanitize = function(e, r) {
+                    var i = void 0,
+                        l = void 0,
+                        s = void 0,
+                        u = void 0,
+                        d = void 0;
+                    if (e || (e = "\x3c!--\x3e"), "string" != typeof e && !Ke(e)) {
+                        if ("function" != typeof e.toString) throw b("toString is not a function");
+                        if ("string" != typeof(e = e.toString())) throw b("dirty is not a string, aborting");
                     }
-
-                    function n(a) {
-                        if (!a.stack) return null;
-                        for (var b, c, g = /^\s*at (?:((?:\[object object\])?\S+(?: \[as \S+\])?) )?\(?((?:file|https?|chrome-extension):.*?):(\d+)(?::(\d+))?\)?\s*$/i, h = /^\s*(\S*)(?:\((.*?)\))?@((?:file|https?|chrome).*?):(\d+)(?::(\d+))?\s*$/i, i = a.stack.split("\n"), j = [], k = /^(.*) is undefined$/.exec(a.message), m = 0, n = i.length; n > m; ++m) {
-                            if (b = h.exec(i[m])) c = {
-                                url: b[3],
-                                func: b[1] || C,
-                                args: b[2] ?
-                                    b[2].split(",") : "",
-                                line: +b[4],
-                                column: b[5] ? +b[5] : null
-                            };
-                            else {
-                                if (!(b = g.exec(i[m]))) continue;
-                                c = {
-                                    url: b[2],
-                                    func: b[1] || C,
-                                    line: +b[3],
-                                    column: b[4] ? +b[4] : null
-                                }
-                            }!c.func && c.line && (c.func = d(c.url, c.line)), c.line && (c.context = e(c.url, c.line)), j.push(c)
+                    if (!n.isSupported) {
+                        if ("object" === j(t.toStaticHTML) || "function" == typeof t.toStaticHTML) {
+                            if ("string" == typeof e) return t.toStaticHTML(e);
+                            if (Ke(e)) return t.toStaticHTML(e.outerHTML)
                         }
-                        return j.length ? (j[0].line && !j[0].column && k ? j[0].column = l(k[1], j[0].url, j[0].line) : j[0].column || f(a.columnNumber) || (j[0].column = a.columnNumber + 1), {
-                            name: a.name,
-                            message: a.message,
-                            url: document.location.href,
-                            stack: j
-                        }) : null
+                        return e
                     }
-
-                    function o(a) {
-                        for (var b, c = a.stacktrace, f = / line (\d+), column (\d+) in (?:<anonymous function: ([^>]+)>|([^\)]+))\((.*)\) in (.*):\s*$/i,
-                                g = c.split("\n"), h = [], i = 0, j = g.length; j > i; i += 2)
-                            if (b = f.exec(g[i])) {
-                                var k = {
-                                    line: +b[1],
-                                    column: +b[2],
-                                    func: b[3] || b[4],
-                                    args: b[5] ? b[5].split(",") : [],
-                                    url: b[6]
-                                };
-                                if (!k.func && k.line && (k.func = d(k.url, k.line)), k.line) try {
-                                    k.context = e(k.url, k.line)
-                                } catch (l$6) {}
-                                k.context || (k.context = [g[i + 1]]), h.push(k)
-                            }
-                        return h.length ? {
-                            name: a.name,
-                            message: a.message,
-                            url: document.location.href,
-                            stack: h
-                        } : null
+                    if (Se || Ue(r), n.removed = [], "string" == typeof e && (Oe = !1), Oe);
+                    else if (e instanceof c) 1 === (l = (i = Be("\x3c!----\x3e")).ownerDocument.importNode(e, !0)).nodeType && "BODY" === l.nodeName || "HTML" === l.nodeName ? i = l : i.appendChild(l);
+                    else {
+                        if (!_e && !Ae &&
+                            !xe && -1 === e.indexOf("<")) return X && Le ? X.createHTML(e) : e;
+                        if (!(i = Be(e))) return _e ? null : $
                     }
-
-                    function p(b) {
-                        var f = b.message.split("\n");
-                        if (f.length < 4) return null;
-                        var g, h, l, m, n = /^\s*Line (\d+) of linked script ((?:file|https?)\S+)(?:: in function (\S+))?\s*$/i,
-                            o = /^\s*Line (\d+) of inline#(\d+) script in ((?:file|https?)\S+)(?:: in function (\S+))?\s*$/i,
-                            p = /^\s*Line (\d+) of function script\s*$/i,
-                            q = [],
-                            r = document.getElementsByTagName("script"),
-                            s = [];
-                        for (h in r) j(r, h) && !r[h].src && s.push(r[h]);
-                        for (h = 2, l = f.length; l > h; h += 2) {
-                            var t = null;
-                            if (g = n.exec(f[h])) t = {
-                                url: g[2],
-                                func: g[3],
-                                line: +g[1]
-                            };
-                            else if (g = o.exec(f[h])) {
-                                t = {
-                                    url: g[3],
-                                    func: g[4]
-                                };
-                                var u = +g[1],
-                                    v = s[g[2] - 1];
-                                if (v && (m = c(t.url))) {
-                                    m = m.join("\n");
-                                    var w = m.indexOf(v.innerText);
-                                    w >= 0 && (t.line = u + m.substring(0, w).split("\n").length)
-                                }
-                            } else if (g =
-                                p.exec(f[h])) {
-                                var x = a.location.href.replace(/#.*$/, ""),
-                                    y = g[1],
-                                    z = new RegExp(i(f[h + 1]));
-                                m = k(z, [x]), t = {
-                                    url: x,
-                                    line: m ? m.line : y,
-                                    func: ""
-                                }
-                            }
-                            if (t) {
-                                t.func || (t.func = d(t.url, t.line));
-                                var A = e(t.url, t.line),
-                                    B = A ? A[Math.floor(A.length / 2)] : null;
-                                t.context = A && B.replace(/^\s*/, "") === f[h + 1].replace(/^\s*/, "") ? A : [f[h + 1]], q.push(t)
-                            }
-                        }
-                        return q.length ? {
-                            name: b.name,
-                            message: f[0],
-                            url: document.location.href,
-                            stack: q
-                        } : null
+                    i && ke && Pe(i.firstChild);
+                    for (var f = Ge(Oe ? e : i); s = f.nextNode();) 3 === s.nodeType && s === u || Ye(s) || (s.content instanceof a && Ze(s.content), $e(s), u = s);
+                    if (u = null, Oe) return e;
+                    if (_e) {
+                        if (De)
+                            for (d = te.call(i.ownerDocument); i.firstChild;) d.appendChild(i.firstChild);
+                        else d = i;
+                        return Ee && (d = ne.call(o, d, !0)), d
                     }
-
-                    function q(a, b, c, f) {
-                        var g = {
-                            url: b,
-                            line: c
-                        };
-                        if (g.url && g.line) {
-                            a.incomplete = !1, g.func || (g.func = d(g.url, g.line)),
-                                g.context || (g.context = e(g.url, g.line));
-                            var h = / '([^']+)' /.exec(f);
-                            if (h && (g.column = l(h[1], g.url, g.line)), a.stack.length > 0 && a.stack[0].url === g.url) {
-                                if (a.stack[0].line === g.line) return !1;
-                                if (!a.stack[0].line && a.stack[0].func === g.func) return a.stack[0].line = g.line, a.stack[0].context = g.context, !1
-                            }
-                            return a.stack.unshift(g), a.partial = !0, !0
-                        }
-                        return a.incomplete = !0, !1
-                    }
-
-                    function r(a, b) {
-                        for (var c, e, f, g = /function\s+([_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*)?\s*\(/i, h = [], i = {}, j = !1, k = r.caller; k && !j; k = k.caller)
-                            if (k !==
-                                s && k !== A.report) {
-                                if (e = {
-                                        url: null,
-                                        func: C,
-                                        line: null,
-                                        column: null
-                                    }, k.name ? e.func = k.name : (c = g.exec(k.toString())) && (e.func = c[1]), f = m(k)) {
-                                    e.url = f.url, e.line = f.line, e.func === C && (e.func = d(e.url, e.line));
-                                    var n = / '([^']+)' /.exec(a.message || a.description);
-                                    n && (e.column = l(n[1], f.url, f.line))
-                                }
-                                i["" + k] ? j = !0 : i["" + k] = !0, h.push(e)
-                            }
-                        b && h.splice(0, b);
-                        var o = {
-                            name: a.name,
-                            message: a.message,
-                            url: document.location.href,
-                            stack: h
-                        };
-                        return q(o, a.sourceURL || a.fileName, a.line || a.lineNumber, a.message || a.description), o
-                    }
-
-                    function s(a,
-                        b) {
-                        var c = null;
-                        b = null == b ? 0 : +b;
-                        try {
-                            if (c = o(a)) return c
-                        } catch (d$7) {
-                            if (u) throw d$7;
-                        }
-                        try {
-                            if (c = n(a)) return c
-                        } catch (d$8) {
-                            if (u) throw d$8;
-                        }
-                        try {
-                            if (c = p(a)) return c
-                        } catch (d$9) {
-                            if (u) throw d$9;
-                        }
-                        try {
-                            if (c = r(a, b + 1)) return c
-                        } catch (d$10) {
-                            if (u) throw d$10;
-                        }
-                        return {}
-                    }
-
-                    function t(a) {
-                        a = (null == a ? 0 : +a) + 1;
-                        try {
-                            throw new Error;
-                        } catch (b$11) {
-                            return s(b$11, a + 1)
-                        }
-                    }
-                    var u = !1,
-                        v = {};
-                    return s.augmentStackTraceWithInitialElement = q, s.guessFunctionName = d, s.gatherContext = e, s.ofCaller = t, s
-                }();
-            var D, E, F, G, H, I, J, K = a.Raven,
-                L = !(!a.JSON || !a.JSON.stringify),
-                M = {
-                    logger: "javascript",
-                    ignoreErrors: [],
-                    ignoreUrls: [],
-                    whitelistUrls: [],
-                    includePaths: [],
-                    collectWindowErrors: !0,
-                    tags: {},
-                    extra: {}
-                },
-                N = !1,
-                O = {
-                    VERSION: "1.1.16",
-                    debug: !0,
-                    noConflict: function() {
-                        return a.Raven = K, O
-                    },
-                    config: function(a, b) {
-                        if (F) return y("error", "Error: Raven has already been configured"), O;
-                        if (!a) return O;
-                        var c = e(a),
-                            d = c.path.lastIndexOf("/"),
-                            f = c.path.substr(1, d);
-                        return b && k(b, function(a, b) {
-                                M[a] = b
-                            }), M.ignoreErrors.push("Script error."), M.ignoreErrors.push("Script error"), M.ignoreErrors.push("Javascript error: Script error on line 0"),
-                            M.ignoreErrors.push("Javascript error: Script error. on line 0"), M.ignoreErrors = w(M.ignoreErrors), M.ignoreUrls = M.ignoreUrls.length ? w(M.ignoreUrls) : !1, M.whitelistUrls = M.whitelistUrls.length ? w(M.whitelistUrls) : !1, M.includePaths = w(M.includePaths), H = c.user, I = c.path.substr(d + 1), F = "//" + c.host + (c.port ? ":" + c.port : "") + "/" + f + "api/" + I + "/store/", c.protocol && (F = c.protocol + ":" + F), M.fetchContext && (A.remoteFetching = !0), M.linesOfContext && (A.linesOfContext = M.linesOfContext), A.collectWindowErrors = !!M.collectWindowErrors,
-                            l(), O
-                    },
-                    install: function() {
-                        return v() && !N && (A.report.subscribe(m), N = !0), O
-                    },
-                    context: function(a, c, d) {
-                        return g(a) && (d = c || [], c = a, a = b), O.wrap(a, c).apply(this, d)
-                    },
-                    wrap: function(a, c) {
-                        function d() {
-                            for (var b = [], d = arguments.length, e = !a || a && a.deep !== !1; d--;) b[d] = e ? O.wrap(a, arguments[d]) : arguments[d];
-                            try {
-                                return c.apply(this, b)
-                            } catch (f$12) {
-                                throw O.captureException(f$12, a), f$12;
-                            }
-                        }
-                        if (f(c) && !g(a)) return a;
-                        if (g(a) && (c = a, a = b), !g(c)) return c;
-                        if (c.__raven__) return c;
-                        for (var e in c) j(c, e) && (d[e] = c[e]);
-                        return d.__raven__ = !0, d.__inner__ = c, d
-                    },
-                    uninstall: function() {
-                        return A.report.uninstall(), N = !1, O
-                    },
-                    captureException: function(a, b) {
-                        if (!(a instanceof Error)) return O.captureMessage(a, b);
-                        D = a;
-                        try {
-                            A.report(a, b)
-                        } catch (c$13) {
-                            if (a !== c$13) throw c$13;
-                        }
-                        return O
-                    },
-                    captureMessage: function(a, b) {
-                        return t(q({
-                            message: a + ""
-                        }, b)), O
-                    },
-                    setUserContext: function(a) {
-                        return G = a, O
-                    },
-                    setExtraContext: function(a) {
-                        return M.extra = a || {}, O
-                    },
-                    setTagsContext: function(a) {
-                        return M.tags = a || {}, O
-                    },
-                    lastException: function() {
-                        return D
-                    },
-                    lastEventId: function() {
-                        return E
-                    }
-                };
-            O.setUser = O.setUserContext;
-            var P = "source protocol user pass host port path".split(" "),
-                Q = /^(?:(\w+):)?\/\/(\w+)(:\w+)?@([\w\.-]+)(?::(\d+))?(\/.*)/;
-            d.prototype = new Error, d.prototype.constructor = d, z(), a.Raven = O, "function" == typeof define && define.amd && define("raven", [], function() {
-                return O
-            })
-        }(this);
-        Raven.config("https://7569be2778c0403186b7f224b35b68ed@app.getsentry.com/17391", {
-            collectWindowErrors: false,
-            whitelistUrls: [],
-            ignoreErrors: ["top.GLOBALS", "originalCreateNotification", "canvas.contentDocument",
-                "MyApp_RemoveAllHighlights", "http://tt.epicplay.com", "Can't find variable: ZiteReader", "jigsaw is not defined", "ComboSearch is not defined", "http://loading.retry.widdit.com/", "atomicFindClose", "fb_xd_fragment", "bmi_SafeAddOnload", "EBCallBackMessageReceived", "conduitPage"
-            ],
-            ignoreUrls: [/graph\.facebook\.com/i, /connect\.facebook\.net\/en_US\/all\.js/i, /eatdifferent\.com\.woopra-ns\.com/i, /static\.woopra\.com\/js\/woopra\.js/i, /extensions\//i, /^chrome:\/\//i, /127\.0\.0\.1:4001\/isrunning/i, /webappstoolbarba\.texthelp\.com\//i,
-                /metrics\.itunes\.apple\.com\.edgesuite\.net\//i
-            ],
-            dataCallback: function(data) {
-                data.extra = TXLIVE.raven_extra;
-                return data
-            },
-            shouldSendCallback: function(data) {
-                if (data && data.message && data.message.length) return data.message.indexOf("TXLive:") >= 0 || data.message.indexOf("TXBridge:") >= 0;
-                return true
-            }
-        }).install()
-    }
+                    var p = xe ? i.outerHTML : i.innerHTML;
+                    return Ae && (p = y(p, ie, " "), p = y(p, ae, " ")), X && Le ? X.createHTML(p) : p
+                }, n.setConfig = function(e) {
+                    Ue(e),
+                        Se = !0
+                }, n.clearConfig = function() {
+                    Ie = null, Se = !1
+                }, n.isValidAttribute = function(e, t, n) {
+                    Ie || Ue({});
+                    var r = p(e),
+                        o = p(t);
+                    return Xe(r, o, n)
+                }, n.addHook = function(e, t) {
+                    "function" == typeof t && (oe[e] = oe[e] || [], f(oe[e], t))
+                }, n.removeHook = function(e) {
+                    oe[e] && d(oe[e])
+                }, n.removeHooks = function(e) {
+                    oe[e] && (oe[e] = [])
+                }, n.removeAllHooks = function() {
+                    oe = {}
+                }, n
+            }()
+        });
+        TXLIVE_PRIVATE.DOMPurify = window.DOMPurify;
+        window.DOMPurify = _prevDOMPurify
+    })();
     TXLIVE.logger = {
         serialize: function(obj) {
             if (typeof obj !== "string")
@@ -771,11 +488,10 @@
                 } catch (err) {
                     obj = ""
                 }
-                return obj
+            return obj
         },
         info: function(message) {
-            var output = "[TXLIVE][INFO] " +
-                TXLIVE.logger.serialize(message);
+            var output = "[TXLIVE][INFO] " + TXLIVE.logger.serialize(message);
             if (window.liveSettings.debug && console && console.log) console.log(output);
             return output
         },
@@ -786,10 +502,8 @@
         },
         error: function(err) {
             var output = "[TXLIVE][ERROR] " + TXLIVE.logger.serialize(err);
-            if (window.liveSettings.debug && console && console.log) console.log(output);
-            if (window.Raven)
-                if (typeof err === "string") window.Raven.captureException(wrapError(new Error(err)));
-                else window.Raven.captureException(wrapError(err));
+            if (window.liveSettings.debug &&
+                console && console.log) console.log(output);
             return output
         }
     };
@@ -841,7 +555,7 @@
                     try {
                         document.documentElement.doScroll("left");
                         ready()
-                    } catch (e$14) {
+                    } catch (e$7) {
                         setTimeout(tryScroll, 10)
                     }
                 };
@@ -856,7 +570,7 @@
         else {
             var fn = window.onload;
             window.onload = function() {
-                fn && fn();
+                if (fn) fn();
                 ready()
             }
         }
@@ -866,139 +580,7 @@
         if (window.addEventListener) window.addEventListener("load",
             handler, false);
         else if (window.attachEvent) window.attachEvent("onload", handler)
-    }(function() {
-        TXLIVE_PRIVATE.JSON = {};
-
-        function f(n) {
-            return n < 10 ? "0" + n : n
-        }
-
-        function f_msec(n) {
-            if (n < 10) return "00" + n;
-            else if (n < 100) return "0" + n;
-            return n
-        }
-        TXLIVE_PRIVATE.JSON.__Date__toJSON = function() {
-            return isFinite(this.valueOf()) ? this.getUTCFullYear() + "-" + f(this.getUTCMonth() + 1) + "-" + f(this.getUTCDate()) + "T" + f(this.getUTCHours()) + ":" + f(this.getUTCMinutes()) + ":" + f(this.getUTCSeconds()) + "." + f_msec(this.getUTCMilliseconds()) + "Z" : null
-        };
-        var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
-            escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
-            gap, indent, meta = {
-                "\b": "\\b",
-                "\t": "\\t",
-                "\n": "\\n",
-                "\f": "\\f",
-                "\r": "\\r",
-                '"': '\\"',
-                "\\": "\\\\"
-            },
-            rep;
-
-        function quote(string) {
-            escapable.lastIndex = 0;
-            return escapable.test(string) ? '"' + string.replace(escapable, function(a) {
-                var c = meta[a];
-                return typeof c === "string" ?
-                    c : "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4)
-            }) + '"' : '"' + string + '"'
-        }
-
-        function str(key, holder) {
-            var i, k, v, length, mind = gap,
-                partial, value = holder[key];
-            if (value && typeof value === "object" && typeof value.toJSON === "function") value = value.toJSON(key);
-            if (typeof rep === "function") value = rep.call(holder, key, value);
-            switch (typeof value) {
-                case "string":
-                    return quote(value);
-                case "number":
-                    return isFinite(value) ? String(value) : "null";
-                case "boolean":
-                case "null":
-                    return String(value);
-                case "object":
-                    if (!value) return "null";
-                    gap += indent;
-                    partial = [];
-                    if (Object.prototype.toString.apply(value) === "[object Array]") {
-                        length = value.length;
-                        for (i = 0; i < length; i += 1) partial[i] = str(i, value) || "null";
-                        v = partial.length === 0 ? "[]" : gap ? "[\n" + gap + partial.join(",\n" + gap) + "\n" + mind + "]" : "[" + partial.join(",") + "]";
-                        gap = mind;
-                        return v
-                    }
-                    if (rep && typeof rep === "object") {
-                        length = rep.length;
-                        for (i = 0; i < length; i += 1)
-                            if (typeof rep[i] === "string") {
-                                k = rep[i];
-                                v = str(k, value);
-                                if (v) partial.push(quote(k) + (gap ? ": " : ":") + v)
-                            }
-                    } else
-                        for (k in value)
-                            if (Object.prototype.hasOwnProperty.call(value,
-                                    k)) {
-                                v = str(k, value);
-                                if (v) partial.push(quote(k) + (gap ? ": " : ":") + v)
-                            }
-                    v = partial.length === 0 ? "{}" : gap ? "{\n" + gap + partial.join(",\n" + gap) + "\n" + mind + "}" : "{" + partial.join(",") + "}";
-                    gap = mind;
-                    return v
-            }
-        }
-        TXLIVE_PRIVATE.JSON.stringify = function(value, replacer, space) {
-            var i;
-            gap = "";
-            indent = "";
-            if (typeof space === "number")
-                for (i = 0; i < space; i += 1) indent += " ";
-            else if (typeof space === "string") indent = space;
-            rep = replacer;
-            if (replacer && typeof replacer !== "function" && (typeof replacer !== "object" || typeof replacer.length !== "number")) throw new Error("JSON.stringify");
-            return str("", {
-                "": value
-            })
-        };
-        TXLIVE_PRIVATE.JSON.parse = function(text, reviver) {
-            var j;
-
-            function walk(holder, key) {
-                var k, v, value = holder[key];
-                if (value && typeof value === "object")
-                    for (k in value)
-                        if (Object.prototype.hasOwnProperty.call(value, k)) {
-                            v = walk(value, k);
-                            if (v !== undefined) value[k] = v;
-                            else delete value[k]
-                        }
-                return reviver.call(holder, key, value)
-            }
-            text = String(text);
-            cx.lastIndex = 0;
-            if (cx.test(text)) text = text.replace(cx, function(a) {
-                return "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4)
-            });
-            if (/^[\],:{}\s]*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,
-                    "@").replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, "]").replace(/(?:^|:|,)(?:\s*\[)+/g, ""))) {
-                j = eval("(" + text + ")");
-                return typeof reviver === "function" ? walk({
-                    "": j
-                }, "") : j
-            }
-            throw new SyntaxError("JSON.parse");
-        };
-        if (typeof JSON !== "object") JSON = {};
-        if (typeof Date.prototype.toJSON !== "function") {
-            Date.prototype.toJSON = TXLIVE_PRIVATE.JSON.__Date__toJSON;
-            String.prototype.toJSON = Number.prototype.toJSON = Boolean.prototype.toJSON = function() {
-                return this.valueOf()
-            }
-        }
-        if (typeof JSON.parse !==
-            "function") JSON.parse = TXLIVE_PRIVATE.JSON.parse;
-        if (typeof JSON.stringify !== "function") JSON.stringify = TXLIVE_PRIVATE.JSON.stringify
-    })();
+    }
 
     function callFunctionArray(fcallarray, param) {
         if (!fcallarray) return;
@@ -1038,23 +620,22 @@
     TXLIVE.assetUrl = function(url, default_host) {
         if (!url || !default_host) return url;
         var locase_url = url.toLowerCase().trim();
-        if (locase_url.indexOf("http://") ==
-            0 || locase_url.indexOf("https://") == 0 || locase_url.indexOf("//") == 0) return url;
-        return default_host + (default_host.slice(-1) == "/" ? "" : "/") + (url.indexOf("/") == 0 ? url.slice(1) : url)
+        if (locase_url.indexOf("http://") === 0 || locase_url.indexOf("https://") === 0 || locase_url.indexOf("//") === 0) return url;
+        return default_host + (default_host.slice(-1) == "/" ? "" : "/") + (url.indexOf("/") === 0 ? url.slice(1) : url)
     };
     TXLIVE.loadScript = function(url, callback, text, attributes) {
-        if (url && url.indexOf("//") == 0)
+        if (url && url.indexOf("//") === 0)
             if (/PhantomJS/.test(navigator.userAgent)) url = "http:" + url;
             else if (TXLIVE_PRIVATE.getWindowLocation().protocol) url = TXLIVE_PRIVATE.getWindowLocation().protocol + url;
         var script = document.createElement("script");
         script.type = "text/javascript";
-        if (script.readyState) script.onreadystatechange =
-            function() {
-                if (script.readyState === "loaded" || script.readyState === "complete") {
-                    script.onreadystatechange = null;
-                    if (callback) callback()
-                }
-            };
+        if (script.readyState) script.onreadystatechange = function() {
+            if (script.readyState ===
+                "loaded" || script.readyState === "complete") {
+                script.onreadystatechange = null;
+                if (callback) callback()
+            }
+        };
         else {
             script.onload = function() {
                 if (callback) callback()
@@ -1064,38 +645,37 @@
                 callFunctionArray(TXLIVE.__onerror, "[ERR1] Cannot load remote url: " + url)
             }
         }
-        var attributes = attributes || [];
+        attributes = attributes || [];
         for (var i = attributes.length; i--;) script[attributes[i].name] = attributes[i].value;
         if (text) script.text = text;
         if (url) script.src = url;
         document.getElementsByTagName("head")[0].appendChild(script)
     };
-    TXLIVE_PRIVATE.getBrowserLocale = function() {
-        if (navigator.languages && navigator.languages.length) {
-            for (var i = 0; i < navigator.languages.length; ++i) {
-                var code = TXLIVE.normalizeLangCode(navigator.languages[i]);
-                if (TXLIVE.hasLanguageCode(code)) return code
-            }
-            for (var i = 0; i < navigator.languages.length; ++i) {
-                var code = TXLIVE.matchLanguageCode(navigator.languages[i]);
+    TXLIVE_PRIVATE.getBrowserLocale =
+        function() {
+            var i, code;
+            if (navigator.languages && navigator.languages.length)
+                for (i = 0; i < navigator.languages.length; ++i) {
+                    code = TXLIVE.normalizeLangCode(navigator.languages[i]);
+                    if (TXLIVE.hasLanguageCode(code)) return code;
+                    code = TXLIVE.matchLanguageCode(navigator.languages[i]);
+                    if (code) return code
+                }
+            if (navigator.userLanguage) {
+                code = TXLIVE.normalizeLangCode(navigator.userLanguage);
+                if (TXLIVE.hasLanguageCode(code)) return code;
+                code = TXLIVE.matchLanguageCode(navigator.userLanguage);
                 if (code) return code
             }
-        }
-        if (navigator.userLanguage) {
-            var code = TXLIVE.normalizeLangCode(navigator.userLanguage);
-            if (TXLIVE.hasLanguageCode(code)) return code;
-            code =
-                TXLIVE.matchLanguageCode(navigator.userLanguage);
-            if (code) return code
-        }
-        if (navigator.language) {
-            var code = TXLIVE.normalizeLangCode(navigator.language);
-            if (TXLIVE.hasLanguageCode(code)) return code;
-            code = TXLIVE.matchLanguageCode(navigator.language);
-            if (code) return code
-        }
-        return null
-    };
+            if (navigator.language) {
+                code =
+                    TXLIVE.normalizeLangCode(navigator.language);
+                if (TXLIVE.hasLanguageCode(code)) return code;
+                code = TXLIVE.matchLanguageCode(navigator.language);
+                if (code) return code
+            }
+            return null
+        };
 
     function mergeArrays(array1, array2) {
         var i = array2.length,
@@ -1120,11 +700,15 @@
     }
 
     function decodeString(str) {
-        return str.replace(/&nbsp;/g, "\u00a0")
+        return str.replace(/&nbsp;/g,
+            "\u00a0")
     }
     TXLIVE_PRIVATE.stripWhitespace = function(str) {
         if (!str || !str.trim().length) return null;
         return encodeString(str).replace(/\s+/g, " ").trim()
+    };
+    TXLIVE_PRIVATE.removeComments = function(str) {
+        return (str || "").replace(TXLIVE_PRIVATE.removeCommentsRegex, "")
     };
     TXLIVE_PRIVATE.getElementsByClassName = function(node, classname) {
         if (!node) return [];
@@ -1137,10 +721,10 @@
     };
     TXLIVE_PRIVATE.bindClick = function(node, fn) {
         if (node.addEventListener) node.addEventListener("click", function() {
-            fn && fn(node)
+            if (fn) fn(node)
         });
         else node.attachEvent("onclick", function() {
-            fn && fn(node)
+            if (fn) fn(node)
         })
     };
     TXLIVE_PRIVATE.hasClass = function(node, cls) {
@@ -1154,14 +738,21 @@
     };
     TXLIVE_PRIVATE.addClass = function(node,
         cls) {
-        if (!TXLIVE_PRIVATE.hasClass(node, cls) && node.className != undefined && node.className.baseVal == undefined) node.className = (node.className || "") + " " + cls
+        if (!TXLIVE_PRIVATE.hasClass(node, cls) && node.className !== undefined && node.className.baseVal === undefined) node.className = (node.className || "") + " " + cls
     };
     TXLIVE_PRIVATE.removeNodeByID = function(id) {
         var element = document.getElementById(id);
         if (element && element.parentNode) element.parentNode.removeChild(element)
     };
+    TXLIVE_PRIVATE.getClosestByTag = function(el, tag) {
+        tag = tag.toUpperCase();
+        do
+            if (el.nodeName === tag) return el; while (el = el.parentNode);
+        return null
+    };
     TXLIVE_PRIVATE.escapeLanguageCode = function(code) {
-        return code.replace(/-/g, "_").replace(/[.@]/g, "__")
+        return code.replace(/-/g,
+            "_").replace(/[.@]/g, "__")
     };
     TXLIVE_PRIVATE.constructPath = function(pathname, search) {
         search = search || "";
@@ -1180,7 +771,8 @@
         return window.location
     };
     TXLIVE_PRIVATE.getWindowPath = function() {
-        return TXLIVE_PRIVATE.constructPath(window.location.pathname, window.location.search)
+        return TXLIVE_PRIVATE.constructPath(window.location.pathname,
+            window.location.search)
     };
     TXLIVE_PRIVATE.getWindowHost = function() {
         return document.location.host
@@ -1188,38 +780,54 @@
     TXLIVE_PRIVATE.isGoogleTranslated = function() {
         return document.documentElement && document.documentElement.className && document.documentElement.className.match("translated-")
     };
+    TXLIVE_PRIVATE.xssProtect = function(html) {
+        if (TXLIVE.settings.xss_protect) return TXLIVE_PRIVATE.DOMPurify.sanitize(html);
+        else return html
+    };
     TXLIVE.doCORSRequest = function(url, method, data, callback, errback) {
-        var req;
+        var req, invoke_cb = true;
         if (window.XMLHttpRequest) {
-            req = new XMLHttpRequest;
+            req =
+                new XMLHttpRequest;
             if ("withCredentials" in req) {
                 req.open(method, url, true);
-                if (errback) req.onerror = errback;
+                if (errback) req.onerror = function(err) {
+                    if (invoke_cb && errback) errback(err);
+                    invoke_cb = false
+                };
                 req.onreadystatechange = function() {
-                    if (req.readyState === 4)
-                        if (req.status >= 200 && req.status < 400) callback && callback(req.responseText);
-                        else errback && errback(new Error("doCORSRequest failed with status " + req.status + " for: " + TXLIVE_PRIVATE.getWindowLocation().href), req.status)
+                    if (req.readyState === 4 && invoke_cb) {
+                        if (req.status >= 200 && req.status < 400) {
+                            if (callback) callback(req.responseText)
+                        } else if (errback) errback(new Error("doCORSRequest failed with status " + req.status + " for: " + TXLIVE_PRIVATE.getWindowLocation().href), req.status);
+                        invoke_cb = false
+                    }
                 };
                 req.send(data)
             }
         } else if (window.XDomainRequest) {
-            req = new XDomainRequest;
+            req =
+                new XDomainRequest;
             req.open(method, url);
-            if (errback) req.onerror = errback;
+            if (errback) req.onerror = function(err) {
+                if (invoke_cb && errback) errback(err);
+                invoke_cb = false
+            };
             req.onload = function() {
-                callback && callback(req.responseText)
+                if (invoke_cb && callback) callback(req.responseText);
+                invoke_cb = false
             };
             req.send(data)
-        } else errback && errback(new Error("doCORSRequest: CORS not supported by browser"))
+        } else if (errback) errback(new Error("doCORSRequest: CORS not supported by browser"))
     };
     TXLIVE_PRIVATE.md5 = function() {
         var rotateLeft = function(lValue, iShiftBits) {
-            return lValue <<
-                iShiftBits | lValue >>> 32 - iShiftBits
+            return lValue << iShiftBits | lValue >>> 32 - iShiftBits
         };
         var addUnsigned = function(lX, lY) {
             var lX4, lY4, lX8, lY8, lResult;
-            lX8 = lX & 2147483648;
+            lX8 =
+                lX & 2147483648;
             lY8 = lY & 2147483648;
             lX4 = lX & 1073741824;
             lY4 = lY & 1073741824;
@@ -1243,7 +851,8 @@
             return y ^ (x | ~z)
         };
         var FF = function(a, b, c, d, x, s, ac) {
-            a = addUnsigned(a, addUnsigned(addUnsigned(F(b, c, d), x), ac));
+            a = addUnsigned(a, addUnsigned(addUnsigned(F(b,
+                c, d), x), ac));
             return addUnsigned(rotateLeft(a, s), b)
         };
         var GG = function(a, b, c, d, x, s, ac) {
@@ -1255,13 +864,13 @@
             return addUnsigned(rotateLeft(a, s), b)
         };
         var II = function(a, b, c, d, x, s, ac) {
-            a = addUnsigned(a, addUnsigned(addUnsigned(I(b, c,
-                d), x), ac));
+            a = addUnsigned(a, addUnsigned(addUnsigned(I(b, c, d), x), ac));
             return addUnsigned(rotateLeft(a, s), b)
         };
         var convertToWordArray = function(string) {
             var lWordCount;
-            var lMessageLength = string.length;
+            var lMessageLength =
+                string.length;
             var lNumberOfWordsTempOne = lMessageLength + 8;
             var lNumberOfWordsTempTwo = (lNumberOfWordsTempOne - lNumberOfWordsTempOne % 64) / 64;
             var lNumberOfWords = (lNumberOfWordsTempTwo + 1) * 16;
@@ -1271,11 +880,11 @@
             while (lByteCount < lMessageLength) {
                 lWordCount = (lByteCount - lByteCount % 4) / 4;
                 lBytePosition = lByteCount % 4 * 8;
-                lWordArray[lWordCount] =
-                    lWordArray[lWordCount] | string.charCodeAt(lByteCount) << lBytePosition;
+                lWordArray[lWordCount] = lWordArray[lWordCount] | string.charCodeAt(lByteCount) << lBytePosition;
                 lByteCount++
             }
-            lWordCount = (lByteCount - lByteCount % 4) / 4;
+            lWordCount = (lByteCount - lByteCount % 4) /
+                4;
             lBytePosition = lByteCount % 4 * 8;
             lWordArray[lWordCount] = lWordArray[lWordCount] | 128 << lBytePosition;
             lWordArray[lNumberOfWords - 2] = lMessageLength << 3;
@@ -1288,8 +897,7 @@
                 lByte, lCount;
             for (lCount = 0; lCount <= 3; lCount++) {
                 lByte = lValue >>> lCount * 8 & 255;
-                WordToHexValueTemp = "0" +
-                    lByte.toString(16);
+                WordToHexValueTemp = "0" + lByte.toString(16);
                 WordToHexValue = WordToHexValue + WordToHexValueTemp.substr(WordToHexValueTemp.length - 2, 2)
             }
             return WordToHexValue
@@ -1306,8 +914,7 @@
                 } else {
                     output += String.fromCharCode(c >> 12 | 224);
                     output += String.fromCharCode(c >> 6 & 63 | 128);
-                    output +=
-                        String.fromCharCode(c & 63 | 128)
+                    output += String.fromCharCode(c & 63 | 128)
                 }
             }
             return output
@@ -1316,7 +923,8 @@
             var x = Array();
             var k, AA, BB, CC, DD, a, b, c, d;
             var S11 = 7,
-                S12 = 12,
+                S12 =
+                12,
                 S13 = 17,
                 S14 = 22;
             var S21 = 5,
@@ -1345,8 +953,7 @@
                 a = FF(a, b, c, d, x[k + 0], S11, 3614090360);
                 d = FF(d, a, b, c, x[k + 1], S12, 3905402710);
                 c = FF(c, d, a, b, x[k + 2], S13, 606105819);
-                b = FF(b, c,
-                    d, a, x[k + 3], S14, 3250441966);
+                b = FF(b, c, d, a, x[k + 3], S14, 3250441966);
                 a = FF(a, b, c, d, x[k + 4], S11, 4118548399);
                 d = FF(d, a, b, c, x[k + 5], S12, 1200080426);
                 c = FF(c, d, a, b, x[k + 6], S13, 2821735955);
@@ -1426,9 +1033,14 @@
         return tx_local_storage[key]
     }
 
+    function _session_set_emu(key, value) {}
+
+    function _session_get_emu(key) {}
+
     function _storage_set_localStorage(key, value) {
         try {
-            window.localStorage.setItem(key, JSON.stringify(value))
+            window.localStorage.setItem(key,
+                JSON.stringify(value))
         } catch (err) {
             TXLIVE.logger.error(err);
             _storage_set_emu(key, value)
@@ -1457,7 +1069,8 @@
 
     function _storage_get_sessionStorage(key) {
         try {
-            var value = window.sessionStorage.getItem(key);
+            var value =
+                window.sessionStorage.getItem(key);
             if (value) return JSON.parse(value);
             return null
         } catch (err) {
@@ -1467,14 +1080,17 @@
     }
     TXLIVE_PRIVATE.storage_set = _storage_set_emu;
     TXLIVE_PRIVATE.storage_get = _storage_get_emu;
+    TXLIVE_PRIVATE.session_set = _session_set_emu;
+    TXLIVE_PRIVATE.session_get = _session_get_emu;
     try {
         if (window.localStorage && window.localStorage.setItem) {
             window.localStorage.setItem("txlive", "1");
             TXLIVE_PRIVATE.storage_set = _storage_set_localStorage;
-            TXLIVE_PRIVATE.storage_get = _storage_get_localStorage;
+            TXLIVE_PRIVATE.storage_get =
+                _storage_get_localStorage;
             TXLIVE.settings.has_storage = true
         }
-    } catch (err$15) {
+    } catch (err$8) {
         try {
             if (window.sessionStorage && window.sessionStorage.setItem) {
                 window.sessionStorage.setItem("txlive", "1");
@@ -1484,11 +1100,24 @@
             }
         } catch (err) {}
     }
+    try {
+        if (window.sessionStorage && window.sessionStorage.setItem) {
+            window.sessionStorage.setItem("txlive", "1");
+            TXLIVE_PRIVATE.session_set = _storage_set_sessionStorage;
+            TXLIVE_PRIVATE.session_get =
+                _storage_get_sessionStorage;
+            TXLIVE.settings.has_session = true
+        }
+    } catch (err$9) {}
+    TXLIVE_PRIVATE.apiScopedKey = function(key) {
+        return TXLIVE.settings.api_key + "@" + key
+    };
     var last_picker_setup = null;
 
     function setupPicker() {
         if (last_picker_setup === TXLIVE.settings.picker) return;
         if (!TXLIVE.settings.picker) return;
+        if (TXLIVE.isPageFiltered()) return;
         var picker = TXLIVE.settings.picker.trim();
         if (!picker.length) return;
         last_picker_setup = picker;
@@ -1496,7 +1125,8 @@
         TXLIVE_PRIVATE.addPicker(picker);
         TXLIVE.dynamicPageOn()
     }
-    var added_picker_css = false;
+    var added_picker_css =
+        false;
     TXLIVE_PRIVATE.addPicker = function(picker) {
         if (!added_picker_css) {
             added_picker_css = true;
@@ -1511,7 +1141,7 @@
                 css += ".txlive-langselector.txlive-langselector-topleft .txlive-langselector-toggle { overflow: hidden;display: block;border-top:2px solid #CCD6E4;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
                 css += ".txlive-langselector.txlive-langselector-topright .txlive-langselector-toggle { overflow: hidden;display: block;border-top:2px solid #CCD6E4;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
                 css += ".txlive-langselector.txlive-langselector-bottomleft .txlive-langselector-toggle { overflow: hidden;display: block;border-bottom:2px solid #CCD6E4;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
-                css += ".txlive-langselector.txlive-langselector-bottomright .txlive-langselector-toggle { overflow: hidden;display: block;border:2px solid #CCD6E4;border-radius: 6px;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
+                css += ".txlive-langselector.txlive-langselector-bottomright .txlive-langselector-toggle { overflow: hidden;display: block;border-bottom:2px solid #CCD6E4;border-radius: 6px;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
                 css += ".txlive-langselector .txlive-langselector-current { float: left;padding: 0;max-width: 200px;overflow:hidden;white-space: nowrap;text-overflow:ellipsis; }";
                 css += ".txlive-langselector .txlive-langselector-marker { float: right;display: block;position:relative;width:0;height:0;margin-left:8px;margin-top: 13px;border-right:4px dashed transparent;border-left:4px dashed transparent;}";
                 css += ".txlive-langselector-topright .txlive-langselector-marker,";
@@ -1519,7 +1149,7 @@
                 css += ".txlive-langselector-bottomright .txlive-langselector-marker,";
                 css += ".txlive-langselector-bottomleft .txlive-langselector-marker {border-bottom:4px solid #3c5675;}";
                 css += ".txlive-langselector-list { position:absolute;width: 100%;margin:0;padding:10px 0;display:none;background-color:#EFF2F6;box-shadow: 0 0 0px #CCD6E4;color:#666;list-style-type:none; }";
-                css += ".txlive-langselector-list.txlive-langselector-list-opened { display:block; }";
+                css += ".txlive-langselector-list.txlive-langselector-list-opened { display:block;max-height:500px;overflow:auto; }";
                 css += ".txlive-langselector-list > li {padding:0 16px;width:100%;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;}";
                 css += ".txlive-langselector-list > li:hover {background-color:#31A3DD;color:#fff;cursor:pointer;cursor:hand;}";
                 css += ".txlive-langselector-topright > .txlive-langselector-list {top:40px;left:auto;right:0;bottom:auto;border-bottom: 1px solid #f4f7f9;}";
@@ -1536,20 +1166,21 @@
                 if (style.styleSheet) style.styleSheet.cssText = css;
                 else style.appendChild(document.createTextNode(css));
                 head.appendChild(style)
-            } catch (err$16) {
-                TXLIVE.logger.error(err$16)
+            } catch (err$10) {
+                TXLIVE.logger.error(err$10)
             }
         }
         try {
             var pick_lang = function(element) {
                 close_picker();
                 if (element && element.getAttribute) {
-                    lang = element.getAttribute("data-value");
-                    lang && TXLIVE.translateTo(lang)
+                    var lang = element.getAttribute("data-value");
+                    if (lang) TXLIVE.translateTo(lang)
                 }
             };
             var close_picker = function() {
-                var toggler = document.getElementById("tx-live-lang-picker");
+                var toggler =
+                    document.getElementById("tx-live-lang-picker");
                 if (toggler) toggler.className = toggler.className.replace(open_class, "")
             };
             var open_picker = function() {
@@ -1562,7 +1193,8 @@
             };
             var html = '<ul id="tx-live-lang-picker" class="txlive-langselector-list notranslate">';
             for (var i = 0; i < TXLIVE.denormalized_languages.length; ++i) {
-                var l = TXLIVE.denormalized_languages[i];
+                var l =
+                    TXLIVE.denormalized_languages[i];
                 html += '<li data-value="' + l.code + '">' + l.name + "</li>"
             }
             html += "</ul>";
@@ -1571,8 +1203,7 @@
             if (picker[0] === "#") {
                 var elem = document.getElementById(picker.substr(1));
                 if (!elem) return;
-                elem.innerHTML = html;
-                TXLIVE.analytics.submitEvent("picker_position", 1, "element")
+                elem.innerHTML = TXLIVE_PRIVATE.xssProtect(html)
             } else {
                 var div =
                     document.getElementById("tx-live-lang-container");
@@ -1597,40 +1228,39 @@
                     default:
                         return
                 }
-                TXLIVE.analytics.submitEvent("picker_position",
-                    1, picker.toLowerCase());
                 div.className = csstext;
-                div.innerHTML = html;
+                div.innerHTML =
+                    TXLIVE_PRIVATE.xssProtect(html);
                 document.body.appendChild(div)
             }
-            if (TXLIVE.selected_lang) {
-                var langname = TXLIVE.getLanguageName(TXLIVE.selected_lang);
+            if (TXLIVE.getSelectedLanguageCode()) {
+                var langname = TXLIVE.getLanguageName(TXLIVE.getSelectedLanguageCode());
                 var nameelem = document.getElementById("tx-live-lang-current");
-                if (langname && nameelem) nameelem.innerHTML = langname
+                if (langname && nameelem) nameelem.innerHTML = TXLIVE_PRIVATE.xssProtect(langname)
             }
             var el = document.getElementById("tx-live-lang-toggle");
             var open_class = "txlive-langselector-list-opened";
             if (el) TXLIVE_PRIVATE.bindClick(el, function() {
-                is_picker_open() ? close_picker() : open_picker()
+                if (is_picker_open()) close_picker();
+                else open_picker()
             });
             el = document.getElementById("tx-live-lang-picker");
             if (el) {
                 el = el.getElementsByTagName("li") || [];
-                for (var i = 0; i < el.length; ++i) TXLIVE_PRIVATE.bindClick(el[i], pick_lang)
+                for (var j = 0; j < el.length; ++j) TXLIVE_PRIVATE.bindClick(el[j], pick_lang)
             }
-        } catch (err$17) {
-            TXLIVE.logger.error(err$17)
+        } catch (err$11) {
+            TXLIVE.logger.error(err$11)
         }
     };
     var LOCQUANT_TYPES = ["currency", "number", "date"];
-    var LOCQUANT_CURRENT_LANGCODE = "";
     TXLIVE_PRIVATE.parse_locquant_string = function(lstring) {
         var ret = {};
         var re = /#([\s\S])#*0([\s\S])0/;
         var markers = re.exec(lstring);
         ret.group = markers[1];
         ret.decimal = markers[2];
-        ret.currency_on_the_left = lstring.indexOf("\u00a4") == 0;
+        ret.currency_on_the_left = lstring.indexOf("\u00a4") === 0;
         if (ret.currency_on_the_left) ret.cspace =
             /\u00a4(\s*)#/.exec(lstring)[1];
         else ret.cspace = /0(\s*)\u00a4/.exec(lstring)[1];
@@ -1642,7 +1272,7 @@
         ko: "\u00a4#,##0.00",
         de: "#.##0,00 \u00a4",
         fr: "# ##0,00 \u00a4",
-        en: "\u00a4#.##0,00",
+        en: "\u00a4#,##0.00",
         ar: "#,##0.00 \u00a4",
         hi: "\u00a4#,##0.00",
         es: "#.##0,00 \u00a4",
@@ -1727,13 +1357,12 @@
         return true
     };
     TXLIVE_PRIVATE.localize_locquant = function(type, text, format) {
-        if (LOCQUANT_CURRENT_LANGCODE == TXLIVE.getSourceLanguageCode()) return text;
-        return TXLIVE_PRIVATE["localize_locquant_" + type](LOCQUANT_CURRENT_LANGCODE, text, format)
+        if (TXLIVE.getSelectedLanguageCode() == TXLIVE.getSourceLanguageCode()) return text;
+        return TXLIVE_PRIVATE["localize_locquant_" + type](TXLIVE.getSelectedLanguageCode(), text, format)
     };
     TXLIVE_PRIVATE.localize_locquant_number = function(langcode, text, format) {
         var spec = TXLIVE_PRIVATE.get_locale_spec(langcode);
-        var cnumber =
-            text.replace(/[A-Za-z]/g, "");
+        var cnumber = text.replace(/[A-Za-z]/g, "");
         var csymbol = text.replace(cnumber, "").replace(" ", "");
         cnumber = TXLIVE_PRIVATE.parseDecimal(cnumber, format);
         if (!spec || isNaN(cnumber)) return text;
@@ -1743,8 +1372,8 @@
     TXLIVE_PRIVATE.localize_locquant_currency = function(langcode, text, format) {
         var spec = TXLIVE_PRIVATE.get_locale_spec(langcode);
         var csymbol = text.replace(/[\d\s]/g, "").replace(",", "").replace(".", "");
-        var cnumber = text.replace(csymbol,
-            "").trim();
+        var cnumber =
+            text.replace(csymbol, "").trim();
         cnumber = TXLIVE_PRIVATE.parseDecimal(cnumber, format);
         if (!spec || isNaN(cnumber)) return text;
         cnumber = _formatNumber(cnumber, spec.group, spec.decimal);
@@ -1757,15 +1386,15 @@
         return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1")
     };
     TXLIVE_PRIVATE.ignorePath = function(filters, path) {
-        if (!filters || !path) return false;
+        if (!filters ||
+            !path) return false;
         var i = filters.length;
         while (i--)
             if (filters[i].action == "ignore") {
                 var filter = TXLIVE_PRIVATE._filterToRegexp(filters[i]);
                 var check = filter.neg ? !filter.re.test(path) : filter.re.test(path);
                 if (check) return true
-            }
-        return false
+            } return false
     };
     TXLIVE_PRIVATE._filterToRegexp = function(filter) {
         var re = /^not_/;
@@ -1777,7 +1406,8 @@
                 re = "^" + path;
                 break;
             case "ends":
-                re = path + "$";
+                re =
+                    path + "$";
                 break;
             case "contains":
                 re = path;
@@ -1815,8 +1445,6 @@
         IFRAME: true,
         NOSCRIPT: true,
         CANVAS: true,
-        SVG: true,
-        svg: true,
         AUDIO: true,
         VIDEO: true,
         CODE: true,
@@ -1829,6 +1457,9 @@
         "txlive-meta": true,
         "facebook_container": true,
         "twitter_container": true
+    };
+    var SKIP_TAGS_CONTENT = {
+        TEXTAREA: true
     };
     var SKIP_TAGS_USER = {},
         SKIP_CLASS_USER = {};
@@ -1865,9 +1496,11 @@
         DL: true,
         VIDEO: true,
         FIELDSET: true,
-        NOSCRIPT: true
+        NOSCRIPT: true,
+        SCRIPT: true,
+        IFRAME: true,
+        TEXTAREA: true
     };
-    var NEW_SEGMENTS_LIST = null;
     var NEW_SEGMENTS_DICT = null;
 
     function isBlockElement(node) {
@@ -1882,8 +1515,21 @@
         return node.nodeType === 3
     }
 
+    function isCommentElement(node) {
+        return node.nodeType === 8
+    }
+
+    function hasDataBinding(node) {
+        return node.nodeType === 1 && node.className && (" " +
+            node.className).indexOf(" ng-") != -1 || node.nodeType === 8 && node.nodeValue && node.nodeValue.indexOf("react-") != -1
+    }
+
     function isSkipTag(tagName) {
-        return tagName && (SKIP_TAGS[tagName] || SKIP_TAGS_USER[tagName])
+        return tagName && (SKIP_TAGS[tagName.toUpperCase()] || SKIP_TAGS_USER[tagName.toUpperCase()])
+    }
+
+    function isSkipTagContent(tagName) {
+        return tagName && SKIP_TAGS_CONTENT[tagName.toUpperCase()]
     }
 
     function isSkipClass(className) {
@@ -1896,6 +1542,16 @@
         return false
     }
 
+    function isSkipAttr(node) {
+        if (!node.getAttribute) return false;
+        var content_attr = node.getAttribute("tx-content");
+        if (content_attr && content_attr.length) {
+            content_attr = content_attr.toLowerCase();
+            if (/\bexclude\b/.test(content_attr)) return true
+        }
+        return false
+    }
+
     function SET_TEXT(item, text) {
         text = decodeString(text);
         item.node.nodeValue = item.head + text + item.tail
@@ -1905,12 +1561,12 @@
         return item.node.nodeValue
     }
 
-    function SET_FRAGMENT(item, text) {
+    function SET_FRAGMENT(item,
+        text) {
         text = decodeString(text);
         for (var i = 0; i < item.block_args.length; ++i) {
             var arg = item.block_args[i];
-            if (arg.type === "VAR") text = text.replace("{{" +
-                i + "}}", arg.html);
+            if (arg.type === "VAR") text = text.replace("{{" + i + "}}", arg.html);
             else if (arg.type === "LQ") text = text.replace("{{" + i + "}}", TXLIVE_PRIVATE.localize_locquant(arg.ltype, arg.inner, arg.format))
         }
         var node = item.snode_before ? item.snode_before.nextSibling : item.snode_after.parentNode.firstChild;
@@ -1919,8 +1575,9 @@
             node = node.nextSibling;
             to_delete.parentNode.removeChild(to_delete)
         }
-        var tmp = document.createElement("div");
-        tmp.innerHTML = item.head + text + item.tail;
+        var tmp =
+            document.createElement("div");
+        tmp.innerHTML = TXLIVE_PRIVATE.xssProtect(item.head + text + item.tail);
         var frag = document.createDocumentFragment();
         var child;
         while (child = tmp.firstChild) frag.appendChild(child);
@@ -1941,11 +1598,10 @@
         text = decodeString(text);
         for (var i = 0; i < item.block_args.length; ++i) {
             var arg = item.block_args[i];
-            if (arg.type ===
-                "VAR") text = text.replace("{{" + i + "}}", arg.html);
+            if (arg.type === "VAR") text = text.replace("{{" + i + "}}", arg.html);
             else if (arg.type === "LQ") text = text.replace("{{" + i + "}}", TXLIVE_PRIVATE.localize_locquant(arg.ltype, arg.inner, arg.format))
         }
-        item.node.innerHTML = item.head + text + item.tail
+        item.node.innerHTML = TXLIVE_PRIVATE.xssProtect(item.head + text + item.tail)
     }
 
     function GET_BLOCK(item, text) {
@@ -1953,7 +1609,8 @@
     }
 
     function SET_ATTR(item, text) {
-        text = decodeString(text);
+        text =
+            decodeString(text);
         item.node.setAttribute(item.attribute, item.head + text + item.tail)
     }
 
@@ -1964,10 +1621,9 @@
     function PARSE_ARGS(node, args) {
         if (node) {
             do
-                if (node.nodeType ===
-                    1) {
+                if (node.nodeType === 1) {
                     var ltype = TXLIVE_PRIVATE.is_locquant(node);
-                    if (ltype || isSkipTag(node.tagName) || isSkipClass(node.className)) {
+                    if (ltype || isSkipTag(node.tagName) || isSkipClass(node.className) || isSkipAttr(node)) {
                         var outerhtml = node.outerHTML;
                         if (outerhtml)
                             if (ltype) args.push({
@@ -1982,16 +1638,26 @@
                                 html: outerhtml
                             })
                     } else PARSE_ARGS(node.firstChild, args)
-                }
-            while (node = node.nextSibling)
+                } while (node = node.nextSibling)
         }
     }
 
-    function PARSE_VARIABLES(text, node, args, options) {
-        PARSE_ARGS(node.firstChild, args);
-        for (var i = 0; i < args.length; ++i)
-            if (args[i].type ===
-                "VAR" || args[i].type === "LQ") text = text.replace(args[i].html, "{{" + i + "}}");
+    function PARSE_VARIABLES(text, args, options) {
+        if (TXLIVE.settings.variables_parser) text = TXLIVE.settings.variables_parser(text, function(match) {
+            args.push({
+                type: "VAR",
+                html: match
+            });
+            return "{{" + (args.length - 1) + "}}"
+        });
+        if (/<[a-z][\s\S]*>/i.test(text)) {
+            var node = document.createElement("div");
+            node.innerHTML = text;
+            PARSE_ARGS(node.firstChild, args);
+            for (var i = 0; i < args.length; ++i)
+                if (args[i].type === "VAR" || args[i].type ===
+                    "LQ") text = text.replace(args[i].html, "{{" + i + "}}")
+        }
         if (PARSER_OPTIONS.isset(options, PARSER_OPTIONS.URLS_AS_VARS) && /\s(src|href)/i.test(text)) {
             var match, regex = /(<a[^>]*href\s*=\s*)("[^"]*"|'[^']*')|(<img[^>]*src\s*=\s*)("[^"]*"|'[^']*')/ig;
             var result = "",
@@ -2005,8 +1671,8 @@
                         html: match[2].substring(1, match[2].length - 1)
                     })
                 } else {
-                    result +=
-                        match[3] + match[4][0] + "{{" + args.length + "}}" + match[4][0];
+                    result += match[3] +
+                        match[4][0] + "{{" + args.length + "}}" + match[4][0];
                     args.push({
                         type: "VAR",
                         html: match[4].substring(1, match[4].length - 1)
@@ -2026,7 +1692,7 @@
             if (snode_before) snode_before.txbefore_detected = true;
             if (snode_after) snode_after.txafter_detected =
                 true
-        } catch (err$18) {}
+        } catch (err$12) {}
         var node = document.createElement("div");
         var next = snode_before ? snode_before.nextSibling : snode_after.parentNode.firstChild;
         while (next && next != snode_after) {
@@ -2034,13 +1700,13 @@
             next = next.nextSibling
         }
         var raw_text = node.innerHTML;
-        var text = TXLIVE_PRIVATE.stripWhitespace(raw_text);
+        var text = TXLIVE_PRIVATE.removeComments(raw_text);
+        text = TXLIVE_PRIVATE.stripWhitespace(text);
         if (!text) return;
         var args = [];
-        text = PARSE_VARIABLES(text, node, args, options);
+        text = PARSE_VARIABLES(text, args, options);
         var key = TXLIVE_PRIVATE.md5(text);
         var segments = TXLIVE.segments;
-        var segment_list = TXLIVE.segment_list;
         var segment = segments[key];
         if (!segment) {
             segment = {
@@ -2049,8 +1715,7 @@
                 tags: [],
                 elements: []
             };
-            segments[key] = segment;
-            segment_list.push(segment)
+            segments[key] = segment
         }
         if (tags.length) mergeArrays(segment.tags, tags);
         segment.elements.push({
@@ -2061,31 +1726,29 @@
             set: SET_FRAGMENT,
             get: GET_FRAGMENT,
             block_args: args,
-            head: raw_text.indexOf(" ") == 0 ? " " : "",
+            head: raw_text.indexOf(" ") === 0 ? " " : "",
             tail: raw_text.indexOf(" ", raw_text.length - 1) >= 0 ? " " : ""
         });
-        if (NEW_SEGMENTS_LIST && !NEW_SEGMENTS_DICT[key]) {
-            NEW_SEGMENTS_LIST.push(segment);
-            NEW_SEGMENTS_DICT[key] = segment
-        }
+        if (NEW_SEGMENTS_DICT) NEW_SEGMENTS_DICT[key] = segment
     }
 
     function CRAWL_BLOCK(node, tags, options) {
-        if (node.txblock_detected === true) return;
+        if (node.txblock_detected ===
+            true) return;
         try {
             node.txblock_detected = true
-        } catch (err$19) {}
+        } catch (err$13) {}
         if (TXLIVE_PRIVATE.process_locquant(node)) return;
+        if (isSkipTagContent(node.tagName)) return;
         var raw_text = node.innerHTML;
-        var text = TXLIVE_PRIVATE.stripWhitespace(raw_text);
-        if (!text || TXLIVE_PRIVATE.isNotTextual.test(text)) return;
+        var text = TXLIVE_PRIVATE.removeComments(raw_text);
+        text = TXLIVE_PRIVATE.stripWhitespace(text);
+        if (!text || TXLIVE_PRIVATE.isNotTextualRegex.test(text)) return;
         var args = [];
-        text = PARSE_VARIABLES(text, node, args, options);
+        text = PARSE_VARIABLES(text, args, options);
         var key = TXLIVE_PRIVATE.md5(text);
         var segments = TXLIVE.segments;
-        var segment_list = TXLIVE.segment_list;
-        var segment =
-            segments[key];
+        var segment = segments[key];
         if (!segment) {
             segment = {
                 key: key,
@@ -2093,8 +1756,7 @@
                 tags: [],
                 elements: []
             };
-            segments[key] = segment;
-            segment_list.push(segment)
+            segments[key] = segment
         }
         if (tags.length) mergeArrays(segment.tags, tags);
         segment.elements.push({
@@ -2104,30 +1766,26 @@
             set: SET_BLOCK,
             get: GET_BLOCK,
             block_args: args,
-            head: raw_text.indexOf(" ") == 0 ? " " : "",
+            head: raw_text.indexOf(" ") === 0 ? " " : "",
             tail: raw_text.indexOf(" ", raw_text.length - 1) >= 0 ? " " : ""
         });
         try {
             node.txsegment = segment
-        } catch (err$20) {}
-        if (NEW_SEGMENTS_LIST && !NEW_SEGMENTS_DICT[key]) {
-            NEW_SEGMENTS_LIST.push(segment);
-            NEW_SEGMENTS_DICT[key] =
-                segment
-        }
+        } catch (err$14) {}
+        if (NEW_SEGMENTS_DICT) NEW_SEGMENTS_DICT[key] = segment
     }
 
-    function CRAWL_TEXT(node, tags) {
+    function CRAWL_TEXT(node, tags, options) {
         if (node.txtext_detected === true) return;
         try {
             node.txtext_detected = true
-        } catch (err$21) {}
-        var raw_text = node.nodeValue;
+        } catch (err$15) {}
+        var raw_text =
+            node.nodeValue;
         var text = TXLIVE_PRIVATE.stripWhitespace(raw_text);
-        if (text && text.length && !TXLIVE_PRIVATE.isNotTextual.test(text)) {
+        if (text && text.length && !TXLIVE_PRIVATE.isNotTextualRegex.test(text)) {
             var key = TXLIVE_PRIVATE.md5(text);
             var segments = TXLIVE.segments;
-            var segment_list = TXLIVE.segment_list;
             var segment = segments[key];
             if (!segment) {
                 segment = {
@@ -2136,38 +1794,32 @@
                     tags: [],
                     elements: []
                 };
-                segments[key] = segment;
-                segment_list.push(segment)
+                segments[key] = segment
             }
-            if (tags.length) mergeArrays(segment.tags,
-                tags);
+            if (tags.length) mergeArrays(segment.tags, tags);
             segment.elements.push({
                 segment: segment,
                 node: node,
                 pnode: node.parentNode,
                 set: SET_TEXT,
                 get: GET_TEXT,
-                head: raw_text.indexOf(" ") == 0 ? " " : "",
-                tail: raw_text.indexOf(" ", raw_text.length - 1) >= 0 ? " " : ""
+                head: raw_text.indexOf(" ") === 0 ? " " : "",
+                tail: raw_text.indexOf(" ",
+                    raw_text.length - 1) >= 0 ? " " : ""
             });
             try {
                 node.txsegment = segment
-            } catch (err$22) {}
-            if (NEW_SEGMENTS_LIST && !NEW_SEGMENTS_DICT[key]) {
-                NEW_SEGMENTS_LIST.push(segment);
-                NEW_SEGMENTS_DICT[key] = segment
-            }
+            } catch (err$16) {}
+            if (NEW_SEGMENTS_DICT) NEW_SEGMENTS_DICT[key] = segment
         }
     }
 
-    function CRAWL_ATTR(node, attr, tags) {
+    function CRAWL_ATTR(node, attr, tags, options) {
         var raw_text = node.getAttribute(attr) || "";
         var text = TXLIVE_PRIVATE.stripWhitespace(raw_text);
-        if (text && text.length && !TXLIVE_PRIVATE.isNotTextual.test(text)) {
-            var key =
-                TXLIVE_PRIVATE.md5(text);
+        if (text && text.length && !TXLIVE_PRIVATE.isNotTextualRegex.test(text)) {
+            var key = TXLIVE_PRIVATE.md5(text);
             var segments = TXLIVE.segments;
-            var segment_list = TXLIVE.segment_list;
             var segment = segments[key];
             if (!segment) {
                 segment = {
@@ -2176,8 +1828,8 @@
                     tags: [],
                     elements: []
                 };
-                segments[key] = segment;
-                segment_list.push(segment)
+                segments[key] =
+                    segment
             }
             if (tags.length) mergeArrays(segment.tags, tags);
             segment.elements.push({
@@ -2187,22 +1839,19 @@
                 set: SET_ATTR,
                 get: GET_ATTR,
                 attribute: attr,
-                head: raw_text.indexOf(" ") == 0 ? " " : "",
+                head: raw_text.indexOf(" ") === 0 ? " " : "",
                 tail: raw_text.indexOf(" ", raw_text.length - 1) >= 0 ? " " : ""
             });
             try {
-                node.txsegment =
-                    segment
-            } catch (err$23) {}
-            if (NEW_SEGMENTS_LIST && !NEW_SEGMENTS_DICT[key]) {
-                NEW_SEGMENTS_LIST.push(segment);
-                NEW_SEGMENTS_DICT[key] = segment
-            }
+                node.txsegment = segment
+            } catch (err$17) {}
+            if (NEW_SEGMENTS_DICT) NEW_SEGMENTS_DICT[key] = segment
         }
     }
 
     function DETECT_i18n_ATTR(node, options) {
-        var list = [];
+        var list = [],
+            i, a;
         switch (node.tagName) {
             case "A":
                 list.push("title");
@@ -2211,28 +1860,43 @@
             case "IMG":
                 list.push("title");
                 list.push("alt");
-                if (PARSER_OPTIONS.isunset(options, PARSER_OPTIONS.URLS_AS_VARS)) list.push("src");
+                if (PARSER_OPTIONS.isunset(options, PARSER_OPTIONS.URLS_AS_VARS)) {
+                    list.push("src");
+                    list.push("srcset")
+                }
                 break;
-            case "META":
+            case "META": {
                 var name = node.getAttribute("name");
                 if (name) {
                     name = name.toLowerCase();
-                    if (name === "keywords" || name === "description") list.push("content")
+                    if (name === "keywords" || name === "description" || name === "title" || name === "twitter:title" || name === "twitter:description") list.push("content")
                 }
                 var social_tags = node.getAttribute("property");
                 if (social_tags) {
                     social_tags = social_tags.toLowerCase();
-                    if (social_tags === "og:title" || social_tags === "og:description") list.push("content")
+                    if (social_tags === "og:title" ||
+                        social_tags === "og:description") list.push("content")
                 }
-                break;
-            case "INPUT":
+                var googleplus_tags = node.getAttribute("itemprop");
+                if (googleplus_tags) {
+                    googleplus_tags = googleplus_tags.toLowerCase();
+                    if (googleplus_tags === "name" || googleplus_tags === "description") list.push("content")
+                }
+                break
+            }
+            case "INPUT": {
                 list.push("placeholder");
                 var inputtype = node.getAttribute("type");
                 if (inputtype) {
                     inputtype = inputtype.toLowerCase();
-                    if (inputtype === "button" || inputtype === "reset" || inputtype === "submit") list.push("value")
+                    if (inputtype === "button" || inputtype === "reset" || inputtype === "submit") list.push("value");
+                    else if (inputtype === "image") {
+                        list.push("alt");
+                        if (PARSER_OPTIONS.isunset(options, PARSER_OPTIONS.URLS_AS_VARS)) list.push("src")
+                    }
                 }
-                break;
+                break
+            }
             case "TEXTAREA":
                 list.push("placeholder");
                 break
@@ -2240,16 +1904,16 @@
         var custom_attr = node.getAttribute("tx-attrs");
         if (custom_attr && custom_attr.length) {
             custom_attr = custom_attr.split(",");
-            var i = custom_attr.length;
+            i = custom_attr.length;
             while (i--) {
-                var a = custom_attr[i].trim().toLowerCase();
+                a = custom_attr[i].trim().toLowerCase();
                 if (a && list.indexOf(a) < 0) list.push(a)
             }
         }
         if (TXLIVE.settings.parse_attr) {
             var parse_attr = TXLIVE.settings.parse_attr;
-            for (var i = 0; i < parse_attr.length; ++i) {
-                var a = parse_attr[i];
+            for (i = 0; i < parse_attr.length; ++i) {
+                a = parse_attr[i];
                 if (list.indexOf(a) < 0) list.push(a)
             }
         }
@@ -2257,13 +1921,12 @@
     }
 
     function PARSE_ATTR(node, tags, options) {
-        if (node.txattr_detected ===
-            true) return;
+        if (node.txattr_detected === true) return;
         try {
             node.txattr_detected = true
-        } catch (err$24) {}
+        } catch (err$18) {}
         var attrs = DETECT_i18n_ATTR(node, options);
-        for (var i = 0; i < attrs.length; ++i) CRAWL_ATTR(node, attrs[i], tags)
+        for (var i = 0; i < attrs.length; ++i) CRAWL_ATTR(node, attrs[i], tags, options)
     }
 
     function IS_IN_DOCUMENT(node) {
@@ -2274,24 +1937,23 @@
 
     function IS_SKIP_PARENT(node) {
         while (node) {
-            if (node.nodeType === 1) {
-                if (isSkipTag(node.tagName) || isSkipClass(node.className)) return true;
-                var content_attr = node.getAttribute("tx-content");
-                if (content_attr && content_attr.length) {
-                    content_attr = content_attr.toLowerCase();
-                    if (/\bexclude\b/.test(content_attr)) return true
-                }
-            }
+            if (node.nodeType === 1)
+                if (isSkipTag(node.tagName) || isSkipClass(node.className) || isSkipAttr(node)) return true;
             node = node.parentNode
         }
         return false
     }
 
+    function NODE_HOSTS_SHADOW_DOM(node) {
+        return node.shadowRoot
+    }
+
     function PARSE_DOM(node, parent_tags, options) {
         if (node)
             if (!isSkipTag(node.tagName))
-                if (node.nodeType === 3) PARSER_OPTIONS.isunset(options, PARSER_OPTIONS.DO_NOT_COLLECT) && CRAWL_TEXT(node, parent_tags);
-                else if (node.nodeType === 1 && !isSkipClass(node.className)) {
+                if (node.nodeType === 3) {
+                    if (PARSER_OPTIONS.isunset(options, PARSER_OPTIONS.DO_NOT_COLLECT)) CRAWL_TEXT(node, parent_tags, options)
+                } else if (node.nodeType === 1 && !isSkipClass(node.className)) {
             var tags = parent_tags;
             var tag_attr = node.getAttribute("tx-tags");
             if (tag_attr && tag_attr.length) {
@@ -2299,13 +1961,14 @@
                 tag_attr = tag_attr.split(",");
                 var i = tag_attr.length;
                 while (i--) {
-                    var a = tag_attr[i].trim().toLowerCase();
+                    var a =
+                        tag_attr[i].trim().toLowerCase();
                     if (a && a.length && tags.indexOf(a) < 0) tags.push(a)
                 }
             }
-            var content_attr = node.getAttribute("tx-content");
-            var is_block = false;
-            var _options = options;
+            var content_attr = node.getAttribute("tx-content"),
+                is_block = false,
+                _options = options;
             if (content_attr && content_attr.length) {
                 content_attr = content_attr.toLowerCase();
                 if (/\bexclude\b/.test(content_attr)) _options = PARSER_OPTIONS.set(_options, PARSER_OPTIONS.DO_NOT_COLLECT);
@@ -2318,21 +1981,26 @@
                 if (/\bnotranslate_urls\b/.test(content_attr)) _options = PARSER_OPTIONS.set(_options, PARSER_OPTIONS.URLS_AS_VARS);
                 else if (/\btranslate_urls\b/.test(content_attr)) _options = PARSER_OPTIONS.unset(_options, PARSER_OPTIONS.URLS_AS_VARS)
             }
+            if (TXLIVE.settings.translate_urls)
+                if (content_attr && content_attr.length) {
+                    if (!/\bnotranslate_urls\b/.test(content_attr)) _options = PARSER_OPTIONS.unset(_options, PARSER_OPTIONS.URLS_AS_VARS)
+                } else _options =
+                    PARSER_OPTIONS.unset(_options, PARSER_OPTIONS.URLS_AS_VARS);
             var _collect = PARSER_OPTIONS.isunset(_options, PARSER_OPTIONS.DO_NOT_COLLECT);
-            _collect && PARSE_ATTR(node, tags, _options);
+            if (_collect) PARSE_ATTR(node, tags, _options);
             if (!is_block && node.childNodes.length) {
                 var all_text_nodes = true;
-                for (var i = node.childNodes.length -
-                        1; i >= 0; --i)
-                    if (node.childNodes[i].nodeType !== 3) {
+                for (var j = node.childNodes.length - 1; j >= 0; --j)
+                    if (node.childNodes[j].nodeType !== 3) {
                         all_text_nodes = false;
                         break
-                    }
-                if (all_text_nodes) is_block = true
+                    } if (all_text_nodes) is_block = true
             }
-            if (is_block) _collect && CRAWL_BLOCK(node, tags, _options);
-            else {
-                var childnode = node.firstChild;
+            if (is_block) {
+                if (_collect) CRAWL_BLOCK(node, tags, _options)
+            } else {
+                var childnode = NODE_HOSTS_SHADOW_DOM(node) ? node.shadowRoot.firstChild :
+                    node.firstChild;
                 while (childnode)
                     if (isBlockElement(childnode)) {
                         PARSE_DOM(childnode, tags, _options);
@@ -2346,25 +2014,29 @@
                             var snode_before = childnode.previousSibling;
                             var snode_after = null;
                             var snode = childnode;
-                            var has_text = false;
+                            var has_text = false,
+                                has_databinding = false;
                             while (snode) {
-                                if (isTextElement(snode) && snode.nodeValue && snode.nodeValue.trim().length) has_text = true;
-                                else if (isBlockElement(snode)) {
+                                if (isTextElement(snode) && snode.nodeValue && snode.nodeValue.trim().length) has_text =
+                                    true;
+                                else if (!TXLIVE.settings.ignore_databind && hasDataBinding(snode)) {
+                                    has_databinding = true;
+                                    break
+                                } else if (isBlockElement(snode)) {
                                     snode_after = snode;
                                     break
                                 }
                                 snode = snode.nextSibling
                             }
-                            if (!has_text)
+                            if (!has_text || has_databinding)
                                 while (childnode && childnode != snode_after) {
                                     PARSE_DOM(childnode, tags, _options);
                                     childnode = childnode.nextSibling
                                 } else if (snode_before || snode_after) {
-                                    _collect && CRAWL_FRAGMENT(snode_before, snode_after, tags, _options);
+                                    if (_collect) CRAWL_FRAGMENT(snode_before, snode_after, tags, _options);
                                     childnode = snode_after
                                 } else {
-                                    _collect && CRAWL_BLOCK(node,
-                                        tags, _options);
+                                    if (_collect) CRAWL_BLOCK(node, tags, _options);
                                     childnode = null
                                 }
                         }
@@ -2373,7 +2045,7 @@
         }
     }
 
-    function REMOVE_NODE(node) {
+    function REMOVE_NODE(node, children) {
         if (!node) return;
         if (node.txsegment) {
             var elements = node.txsegment.elements;
@@ -2383,7 +2055,7 @@
                 if (item.node == node) removeFromArray(elements, item)
             }
         }
-        CLEAR_FLAGS_DOM(node)
+        CLEAR_FLAGS_DOM(node, children)
     }
 
     function CLEAR_FLAGS_DOM(node, children) {
@@ -2395,7 +2067,7 @@
             if (node.txtext_detected) delete node.txtext_detected;
             if (node.txattr_detected) delete node.txattr_detected;
             if (node.txsegment) delete node.txsegment
-        } catch (err$25) {}
+        } catch (err$19) {}
         if (children) {
             node = node.firstChild;
             while (node) {
@@ -2410,34 +2082,44 @@
     TXLIVE.setLocale = function(langcode) {
         if (!langcode) return;
         try {
-            document.getElementsByTagName("html")[0].setAttribute("lang", langcode.toLowerCase().replace("_", "-"))
-        } catch (err$26) {
-            TXLIVE.logger.error(err$26)
+            document.getElementsByTagName("html")[0].setAttribute("lang", langcode.toLowerCase().replace("_", "-"));
+            if (TXLIVE.settings.rtl_layout) {
+                var dir =
+                    TXLIVE.getLanguageDirection(langcode);
+                if (dir == "rtl" || dir == "ltr" && document.dir == "rtl") document.dir = dir
+            }
+        } catch (err$20) {
+            TXLIVE.logger.error(err$20)
         }
     };
 
     function resetSegments(langcode) {
-        LOCQUANT_CURRENT_LANGCODE = langcode;
+        TXLIVE.setSelectedLanguageCode(langcode);
         TXLIVE.dynamicPageOff();
         callFunctionArray(TXLIVE.__onbeforetranslate);
-        var segments = TXLIVE.segments;
-        for (var key in segments) {
-            var s = segments[key];
-            var j = s.elements.length;
-            while (j--) {
-                var item = s.elements[j];
-                try {
-                    item.set(item, s.source_string)
-                } catch (err$27) {}
+
+        function revert(segments) {
+            for (var key in segments) {
+                var s = segments[key];
+                var j = s.elements.length;
+                while (j--) {
+                    var item = s.elements[j];
+                    try {
+                        if (item.modified) {
+                            item.set(item, s.source_string);
+                            item.modified = false
+                        }
+                    } catch (err$21) {}
+                }
+                delete s.translation_string
             }
-            delete s.translation_string
         }
+        revert(TXLIVE.segments);
         var locquant_segment_list = TXLIVE.locquant_segment_list,
             index = locquant_segment_list.length;
         while (index--) {
             var s = locquant_segment_list[index];
-            s.node.innerHTML =
-                s.source_string
+            s.node.innerHTML = s.source_string
         }
         TXLIVE.setLocale(langcode);
         LAST_TRANSLATION_JSON = null;
@@ -2448,70 +2130,78 @@
     }
 
     function translateSegments(langcode, json) {
-        LOCQUANT_CURRENT_LANGCODE = langcode;
+        TXLIVE.setSelectedLanguageCode(langcode);
         TXLIVE.dynamicPageOff();
         callFunctionArray(TXLIVE.__onbeforetranslate);
+        var s, string, j, key, item;
         var segments = TXLIVE.segments;
-        for (var key in segments) {
-            var s = segments[key];
-            var string = json[key] || s.source_string;
-            var j = s.elements.length;
+        for (key in segments) {
+            s = segments[key];
+            string = json[key];
+            j = s.elements.length;
             while (j--) {
-                var item = s.elements[j];
+                item = s.elements[j];
                 try {
-                    item.set(item, string)
-                } catch (err$28) {
+                    if (string) {
+                        item.set(item, string);
+                        item.modified = true
+                    } else if (item.modified) {
+                        item.set(item, s.source_string);
+                        item.modified = false
+                    }
+                } catch (err$22) {
                     s.elements.splice(j, 1)
                 }
             }
-            s.translation_string = string
+            s.translation_string = string || s.source_string
         }
         var locquant_segment_list = TXLIVE.locquant_segment_list,
             index = locquant_segment_list.length;
         while (index--) {
-            var s = locquant_segment_list[index];
-            s.node.innerHTML = TXLIVE_PRIVATE.localize_locquant(s.type, s.source_string, s.format)
+            s = locquant_segment_list[index];
+            s.node.innerHTML = TXLIVE_PRIVATE.xssProtect(TXLIVE_PRIVATE.localize_locquant(s.type, s.source_string, s.format))
         }
         TXLIVE.setLocale(langcode);
         LAST_TRANSLATION_JSON = json;
         LAST_TRANSLATION_LANG = langcode;
         callFunctionArray(TXLIVE.__onaftertranslate);
-        callFunctionArray(TXLIVE.__ontranslatepage,
-            langcode);
+        callFunctionArray(TXLIVE.__ontranslatepage, langcode);
         TXLIVE.dynamicPageOn()
     }
     var autocollect_queue = [],
         autocollect_processing = false;
 
     function autocollectConsume() {
-        if (!TXLIVE.autocollect_ready || !autocollect_queue.length || autocollect_processing) return;
-        var entry = autocollect_queue.shift(),
-            vault = entry.vault,
-            json = entry.json;
+        if (!TXLIVE.autocollect_ready || !autocollect_queue.length ||
+            autocollect_processing) return;
+        var source_lang = TXLIVE.getSourceLanguageCode() || "";
+        var target_lang = TXLIVE.getSelectedLanguageCode() || "";
+        if (!TXLIVE_PRIVATE.manifest_ready) {
+            setTimeout(autocollectConsume, 2E3);
+            return
+        }
+        if (source_lang !== target_lang) {
+            autocollect_queue.length = 0;
+            return
+        }
+        var json = autocollect_queue.shift();
         autocollect_processing = true;
-        TXLIVE.analytics.stopwatch("start", "autocollect");
-        TXLIVE.doCORSRequest(TXLIVE.autocollect_url, "POST", JSON.stringify(json), function() {
+        TXLIVE.doCORSRequest(TXLIVE.settings.autocollect_url, "POST", JSON.stringify(json), function() {
             autocollect_processing = false;
-            var previous_vault = TXLIVE_PRIVATE.storage_get("txlive:vault") || {};
-            for (var key in vault) previous_vault[key] = vault[key];
-            TXLIVE_PRIVATE.storage_set("txlive:vault", previous_vault);
-            TXLIVE.analytics.stopwatch("stop", "autocollect");
             autocollectConsume()
         }, function(err, status_code) {
-            autocollect_processing = false;
+            autocollect_processing =
+                false;
             if (status_code !== 0 && status_code !== 404) TXLIVE.logger.error(err);
             autocollectConsume()
         })
     }
 
     function autoCollect(custom_segments) {
-        if (TXLIVE_PRIVATE.extractDomain(TXLIVE.settings.domain) !== TXLIVE_PRIVATE.extractDomain(TXLIVE_PRIVATE.getWindowLocation().href) || TXLIVE_SIDEBAR.loaded ||
-            !TXLIVE.settings.has_storage || !TXLIVE.settings.autocollect || TXLIVE.settings.autocollected && !custom_segments) return;
+        if (TXLIVE_PRIVATE.extractDomain(TXLIVE.settings.domain) !== TXLIVE_PRIVATE.extractDomain(TXLIVE_PRIVATE.getWindowLocation().href) || TXLIVE_SIDEBAR.loaded || !TXLIVE.settings.has_session || !TXLIVE.settings.autocollect || TXLIVE.settings.autocollected && !custom_segments) return;
         TXLIVE.settings.autocollected = !custom_segments;
         try {
-            var timestamp = Date.now(),
-                vault = TXLIVE_PRIVATE.storage_get("txlive:vault") || {},
-                segments = custom_segments || TXLIVE.segments,
+            var segments = custom_segments || TXLIVE.segments,
                 new_entities = {},
                 refresh_ts = [],
                 found = false,
@@ -2519,28 +2209,13 @@
             for (var key in segments) {
                 var s = segments[key];
                 if (!s.source_string) continue;
-                var collected = key in published_keys,
-                    vault_entry = vault[key],
-                    to_autocollect = false;
-                if (!vault_entry) {
-                    to_autocollect = true;
-                    vault[key] = {
-                        string: s.source_string,
-                        tags: s.tags,
-                        ts: timestamp
-                    }
-                } else if (timestamp - vault_entry.ts >= AUTOCOLLECT_EXPIRE_MSEC) {
-                    to_autocollect = true;
-                    vault_entry.ts = timestamp
-                }
-                if (to_autocollect) {
-                    found = true;
-                    if (collected) refresh_ts.push(key);
-                    else new_entities[key] = {
-                        string: s.source_string,
-                        tags: s.tags
-                    }
-                }
+                var collected = key in published_keys;
+                if (collected) refresh_ts.push(key);
+                else new_entities[key] = {
+                    string: s.source_string,
+                    tags: s.tags
+                };
+                found = true
             }
             if (!found) return;
             var json = {
@@ -2553,23 +2228,18 @@
                 newstrings: new_entities,
                 refresh_ts: refresh_ts
             };
-            autocollect_queue.push({
-                vault: vault,
-                json: json
-            });
+            autocollect_queue.push(json);
             autocollectConsume()
-        } catch (err$29) {
-            TXLIVE.logger.error(err$29)
+        } catch (err$23) {
+            TXLIVE.logger.error(err$23)
         }
     }
-    var timer_mutation = null,
-        mutation_nodes = [],
+    var mutation_nodes = [],
         observer = null,
         mutators_initialized = false,
         mutators_on = false;
 
     function __proc_mutations__() {
-        timer_mutation = null;
         if (TXLIVE_PRIVATE.isGoogleTranslated()) {
             mutation_nodes = [];
             return
@@ -2577,16 +2247,14 @@
         var node_list = [];
         for (var i = 0; i < mutation_nodes.length; ++i)
             if (IS_IN_DOCUMENT(mutation_nodes[i]))
-                if (node_list.indexOf(mutation_nodes[i]) ==
-                    -1) node_list.push(mutation_nodes[i]);
+                if (node_list.indexOf(mutation_nodes[i]) == -1) node_list.push(mutation_nodes[i]);
         mutation_nodes = [];
         if (node_list.length) TXLIVE.translateNodes(node_list)
     }
 
     function __dom_inserted_cb(e) {
         mutation_nodes.push(e.target);
-        if (timer_mutation) clearTimeout(timer_mutation);
-        timer_mutation = setTimeout(__proc_mutations__, 0)
+        __proc_mutations__()
     }
 
     function __dom_removed_cb(e) {
@@ -2597,15 +2265,17 @@
         mutations.forEach(function(mutation) {
             if (mutation.target) {
                 if (mutation.removedNodes.length)
-                    for (var i = 0; i < mutation.removedNodes.length; ++i) REMOVE_NODE(mutation.removedNodes[i]);
+                    for (var i = 0; i < mutation.removedNodes.length; ++i) REMOVE_NODE(mutation.removedNodes[i], true);
                 REMOVE_NODE(mutation.target);
-                if (mutation.target.childNodes.length || mutation.type == "attributes") mutation_nodes.push(mutation.target)
+                if (mutation.target.childNodes.length || mutation.type == "attributes") mutation_nodes.push(mutation.target);
+                else if (isTextElement(mutation.target) &&
+                    mutation.target.parentNode) {
+                    REMOVE_NODE(mutation.target.parentNode);
+                    mutation_nodes.push(mutation.target.parentNode)
+                }
             }
         });
-        if (mutation_nodes.length) {
-            if (timer_mutation) clearTimeout(timer_mutation);
-            timer_mutation = setTimeout(__proc_mutations__, 0)
-        }
+        if (mutation_nodes.length) __proc_mutations__()
     }
     TXLIVE.isDynamicPageOn = function() {
         return mutators_on
@@ -2613,14 +2283,17 @@
     TXLIVE.dynamicPageOn = function() {
         if (!mutators_initialized || mutators_on) return;
         mutators_on = true;
-        if (observer) observer.observe(document.body, {
-            childList: true,
-            subtree: true,
-            characterData: true,
-            attributes: true,
-            attributeFilter: ["value", "placeholder", "title"]
-        });
-        else {
+        if (observer) {
+            var attributeFilter = ["value", "placeholder", "title"];
+            if (TXLIVE.settings.translate_urls) attributeFilter.push("href", "src");
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true,
+                characterData: true,
+                attributes: true,
+                attributeFilter: attributeFilter
+            })
+        } else {
             document.addEventListener("DOMNodeInserted", __dom_inserted_cb, false);
             document.addEventListener("DOMNodeRemoved", __dom_removed_cb, false)
         }
@@ -2649,17 +2322,19 @@
     }
     TXLIVE.normalizeLangCode = function(langcode) {
         if (!langcode) return langcode;
+        if (langcode === "zh-Hans" || langcode === "zh-Hant") return langcode;
         langcode = langcode.replace("-", "_");
-        var extra = null;
+        var extra = null,
+            tokens, lang, country;
         if (langcode.indexOf("@") >= 0) {
-            var tokens = langcode.split("@");
+            tokens = langcode.split("@");
             langcode = tokens[0];
             extra = tokens[1]
         }
         if (langcode.indexOf("_") >= 0) {
-            var tokens = langcode.split("_"),
-                lang = tokens[0].toLowerCase(),
-                country = tokens[1].toUpperCase();
+            tokens = langcode.split("_");
+            lang = tokens[0].toLowerCase();
+            country = tokens[1].toUpperCase();
             langcode = lang + "_" + country
         } else langcode = langcode.toLowerCase();
         if (extra) langcode += "@" + extra;
@@ -2677,8 +2352,7 @@
             lang_code: langcode,
             noop: false
         };
-        callFunctionArray(TXLIVE.__onbeforetranslatepage,
-            bft_params);
+        callFunctionArray(TXLIVE.__onbeforetranslatepage, bft_params);
         if (bft_params.noop) return;
         try {
             if (!TXLIVE.languages) return;
@@ -2687,61 +2361,46 @@
                 return
             }
             var languages = TXLIVE.languages;
-            if (TXLIVE.selected_lang === langcode)
+            if (TXLIVE.getSelectedLanguageCode() === langcode)
                 if (languages.source.code === langcode && !LAST_TRANSLATION_LANG || LAST_TRANSLATION_LANG && LAST_TRANSLATION_JSON && LAST_TRANSLATION_LANG === langcode) {
                     __ready__();
                     return
-                }
-            if (languages.source.code === langcode) {
+                } if (languages.source.code === langcode) {
                 if (LAST_TRANSLATION_LANG) resetSegments(langcode);
                 __ready__()
             } else {
-                if (TXLIVE.settings && TXLIVE.settings.filters && TXLIVE_PRIVATE.ignorePath(TXLIVE.settings.filters,
-                        window.location.pathname)) return __ready__();
+                if (TXLIVE.isPageFiltered()) return __ready__();
                 var lang_url = null;
                 for (var i = 0; i < languages.translation.length; ++i)
                     if (languages.translation[i].code === langcode) {
                         lang_url = languages.translation[i].url;
                         break
-                    }
-                if (!lang_url && !LOCAL_TRANSLATION_STORAGE[langcode]) {
+                    } if (!lang_url && !LOCAL_TRANSLATION_STORAGE[langcode]) {
                     __ready__();
                     return
                 }
-                var key = langcode + "@" + languages.timestamp;
+                var key = TXLIVE_PRIVATE.apiScopedKey(langcode + "@" + languages.timestamp);
                 var json = TXLIVE_PRIVATE.storage_get(key);
                 if (!json) json = LOCAL_TRANSLATION_STORAGE[langcode];
                 if (json) {
                     translateSegments(langcode, json);
                     __ready__()
-                } else {
-                    var lang_loaded = false;
-                    window["transifex_lang_" +
-                        TXLIVE_PRIVATE.escapeLanguageCode(langcode)] = function(data) {
-                        lang_loaded = true;
-                        TXLIVE_PRIVATE.storage_set(key, data);
-                        if (langcode === TXLIVE.selected_lang) {
-                            translateSegments(langcode, data);
-                            __ready__()
-                        }
-                    };
-                    TXLIVE.analytics.stopwatch("start", "translate_to_time");
-                    TXLIVE.loadScript(lang_url, function() {
-                        TXLIVE.analytics.stopwatch("stop", "translate_to_time");
-                        setTimeout(function() {
-                            if (!lang_loaded && TXLIVE.__onerror) callFunctionArray(TXLIVE.__onerror, "[ERR2] Cannot load translation url: " + lang_url);
-                            __ready__()
-                        }, 100)
+                } else __loadlanguage__(langcode,
+                    lang_url,
+                    function(data) {
+                        if (data) {
+                            TXLIVE_PRIVATE.storage_set(key, data);
+                            if (langcode === TXLIVE.getSelectedLanguageCode()) {
+                                translateSegments(langcode, data);
+                                __ready__()
+                            }
+                        } else __ready__()
                     })
-                }
             }
-            TXLIVE_PRIVATE.storage_set("txlive:selectedlang",
-                langcode);
-            TXLIVE.selected_lang = langcode;
-            var elem = document.getElementById("tx-live-lang-current");
-            if (elem) elem.innerHTML = TXLIVE.getLanguageName(langcode)
-        } catch (err$30) {
-            TXLIVE.logger.error(err$30)
+            TXLIVE.setSelectedLanguageCode(langcode);
+            TXLIVE_PRIVATE.storage_set("txlive:selectedlang", langcode)
+        } catch (err$24) {
+            TXLIVE.logger.error(err$24)
         }
     };
 
@@ -2754,8 +2413,8 @@
             }
             if (isString(languages.translation)) try {
                 languages.translation = JSON.parse(languages.translation) || []
-            } catch (err$31) {
-                TXLIVE.logger.error(err$31);
+            } catch (err$25) {
+                TXLIVE.logger.error(err$25);
                 languages.translation = []
             }
             TXLIVE.denormalized_languages = [{
@@ -2768,69 +2427,93 @@
                 code: languages.translation[i].code
             });
             TXLIVE.languages = languages;
-            if (TXLIVE.selected_lang && TXLIVE.selected_lang.length && languages.source.code !== TXLIVE.selected_lang && !TXLIVE.hasTargetLanguage(TXLIVE.selected_lang)) resetSegments(languages.source.code);
-            TXLIVE.selected_lang = languages.source.code;
+            var selected_lang = TXLIVE.getSelectedLanguageCode();
+            if (selected_lang && languages.source.code !== selected_lang && !TXLIVE.hasTargetLanguage(selected_lang)) resetSegments(languages.source.code);
+            TXLIVE.setSelectedLanguageCode(languages.source.code);
             callFunctionArray(TXLIVE.__onfetchlanguages, TXLIVE.denormalized_languages);
             setupPicker()
-        } catch (err$32) {
-            TXLIVE.logger.error(err$32)
+        } catch (err$26) {
+            TXLIVE.logger.error(err$26)
         }
     }
-    TXLIVE.detectLanguage = function() {
-        try {
-            var detect_lang = TXLIVE.settings.detectlang;
-            if (detect_lang && isFunction(detect_lang)) {
-                detect_lang = detect_lang();
-                if (detect_lang !== true && detect_lang !== false) return detect_lang
-            }
-            if (!detect_lang) return TXLIVE_PRIVATE.storage_get("txlive:selectedlang");
-            var url = TXLIVE_PRIVATE.getWindowLocation().href.split("?");
-            if (url.length == 2) {
-                var params = url[1].split("&");
-                for (var i = 0; i < params.length; ++i) {
-                    var keyvalue = params[i].split("=");
-                    if (keyvalue.length == 2 && keyvalue[0].toLowerCase() == "lang") {
-                        var code = TXLIVE.normalizeLangCode(keyvalue[1]);
-                        if (TXLIVE.hasLanguageCode(code)) return code;
-                        break
+    TXLIVE.isPageFiltered = function() {
+        return TXLIVE.settings && TXLIVE.settings.filters && TXLIVE_PRIVATE.ignorePath(TXLIVE.settings.filters, window.location.pathname)
+    };
+    TXLIVE.detectLanguage =
+        function() {
+            try {
+                var detect_lang = TXLIVE.settings.detectlang,
+                    code;
+                if (detect_lang && isFunction(detect_lang)) {
+                    detect_lang = detect_lang();
+                    if (detect_lang !== true && detect_lang !== false) return detect_lang
+                }
+                if (!detect_lang) return TXLIVE_PRIVATE.storage_get("txlive:selectedlang");
+                var url = TXLIVE_PRIVATE.getWindowLocation().href.split("?");
+                if (url.length == 2) {
+                    var params = url[1].split("&");
+                    for (var i = 0; i < params.length; ++i) {
+                        var keyvalue = params[i].split("=");
+                        if (keyvalue.length == 2 && keyvalue[0].toLowerCase() == "lang") {
+                            code =
+                                TXLIVE.normalizeLangCode(keyvalue[1]);
+                            if (TXLIVE.hasLanguageCode(code)) return code;
+                            break
+                        }
                     }
                 }
+                url = TXLIVE_PRIVATE.getWindowLocation().host.split(".");
+                if (url.length > 0) {
+                    code = TXLIVE.normalizeLangCode(url[0]);
+                    if (TXLIVE.hasLanguageCode(code)) return code
+                }
+                url = TXLIVE_PRIVATE.getWindowLocation().pathname.split("/");
+                if (url.length > 1) {
+                    code = TXLIVE.normalizeLangCode(url[1]);
+                    if (TXLIVE.hasLanguageCode(code)) return code
+                }
+                return TXLIVE_PRIVATE.storage_get("txlive:selectedlang") || TXLIVE_PRIVATE.getBrowserLocale()
+            } catch (err$27) {
+                TXLIVE.logger.error(err$27)
             }
-            url = TXLIVE_PRIVATE.getWindowLocation().host.split(".");
-            if (url.length > 0) {
-                var code = TXLIVE.normalizeLangCode(url[0]);
-                if (TXLIVE.hasLanguageCode(code)) return code
-            }
-            url = TXLIVE_PRIVATE.getWindowLocation().pathname.split("/");
-            if (url.length >
-                1) {
-                var code = TXLIVE.normalizeLangCode(url[1]);
-                if (TXLIVE.hasLanguageCode(code)) return code
-            }
-            return TXLIVE_PRIVATE.storage_get("txlive:selectedlang") || TXLIVE_PRIVATE.getBrowserLocale()
-        } catch (err$33) {
-            TXLIVE.logger.error(err$33)
-        }
-    };
+        };
     TXLIVE.getLanguageName = function(langcode) {
         try {
             if (!TXLIVE.denormalized_languages) return;
             var d = TXLIVE.denormalized_languages;
             for (var i = 0; i < d.length; ++i)
                 if (d[i].code === langcode) return d[i].name
-        } catch (err$34) {
-            TXLIVE.logger.error(err$34)
+        } catch (err$28) {
+            TXLIVE.logger.error(err$28)
         }
     };
     TXLIVE.hasLanguageCode = function(langcode) {
         try {
-            if (!TXLIVE.denormalized_languages) return false;
+            var i;
+            if (!TXLIVE.denormalized_languages) {
+                if (TXLIVE_PRIVATE.manifest && TXLIVE_PRIVATE.manifest.languages && TXLIVE_PRIVATE.manifest.languages.translation) {
+                    var languages = TXLIVE_PRIVATE.manifest.languages.translation;
+                    for (i = 0; i <
+                        languages.length; ++i)
+                        if (languages[i].code === langcode) return true
+                }
+                return false
+            }
             var d = TXLIVE.denormalized_languages;
-            for (var i = 0; i < d.length; ++i)
+            for (i = 0; i < d.length; ++i)
                 if (d[i].code === langcode) return true;
             return false
-        } catch (err$35) {
-            TXLIVE.logger.error(err$35)
+        } catch (err$29) {
+            TXLIVE.logger.error(err$29)
+        }
+    };
+    TXLIVE.getLanguageDirection = function(langcode) {
+        if (!TXLIVE.languages) return;
+        if (TXLIVE.languages.source.code == langcode) return TXLIVE.languages.source.rtl ? "rtl" : "ltr";
+        for (var i = 0; i < TXLIVE.languages.translation.length; ++i) {
+            var lang = TXLIVE.languages.translation[i];
+            if (lang.code ==
+                langcode) return lang.rtl ? "rtl" : "ltr"
         }
     };
     TXLIVE.matchLanguageCode = function(fuzzy_langcode) {
@@ -2844,11 +2527,10 @@
             if (!TXLIVE.denormalized_languages) return;
             fuzzy_langcode = stripCode(fuzzy_langcode);
             var d = TXLIVE.denormalized_languages;
-            for (var i =
-                    0; i < d.length; ++i)
+            for (var i = 0; i < d.length; ++i)
                 if (stripCode(d[i].code) === fuzzy_langcode) return d[i].code
-        } catch (err$36) {
-            TXLIVE.logger.error(err$36)
+        } catch (err$30) {
+            TXLIVE.logger.error(err$30)
         }
     };
     TXLIVE.getAllLanguages = function() {
@@ -2858,118 +2540,133 @@
         if (TXLIVE.languages) return TXLIVE.languages.source
     };
     TXLIVE.getSourceLanguageCode = function() {
-        if (TXLIVE.languages && TXLIVE.languages.source) return TXLIVE.languages.source.code
+        if (TXLIVE.languages && TXLIVE.languages.source) return TXLIVE.languages.source.code;
+        return TXLIVE.__source_language_code
     };
     TXLIVE.getSelectedLanguageCode = function() {
-        return TXLIVE.selected_lang || ""
+        return TXLIVE.selected_lang
     };
-    TXLIVE.onBeforeTranslatePage =
-        function(fcall) {
-            this.__onbeforetranslatepage = this.__onbeforetranslatepage || [];
-            this.__onbeforetranslatepage.push(fcall)
-        };
+    TXLIVE.setSelectedLanguageCode = function(lang_code) {
+        if (TXLIVE.selected_lang === lang_code) return;
+        TXLIVE.selected_lang =
+            lang_code || "";
+        var elem = document.getElementById("tx-live-lang-current");
+        if (elem) elem.innerHTML = TXLIVE_PRIVATE.xssProtect(TXLIVE.getLanguageName(lang_code))
+    };
+    TXLIVE.onBeforeTranslatePage = function(fcall) {
+        TXLIVE.__onbeforetranslatepage = TXLIVE.__onbeforetranslatepage || [];
+        TXLIVE.__onbeforetranslatepage.push(fcall)
+    };
     TXLIVE.onTranslatePage = function(fcall) {
-        this.__ontranslatepage = this.__ontranslatepage || [];
-        this.__ontranslatepage.push(fcall);
+        TXLIVE.__ontranslatepage = TXLIVE.__ontranslatepage || [];
+        TXLIVE.__ontranslatepage.push(fcall);
         if (LAST_TRANSLATION_LANG && fcall) callFunctionArray([fcall], LAST_TRANSLATION_LANG)
     };
     TXLIVE.onFetchLanguages = function(fcall) {
-        this.__onfetchlanguages = this.__onfetchlanguages || [];
-        this.__onfetchlanguages.push(fcall);
-        if (TXLIVE.languages && fcall) callFunctionArray([fcall],
-            TXLIVE.denormalized_languages)
+        TXLIVE.__onfetchlanguages = TXLIVE.__onfetchlanguages || [];
+        TXLIVE.__onfetchlanguages.push(fcall);
+        if (TXLIVE.languages && fcall) callFunctionArray([fcall], TXLIVE.denormalized_languages)
     };
     TXLIVE.onDynamicContent = function(fcall) {
-        this.__ondynamiccontent = this.__ondynamiccontent || [];
-        this.__ondynamiccontent.push(fcall)
+        TXLIVE.__ondynamiccontent = TXLIVE.__ondynamiccontent || [];
+        TXLIVE.__ondynamiccontent.push(fcall)
     };
     TXLIVE.onError = function(fcall) {
-        this.__onerror = this.__onerror || [];
-        this.__onerror.push(fcall)
+        TXLIVE.__onerror = TXLIVE.__onerror || [];
+        TXLIVE.__onerror.push(fcall)
     };
     TXLIVE.onReady = function(fcall) {
-        if (TXLIVE.ready && fcall) callFunctionArray([fcall], TXLIVE.load_msec);
+        if (TXLIVE.ready &&
+            fcall) callFunctionArray([fcall], TXLIVE.load_msec);
         else {
-            this.__onready = this.__onready || [];
-            this.__onready.push(fcall)
+            TXLIVE.__onready = TXLIVE.__onready || [];
+            TXLIVE.__onready.push(fcall)
         }
     };
     TXLIVE.onBeforeTranslate = function(fcall) {
-        this.__onbeforetranslate = this.__onbeforetranslate || [];
-        this.__onbeforetranslate.push(fcall)
+        TXLIVE.__onbeforetranslate = TXLIVE.__onbeforetranslate || [];
+        TXLIVE.__onbeforetranslate.push(fcall)
     };
     TXLIVE.onAfterTranslate = function(fcall) {
-        this.__onaftertranslate = this.__onaftertranslate || [];
-        this.__onaftertranslate.push(fcall)
+        TXLIVE.__onaftertranslate = TXLIVE.__onaftertranslate || [];
+        TXLIVE.__onaftertranslate.push(fcall)
     };
     TXLIVE.unBind = function(fcall) {
-        removeFromFunctionArray(this.__onready, fcall);
-        removeFromFunctionArray(this.__onerror, fcall);
-        removeFromFunctionArray(this.__ondynamiccontent, fcall);
-        removeFromFunctionArray(this.__onfetchlanguages, fcall);
-        removeFromFunctionArray(this.__onbeforetranslatepage, fcall);
-        removeFromFunctionArray(this.__ontranslatepage,
+        removeFromFunctionArray(TXLIVE.__onready, fcall);
+        removeFromFunctionArray(TXLIVE.__onerror,
             fcall);
-        removeFromFunctionArray(this.__onbeforetranslate, fcall);
-        removeFromFunctionArray(this.__onaftertranslate, fcall)
+        removeFromFunctionArray(TXLIVE.__ondynamiccontent, fcall);
+        removeFromFunctionArray(TXLIVE.__onfetchlanguages, fcall);
+        removeFromFunctionArray(TXLIVE.__onbeforetranslatepage, fcall);
+        removeFromFunctionArray(TXLIVE.__ontranslatepage, fcall);
+        removeFromFunctionArray(TXLIVE.__onbeforetranslate, fcall);
+        removeFromFunctionArray(TXLIVE.__onaftertranslate, fcall)
     };
     TXLIVE.translateNodes = function(node_array) {
         TXLIVE.dynamicPageOff();
         callFunctionArray(TXLIVE.__onbeforetranslate);
-        NEW_SEGMENTS_LIST = [];
         NEW_SEGMENTS_DICT = {};
-        for (var i = 0; i < node_array.length; ++i) {
+        var i, j, key,
+            s, string, item;
+        for (i = 0; i < node_array.length; ++i) {
             var node = node_array[i];
             try {
                 if (!IS_SKIP_PARENT(node)) PARSE_DOM(node, [], PARSER_OPTIONS.DEFAULT)
-            } catch (err$37) {
-                TXLIVE.logger.error(err$37)
+            } catch (err$31) {
+                TXLIVE.logger.error(err$31)
             }
         }
-        if (NEW_SEGMENTS_LIST.length) {
+        var new_segments = [];
+        for (key in NEW_SEGMENTS_DICT) new_segments.push(NEW_SEGMENTS_DICT[key]);
+        if (new_segments.length) {
             if (LAST_TRANSLATION_JSON) {
-                var json =
-                    LAST_TRANSLATION_JSON;
-                var i = NEW_SEGMENTS_LIST.length;
+                var json = LAST_TRANSLATION_JSON;
+                i = new_segments.length;
                 while (i--) {
-                    var s = NEW_SEGMENTS_LIST[i];
-                    var string = json[s.key] || s.source_string;
-                    var j = s.elements.length;
+                    s = new_segments[i];
+                    string = json[s.key];
+                    j = s.elements.length;
                     while (j--) {
-                        var item = s.elements[j];
+                        item = s.elements[j];
                         try {
-                            item.set(item, string)
-                        } catch (err$38) {
+                            if (string) {
+                                item.set(item,
+                                    string);
+                                item.modified = true
+                            } else if (item.modified) {
+                                item.set(item, s.source_string);
+                                item.modified = false
+                            }
+                        } catch (err$32) {
                             s.elements.splice(j, 1)
                         }
                     }
-                    s.translation_string = string
+                    s.translation_string = string || s.source_string
                 }
             }
-            callFunctionArray(TXLIVE.__ondynamiccontent, NEW_SEGMENTS_LIST);
+            callFunctionArray(TXLIVE.__ondynamiccontent, new_segments);
             autoCollect(NEW_SEGMENTS_DICT)
         }
-        NEW_SEGMENTS_LIST = null;
         NEW_SEGMENTS_DICT = null;
         callFunctionArray(TXLIVE.__onaftertranslate);
         TXLIVE.dynamicPageOn()
     };
-    TXLIVE.translateNode =
-        function(node) {
-            TXLIVE.translateNodes([node])
-        };
+    TXLIVE.translateNode = function(node) {
+        TXLIVE.translateNodes([node])
+    };
     var timer_translate_text = null;
     var autocollect_translate_text = {};
 
     function autocollect_translate_text_cb() {
-        timer_translate_text = null;
+        timer_translate_text =
+            null;
         autoCollect(autocollect_translate_text);
         autocollect_translate_text = {}
     }
 
     function translate_text_params(text, params) {
         if (params)
-            for (key in params) text = text.replace(new RegExp("\\{" + key + "\\}", "g"), params[key]);
+            for (var key in params) text = text.replace(new RegExp("\\{" + key + "\\}", "g"), params[key]);
         return text
     }
     TXLIVE.translateText = function(text, params) {
@@ -2977,22 +2674,19 @@
         var key = TXLIVE_PRIVATE.md5(text);
         if (LAST_TRANSLATION_JSON && LAST_TRANSLATION_JSON[key]) return translate_text_params(LAST_TRANSLATION_JSON[key], params);
         var segments = TXLIVE.segments;
-        var segment_list = TXLIVE.segment_list;
         var segment = segments[key];
         if (!segment) {
-            var segment = {
+            segment = {
                 key: key,
                 source_string: text,
                 tags: ["api"],
                 elements: []
             };
             segments[key] = segment;
-            segment_list.push(segment);
             callFunctionArray(TXLIVE.__ondynamiccontent, [segment]);
             autocollect_translate_text[key] = segment;
             if (timer_translate_text) clearTimeout(timer_translate_text);
-            timer_translate_text =
-                setTimeout(autocollect_translate_text_cb, 1E3)
+            timer_translate_text = setTimeout(autocollect_translate_text_cb, 1E3)
         }
         return translate_text_params(text, params)
     };
@@ -3000,37 +2694,40 @@
         if (!json || !json.source || !json.translation) return;
         json.timestamp = Date.now();
         for (var i = 0; i < json.translation.length; ++i) {
-            var translation = json.translation[i];
+            var translation =
+                json.translation[i];
             if (translation.code && translation.translations) LOCAL_TRANSLATION_STORAGE[translation.code] = translation.translations
         }
         setLanguages(json);
         if (TXLIVE.traverse_ready) TXLIVE.translateTo(TXLIVE.normalizeLangCode(TXLIVE.detectLanguage()))
     };
     TXLIVE_PRIVATE.translateFromJSON = function(lang_code, translations, merge) {
-        if (!translations || !lang_code) return;
+        if (!lang_code) return;
+        translations = translations || {};
         if (merge && LOCAL_TRANSLATION_STORAGE[lang_code]) {
             var existing = LOCAL_TRANSLATION_STORAGE[lang_code];
-            for (var key in translations) existing[key] = translations[key]
+            for (var key in translations) existing[key] =
+                translations[key]
         } else LOCAL_TRANSLATION_STORAGE[lang_code] = translations;
-        TXLIVE.selected_lang = lang_code;
         translateSegments(lang_code, LOCAL_TRANSLATION_STORAGE[lang_code])
     };
     TXLIVE_PRIVATE.revertToSource = function(lang_code) {
-        TXLIVE.selected_lang = lang_code;
         resetSegments(lang_code)
+    };
+    TXLIVE_PRIVATE.useSourceLanguageCode = function(lang_code) {
+        TXLIVE.__source_language_code = lang_code
     };
     TXLIVE_PRIVATE.parseHTMLBlock = function(html) {
         var root = document.createElement("div");
         root.innerHTML = html;
-        NEW_SEGMENTS_LIST = [];
         NEW_SEGMENTS_DICT = {};
         try {
             PARSE_DOM(root, [], PARSER_OPTIONS.DEFAULT)
-        } catch (err$39) {
-            TXLIVE.logger.error(err$39)
+        } catch (err$33) {
+            TXLIVE.logger.error(err$33)
         }
-        var segments = NEW_SEGMENTS_DICT;
-        NEW_SEGMENTS_LIST = null;
+        var segments =
+            NEW_SEGMENTS_DICT;
         NEW_SEGMENTS_DICT = null;
         return {
             root: root,
@@ -3039,12 +2736,12 @@
     };
     TXLIVE.segmentHTML = function(html, as_key_value_json) {
         var segments = TXLIVE_PRIVATE.parseHTMLBlock(html).segments;
-        var json = {};
+        var json = {},
+            key;
         if (as_key_value_json)
-            for (var key in segments) json[key] =
-                segments[key].source_string;
+            for (key in segments) json[key] = segments[key].source_string;
         else
-            for (var key in segments) {
+            for (key in segments) {
                 var segment = segments[key];
                 json[key] = {
                     source_string: segment.source_string,
@@ -3060,14 +2757,14 @@
         if (translations)
             for (var key in segments) {
                 var s = segments[key];
-                var string = translations[s.key] || s.source_string;
+                var string = translations[s.key];
+                if (!string) continue;
                 var j = s.elements.length;
                 while (j--) {
-                    var item =
-                        s.elements[j];
+                    var item = s.elements[j];
                     try {
                         item.set(item, string)
-                    } catch (err$40) {}
+                    } catch (err$34) {}
                 }
             }
         return parsed_content.root.innerHTML
@@ -3089,28 +2786,24 @@
                 break
             }
         }
-    } catch (err$41) {
-        TXLIVE.logger.error(err$41)
+    } catch (err$35) {
+        TXLIVE.logger.error(err$35)
     }
     TXLIVE.version = "latest";
+    TXLIVE.selected_lang = "";
     TXLIVE.segments = {};
-    TXLIVE.segment_list = [];
     TXLIVE.locquant_segment_list = [];
 
     function __ready__() {
         if (TXLIVE.ready) return;
         TXLIVE.ready = true;
-        TXLIVE.analytics.submitEvent("page_view", 1);
         showDom();
         autoCollect();
-        TXLIVE.analytics.boot();
         try {
-            TXLIVE.load_msec = (new Date).getTime() - benchmark;
-            TXLIVE.analytics.stopwatch("stop", "live_load_time");
-            TXLIVE.analytics.submitEvent("page_language", 1, TXLIVE.normalizeLangCode(TXLIVE.detectLanguage()))
-        } catch (err$42) {}
-        callFunctionArray(TXLIVE.__onready,
-            TXLIVE.load_msec);
+            TXLIVE.load_msec =
+                (new Date).getTime() - benchmark
+        } catch (err$36) {}
+        callFunctionArray(TXLIVE.__onready, TXLIVE.load_msec);
         TXLIVE.__onready = null;
         if (TXLIVE.settings.prerender) window.prerenderReady = true;
         if (TXLIVE_SIDEBAR.shouldOpen()) {
@@ -3125,21 +2818,24 @@
         timeout: 8
     };
     TXLIVE_SIDEBAR.setCookie = function(name, value, hours) {
-        var expires = "";
+        var expires =
+            "",
+            sameSite = "";
         if (hours) {
             var date = new Date;
-            date.setTime(date.getTime() + hours * 60 * 60 *
-                1E3);
+            date.setTime(date.getTime() + hours * 60 * 60 * 1E3);
             expires = "; expires=" + date.toGMTString()
         }
-        document.cookie = name + "=" + value + expires + "; path=/"
+        if (window.location.href.indexOf("https://") === 0) sameSite = " SameSite=None; Secure;";
+        document.cookie = name + "=" + value + expires + "; path=/;" + sameSite
     };
     TXLIVE_SIDEBAR.getCookie = function(name) {
         var nameEQ = name + "=";
         var cookie_values = document.cookie.split(";");
         for (var i = 0; i < cookie_values.length; i++) {
             var value = cookie_values[i].trim();
-            if (value.indexOf(nameEQ) == 0) return value.substring(nameEQ.length, value.length)
+            if (value.indexOf(nameEQ) == 0) return value.substring(nameEQ.length,
+                value.length)
         }
     };
     TXLIVE_SIDEBAR.delCookie = function(name) {
@@ -3154,41 +2850,39 @@
             if (key.toLowerCase() === SIDEBAR_URL_TRIGGER) return true;
         return false
     };
-    TXLIVE_SIDEBAR.getLocationParams = function() {
-        var search_string = TXLIVE_PRIVATE.getWindowLocation().search.substr(1);
-        var params_array = search_string.split("&");
-        var return_value = {};
-        for (var i = 0; i < params_array.length; i++) {
-            var param_string =
-                params_array[i];
-            if (param_string.indexOf("=") != -1) {
-                var param_string_split = param_string.split("=");
-                var key = param_string_split[0],
-                    value = param_string_split[1];
-                return_value[key] = value
-            } else return_value[param_string] = null
-        }
-        return return_value
-    };
+    TXLIVE_SIDEBAR.getLocationParams =
+        function() {
+            var search_string = TXLIVE_PRIVATE.getWindowLocation().search.substr(1);
+            var params_array = search_string.split("&");
+            var return_value = {};
+            for (var i = 0; i < params_array.length; i++) {
+                var param_string = params_array[i];
+                if (param_string.indexOf("=") != -1) {
+                    var param_string_split = param_string.split("=");
+                    var key = param_string_split[0],
+                        value = param_string_split[1];
+                    return_value[key] = value
+                } else return_value[param_string] = null
+            }
+            return return_value
+        };
     TXLIVE_SIDEBAR.load = function(callback) {
         if (TXLIVE_SIDEBAR.loaded) return;
-        TXLIVE.analytics.stopwatch("start", "sidebar_load_time");
         TXLIVE_SIDEBAR.loaded = true;
-        var sidebar_url = TXLIVE.settings.sidebar_base_url + "/_/live/sidebar/?lang=" + TXLIVE.settings.sidebar_lang;
-        if (TXLIVE.settings.mode) sidebar_url +=
-            "&mode=" + TXLIVE.settings.mode;
+        var sidebar_url = TXLIVE.settings.sidebar_base_url + "/_/live/sidebar/?lang=" + TXLIVE.settings.sidebar_lang + "&apikey=" + TXLIVE.settings.api_key;
+        if (TXLIVE.settings.mode) sidebar_url += "&mode=" + TXLIVE.settings.mode;
         TXLIVE.doCORSRequest(sidebar_url, "GET", "", function(html) {
             var div = document.createElement("div");
             div.innerHTML = html;
             var scripts = [].slice.call(div.getElementsByTagName("script"));
-            for (var i = scripts.length; i--;)
+            var i;
+            for (i = scripts.length; i--;)
                 if (scripts[i].getAttribute("type") == "text/javascript") scripts[i].parentNode.removeChild(scripts[i]);
                 else scripts.splice(i, 1);
             var links = [].slice.call(div.getElementsByTagName("link")),
                 head = document.head || document.getElementsByTagName("head")[0];
-            for (var i = links.length; i--;) {
-                var rel =
-                    links[i].getAttribute("rel"),
+            for (i = links.length; i--;) {
+                var rel = links[i].getAttribute("rel"),
                     href = links[i].getAttribute("href");
                 if (href && rel && rel.indexOf("stylesheet") >= 0) links[i].setAttribute("href", TXLIVE.assetUrl(href, TXLIVE.settings.assets_base_url));
                 head.appendChild(links[i].parentNode.removeChild(links[i]))
@@ -3200,14 +2894,14 @@
             }
 
             function consume_scripts() {
-                var script = scripts.shift();
+                var script =
+                    scripts.shift();
                 if (!script) {
                     if (callback) callback();
                     return
                 }
                 var url = script.getAttribute("src");
-                if (url) TXLIVE.loadScript(TXLIVE.assetUrl(url,
-                    TXLIVE.settings.assets_base_url), consume_scripts, script.innerHTML, script.attributes);
+                if (url) TXLIVE.loadScript(TXLIVE.assetUrl(url, TXLIVE.settings.assets_base_url), consume_scripts, script.innerHTML, script.attributes);
                 else {
                     TXLIVE.loadScript(null, null, script.innerHTML, script.attributes);
                     consume_scripts()
@@ -3220,11 +2914,11 @@
         TXLIVE_PRIVATE._json_stringify = JSON.stringify;
         JSON.stringify = function(value, replacer, spacer) {
             if (Array.prototype.toJSON !== undefined) {
-                var _array_tojson = Array.prototype.toJSON;
+                var _array_tojson =
+                    Array.prototype.toJSON;
                 delete Array.prototype.toJSON;
                 var r = TXLIVE_PRIVATE._json_stringify(value, replacer, spacer);
-                Array.prototype.toJSON =
-                    _array_tojson;
+                Array.prototype.toJSON = _array_tojson;
                 return r
             } else return TXLIVE_PRIVATE._json_stringify(value, replacer, spacer)
         }
@@ -3235,19 +2929,19 @@
             var index = 0;
             for (var sibling = element.previousSibling; sibling; sibling = sibling.previousSibling) {
                 if (sibling.nodeType == 10) continue;
-                if (sibling.nodeName == element.nodeName) ++index
+                if (sibling.nodeName ==
+                    element.nodeName) ++index
             }
             var tagName = element.nodeName.toLowerCase();
             var pathIndex = "[" + (index + 1) + "]";
             paths.unshift(tagName + pathIndex)
         }
-        return paths.length ?
-            "/" + paths.join("/") : null
+        return paths.length ? "/" + paths.join("/") : null
     };
     TXLIVE_PRIVATE.getSegmentsXPaths = function() {
         var xpaths = {};
-        for (var i = 0; i < TXLIVE.segment_list.length; ++i) {
-            var segment = TXLIVE.segment_list[i];
+        for (var key in TXLIVE.segments) {
+            var segment = TXLIVE.segments[key];
             for (var j = 0; j < segment.elements.length; ++j) {
                 var xpath = TXLIVE_PRIVATE.getXPath(segment.elements[j].node);
                 if (xpath) xpaths[xpath] = segment.key
@@ -3255,127 +2949,56 @@
         }
         return xpaths
     };
-    TXLIVE.analytics = TXLIVE.analytics || {};
-    TXLIVE.analytics.timers = TXLIVE.analytics.timers || [];
-    TXLIVE.analytics.queue = TXLIVE.analytics.queue || [];
-    TXLIVE.analytics.whitelist = [/transifex\.com$/,
-        /tx\.loc$/
-    ];
-    TXLIVE.analytics._is_whitelisted = function(host) {
-        var i = TXLIVE.analytics.whitelist.length;
-        while (i--)
-            if (TXLIVE.analytics.whitelist[i].test(host)) return true;
-        return false
-    };
-    TXLIVE.analytics._submit = function(event_type, event_value, event_extra) {
-        if ("undefined" == typeof event_type || "undefined" == typeof event_value) return;
-        if (!event_extra) event_extra = "";
-        var event_hostname, event_pathname;
-        if (!TXLIVE.settings.current_url) {
-            event_hostname = TXLIVE_PRIVATE.getWindowHost();
-            event_pathname = TXLIVE_PRIVATE.getWindowPath()
-        } else {
-            var l =
-                document.createElement("a");
-            l.href = TXLIVE.settings.current_url;
-            event_hostname = l.hostname;
-            event_pathname = l.pathname
-        }
-        var event_origin = "web";
-        if (TXLIVE.settings.wp) event_origin = "wordpress";
-        if (TXLIVE.settings.mode && TXLIVE.settings.mode == "preview") event_origin = "preview";
-        TXLIVE.analytics.queue.push({
-            event_type: event_type,
-            event_value: event_value,
-            event_extra: event_extra,
-            event_apikey: TXLIVE.settings.api_key,
-            event_timestamp: Date.now(),
-            event_hostname: event_hostname,
-            event_pathname: event_pathname,
-            event_origin: event_origin
-        });
-        if (!TXLIVE.analytics._consume_timer && TXLIVE.analytics._booted) TXLIVE.analytics._consume_timer = setTimeout(TXLIVE.analytics._consume, TXLIVE.analytics.consume_interval)
-    };
-    TXLIVE.analytics._consume = function() {
-        TXLIVE.analytics._consume_timer = null;
-        if (!TXLIVE.analytics.queue.length) return;
-        var queueCopy = JSON.stringify(TXLIVE.analytics.queue);
-        TXLIVE.logger.info("Submitting " + TXLIVE.analytics.queue.length + " points to analytics server.");
-        TXLIVE.analytics.queue = [];
-        TXLIVE.doCORSRequest(TXLIVE.analytics.analytics_endpoint,
-            "POST", queueCopy,
-            function(data) {})
-    };
-    TXLIVE.analytics.boot = function() {
-        TXLIVE.analytics.analytics_enabled = TXLIVE.settings.analytics_enabled || true;
-        if (!TXLIVE.analytics.analytics_enabled) return;
-        if (!TXLIVE.settings.wp && !TXLIVE.analytics._is_whitelisted(window.location.hostname)) {
-            TXLIVE.analytics.submitEvent = function() {};
-            TXLIVE.analytics.stopwatch = function() {};
-            TXLIVE.analytics.queue = [];
-            return
-        }
-        TXLIVE.analytics.analytics_endpoint = TXLIVE.settings.analytics_endpoint || "https://an-tx.transifex.com";
-        TXLIVE.analytics.consume_interval =
-            TXLIVE.settings.analytics_interval || 1E4;
-        TXLIVE.analytics._booted = true;
-        TXLIVE.analytics._consume()
-    };
-    TXLIVE.analytics.stopwatch = function(action, event_type, event_extra) {
-        if (action == "start") TXLIVE.analytics.timers[event_type] = (new Date).getTime();
-        else {
-            var time_taken = (new Date).getTime();
-            time_taken -= TXLIVE.analytics.timers[event_type];
-            delete TXLIVE.analytics.timers[event_type];
-            TXLIVE.analytics._submit(event_type, time_taken, event_extra)
-        }
-    };
-    TXLIVE.analytics.submitEvent = function(event_type, event_value, event_extra) {
-        if (!event_type) return;
-        event_value = event_value || 1;
-        TXLIVE.analytics._submit(event_type, event_value, event_extra)
-    };
 
     function __traverseready__() {
         if (TXLIVE.traverse_ready) return;
         TXLIVE.traverse_ready = true;
+        var i, key, tag;
         try {
             SKIP_TAGS_USER = {};
             if (TXLIVE.settings.ignore_tags && TXLIVE.settings.ignore_tags.length)
-                for (var i = 0; i < TXLIVE.settings.ignore_tags.length; ++i) {
-                    var tag = TXLIVE.settings.ignore_tags[i];
+                for (i = 0; i < TXLIVE.settings.ignore_tags.length; ++i) {
+                    tag = TXLIVE.settings.ignore_tags[i];
                     if (tag.length) SKIP_TAGS_USER[tag] = true
                 }
-        } catch (err$43) {
-            TXLIVE.logger.error(err$43)
+        } catch (err$37) {
+            TXLIVE.logger.error(err$37)
+        }
+        try {
+            if (TXLIVE.settings.enable_tags && TXLIVE.settings.enable_tags.length)
+                for (i = 0; i < TXLIVE.settings.enable_tags.length; ++i) {
+                    tag = TXLIVE.settings.enable_tags[i];
+                    if (tag.length) {
+                        delete SKIP_TAGS[tag];
+                        delete SKIP_TAGS_USER[tag]
+                    }
+                }
+        } catch (err$38) {
+            TXLIVE.logger.error(err$38)
         }
         try {
             SKIP_CLASS_USER = {};
             if (TXLIVE.settings.ignore_class && TXLIVE.settings.ignore_class.length)
-                for (var i =
-                        0; i < TXLIVE.settings.ignore_class.length; ++i) {
+                for (i = 0; i < TXLIVE.settings.ignore_class.length; ++i) {
                     var cls = TXLIVE.settings.ignore_class[i];
                     if (cls.length) SKIP_CLASS_USER[cls] = true
                 }
-        } catch (err$44) {
-            TXLIVE.logger.error(err$44)
+        } catch (err$39) {
+            TXLIVE.logger.error(err$39)
         }
         try {
-            if (TXLIVE.segment_list.length) {
-                TXLIVE.segment_list.splice(0, TXLIVE.segment_list.length);
-                for (var key in TXLIVE.segments) delete TXLIVE.segments[key]
-            }
-            TXLIVE.analytics.stopwatch("start", "parse_dom_time");
+            for (key in TXLIVE.segments) delete TXLIVE.segments[key];
+            TXLIVE.locquant_segment_list.splice(0, TXLIVE.locquant_segment_list.length);
             PARSE_DOM(document.head || document.getElementsByTagName("head")[0], [], PARSER_OPTIONS.DEFAULT);
-            PARSE_DOM(document.body || document.getElementsByTagName("body")[0], [], PARSER_OPTIONS.DEFAULT);
-            TXLIVE.analytics.stopwatch("stop", "parse_dom_time")
-        } catch (err$45) {
-            TXLIVE.logger.error(err$45)
+            PARSE_DOM(document.body || document.getElementsByTagName("body")[0],
+                [], PARSER_OPTIONS.DEFAULT)
+        } catch (err$40) {
+            TXLIVE.logger.error(err$40)
         }
         try {
             __init_mutators__()
-        } catch (err$46) {
-            TXLIVE.logger.error(err$46)
+        } catch (err$41) {
+            TXLIVE.logger.error(err$41)
         }
     }
 
@@ -3388,105 +3011,142 @@
         }
         __destroy_mutators__();
         TXLIVE.traverse_ready = false;
-        CLEAR_FLAGS_DOM(document.head || document.getElementsByTagName("head")[0],
-            true);
-        CLEAR_FLAGS_DOM(document.body || document.getElementsByTagName("body")[0], true);
+        CLEAR_FLAGS_DOM(document.head || document.getElementsByTagName("head")[0], true);
+        CLEAR_FLAGS_DOM(document.body ||
+            document.getElementsByTagName("body")[0], true);
         __traverseready__();
         if (previous_lang) TXLIVE.translateTo(previous_lang)
     }
 
-    function __init__() {
-        try {
-            benchmark = (new Date).getTime();
-            TXLIVE.analytics.stopwatch("start", "live_load_time")
-        } catch (err$47) {}
+    function __loadManifest__() {
+        if (TXLIVE_PRIVATE._load_manifest) return;
         setSettings(window.liveSettings, true);
         setSettings(window.proxyLiveSettings, true);
-        if (window.Raven && window.Raven.setUser)
-            if (TXLIVE.settings.api_key) window.Raven.setUser({
-                id: TXLIVE.settings.api_key
-            });
-            else if (TXLIVE.user) window.Raven.setUser({
-            id: TXLIVE.user.username,
-            email: TXLIVE.user.email
-        });
-        TXLIVE.languages_url = TXLIVE.settings.cdn || "//cdn.transifex.com/";
-        TXLIVE.autocollect_url = TXLIVE.settings.autocollect_url || "//clsrv.transifex.com";
-        if (TXLIVE.settings.prerender) window.prerenderReady = false;
-        TXLIVE.traverse_ready = false;
-        if (TXLIVE.settings.api_key && !TXLIVE.live_noop) {
-            if (TXLIVE.settings.version) TXLIVE.version = TXLIVE.settings.version;
-            var has_sidebar = TXLIVE_SIDEBAR.shouldOpen(),
-                previous_settings, previous_langs;
-            if (!has_sidebar) {
-                previous_settings = TXLIVE_PRIVATE.storage_get("txlive:settings");
-                previous_langs = TXLIVE_PRIVATE.storage_get("txlive:languages");
-                if (previous_settings && previous_langs) {
-                    setSettings(previous_settings);
-                    __traverseready__();
-                    setLanguages(previous_langs);
-                    TXLIVE.translateTo(TXLIVE.normalizeLangCode(TXLIVE.detectLanguage()))
-                }
+        if (!TXLIVE.settings.api_key || TXLIVE.live_noop) return;
+        TXLIVE_PRIVATE._load_manifest = true;
+        if (TXLIVE.settings.version) TXLIVE.version = TXLIVE.settings.version;
+        var base_url = (TXLIVE.settings.cdn || "//cdn.transifex.com/") + TXLIVE.settings.api_key +
+            "/" + TXLIVE.version;
+        window.transifex_manifest = function(manifest) {
+            if (!manifest) {
+                TXLIVE.logger.error("Empty manifest");
+                TXLIVE_PRIVATE.manifest = {};
+                __init__();
+                return
             }
-            window.transifex_settings = function(settings) {
-                if (!settings || !settings.production || !settings.staging) {
-                    TXLIVE.logger.error("Invalid settings json object");
-                    return
-                }
-                if (window.liveSettings.staging === undefined) TXLIVE.settings.staging = (settings.staging.domain ||
-                    "").toLowerCase() === TXLIVE_PRIVATE.getWindowHost().toLowerCase();
+            var settings = manifest.settings,
+                languages = manifest.languages;
+            if (settings) {
+                if (window.liveSettings.staging === undefined) TXLIVE.settings.staging = (settings.staging.domain || "").toLowerCase() === TXLIVE_PRIVATE.getWindowHost().toLowerCase();
                 var _filters = settings.filters;
                 settings = TXLIVE.settings.staging ? settings.staging : settings.production;
-                settings.filters = _filters;
-                TXLIVE_PRIVATE.storage_set("txlive:settings", settings);
-                setSettings(settings);
-                if (previous_settings && previous_langs && settings && TXLIVE.traverse_ready) try {
-                    if (JSON.stringify(previous_settings) !== JSON.stringify(settings)) __reload__()
-                } catch (err$48) {
-                    TXLIVE.logger.error(err$48)
-                }
+                settings.filters =
+                    _filters
+            } else TXLIVE.logger.error("Empty manifest.settings");
+            if (languages) languages = TXLIVE.settings.staging ? languages.staging : languages.production;
+            else TXLIVE.logger.error("Empty manifest.languages");
+            TXLIVE_PRIVATE.manifest = {
+                settings: settings,
+                languages: languages
             };
-            var base_url = TXLIVE.languages_url + TXLIVE.settings.api_key +
-                "/" + TXLIVE.version;
-            var langs_loaded = false;
-            window.transifex_languages = function(data) {
-                langs_loaded = true;
-                TXLIVE_PRIVATE.storage_set("txlive:languages", data);
-                setLanguages(data);
-                TXLIVE.translateTo(TXLIVE.normalizeLangCode(TXLIVE.detectLanguage()));
-                if (!TXLIVE.languages) __ready__()
-            };
-            TXLIVE.analytics.stopwatch("start", "settings_load_time");
-            TXLIVE.loadScript(base_url + "/settings.all.jsonp", function() {
-                TXLIVE.analytics.stopwatch("stop", "settings_load_time");
-                __traverseready__();
-                if (has_sidebar) __ready__();
-                else {
-                    var languages_partial_url =
-                        "";
-                    if (TXLIVE.settings.staging) languages_partial_url = "/languages.staging.jsonp";
-                    else languages_partial_url = "/languages.jsonp";
-                    TXLIVE.analytics.stopwatch("start", "languages_load_time");
-                    TXLIVE.loadScript(base_url + languages_partial_url, function() {
-                        TXLIVE.analytics.stopwatch("stop", "languages_load_time");
-                        setTimeout(function() {
-                            if (!langs_loaded) {
-                                __ready__();
-                                callFunctionArray(TXLIVE.__onerror, "[ERR3] Cannot load languages url: " + base_url.replace("{}", "languages"))
+            if (!TXLIVE_PRIVATE._domready && languages && languages.translation) {
+                var detected_langcode = TXLIVE.normalizeLangCode(TXLIVE.detectLanguage());
+                if (detected_langcode)
+                    for (var i = 0; i < languages.translation.length; ++i)
+                        if (languages.translation[i].code ===
+                            detected_langcode) {
+                            var key = TXLIVE_PRIVATE.apiScopedKey(detected_langcode + "@" + languages.timestamp);
+                            if (TXLIVE_PRIVATE.storage_get(key)) break;
+                            else {
+                                __loadlanguage__(detected_langcode, languages.translation[i].url, function(data) {
+                                    TXLIVE_PRIVATE.storage_set(key, data);
+                                    __init__()
+                                });
+                                return
                             }
-                        }, 100)
-                    })
+                        }
+            }
+            TXLIVE_PRIVATE.manifest_ready = true;
+            __init__()
+        };
+        TXLIVE.loadScript(base_url + "/manifest.jsonp", function() {
+            if (!TXLIVE_PRIVATE.manifest) {
+                TXLIVE_PRIVATE.manifest = {};
+                __init__()
+            }
+        })
+    }
+
+    function __loadlanguage__(langcode, url, callback) {
+        var lang_loaded =
+            false;
+        window["transifex_lang_" + TXLIVE_PRIVATE.escapeLanguageCode(langcode)] = function(data) {
+            lang_loaded = true;
+            callback(data)
+        };
+        TXLIVE.loadScript(url, function() {
+            if (!lang_loaded && TXLIVE.__onerror) callFunctionArray(TXLIVE.__onerror, "[ERR2] Cannot load translation url: " + url);
+            if (!lang_loaded && callback) callback()
+        })
+    }
+
+    function __init__() {
+        if (!TXLIVE_PRIVATE._domready) return;
+        try {
+            benchmark = (new Date).getTime()
+        } catch (err$42) {}
+        if (TXLIVE.settings.prerender && !TXLIVE.ready) window.prerenderReady = false;
+        if (!TXLIVE.settings.api_key ||
+            TXLIVE.live_noop) {
+            __traverseready__();
+            __ready__();
+            return
+        }
+        var settings = TXLIVE_PRIVATE.storage_get(TXLIVE_PRIVATE.apiScopedKey("txlive:settings")),
+            languages = TXLIVE_PRIVATE.storage_get(TXLIVE_PRIVATE.apiScopedKey("txlive:languages")),
+            manifest = TXLIVE_PRIVATE.manifest,
+            reload = false,
+            has_previous = settings && languages,
+            has_sidebar = TXLIVE_SIDEBAR.shouldOpen();
+        if (!has_previous && !manifest) return;
+        if (manifest) {
+            if (manifest.settings) {
+                TXLIVE_PRIVATE.storage_set(TXLIVE_PRIVATE.apiScopedKey("txlive:settings"), manifest.settings);
+                if (settings) try {
+                    if (JSON.stringify(settings) !== JSON.stringify(manifest.settings)) reload = true
+                } catch (err$43) {
+                    TXLIVE.logger.error(err$43)
                 }
-            })
-        } else {
+            }
+            if (manifest.languages) TXLIVE_PRIVATE.storage_set(TXLIVE_PRIVATE.apiScopedKey("txlive:languages"), manifest.languages);
+            settings = manifest.settings || settings;
+            languages = manifest.languages || languages
+        }
+        if (settings && languages) {
+            setSettings(settings);
+            if (reload) __reload__();
+            else __traverseready__();
+            if (!has_sidebar) {
+                setLanguages(languages);
+                if (TXLIVE.languages) TXLIVE.translateTo(TXLIVE.normalizeLangCode(TXLIVE.detectLanguage()));
+                else __ready__()
+            } else __ready__()
+        } else if (manifest) {
             __traverseready__();
             __ready__()
         }
     }
-    bindReady(__init__);
+    TXLIVE.init = function() {
+        TXLIVE_PRIVATE._domready = true;
+        __loadManifest__();
+        __init__()
+    };
+    bindReady(function() {
+        if (!TXLIVE.settings.manual_init) TXLIVE.init()
+    });
     bindLoad(function() {
         TXLIVE.autocollect_ready = true;
-        autocollectConsume();
-        TXLIVE.analytics.submitEvent("segment_count", Object.keys(TXLIVE.segments).length)
-    })
+        autocollectConsume()
+    });
+    setTimeout(__loadManifest__, 0)
 })();

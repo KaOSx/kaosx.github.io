@@ -12,7 +12,7 @@
             </tr>
             <tr>
                 <td class="cctable">
-                    You are about to flag <b><?php echo $package['CompleteName']; ?></b> as outdated, write any additional information here.
+                    You are about to flag <b><?= $package['CompleteName'] ?></b> as outdated, write any additional information here.
                     <br>
                     Use <a href="https://kaosx.us/bugs"><u>Bugs</u></a> <b>for broken packages</b>.
                     <br>
@@ -42,5 +42,5 @@
 <br>
 <br>
 <div align="center" class="Button">
-    <a href="view.php?repo=<?php echo $package['Repository']; ?>&name=<?php echo $package['CompleteName']; ?>">Back to package</a>
+    <a href="view.php?name=<?= $package['FullName'] ?>">Back to package</a>
 </div>

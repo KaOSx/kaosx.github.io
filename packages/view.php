@@ -7,14 +7,12 @@ $page_title = 'Online Package Viewer';
 
 function render()
 {
-    $repo = isset($_GET['repo']) ? $_GET['repo'] : '';
-    $name = isset($_GET['name']) ? $_GET['name'] : '';
+    $name = $_GET['name'] ?? '';
     $result = execRequest('/package/view', [
-        'repo' => $repo,
         'name' => $name,
     ]);
-    if ($result === false || !isset($result['data'])) {
-        echo 'Package “'.$repo.'/'.$name.'” not found.';
+    if ($result === false || !isset($result['data']) || !is_array($result['data'])) {
+        echo "Package “${name}” not found.";
         return;
     }
     $package = $result['data'];

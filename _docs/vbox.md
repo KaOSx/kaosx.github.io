@@ -91,4 +91,4 @@ Now you are ready to reboot.
 Since there is no login manager, you will boot into a shell, type your username and password to login, next type:
 `startx`
 to start the plasma session. As long as you want to use the guest additon modules and there is no fix for sddm, this is the way you will have to start on each boot.
-But Plasma 5 will now run full screen in your vbox :)
+But Plasma 6 will now run full screen in your vbox :)

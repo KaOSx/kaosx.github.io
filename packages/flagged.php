@@ -8,7 +8,6 @@ $page_title = 'Online Package Viewer';
 function render()
 {
     $result = execRequest('/flag/list', [
-        'flagged' => 1,
         'sortby'  => 'name',
         'sortdir' => 'asc',
     ]);
@@ -16,7 +15,7 @@ function render()
         echo 'Internal servor error';
         return;
     }
-    $flags = $result['data'] ? $result['data'] : [];
+    $flags = $result['data'] ?? [];
     include __DIR__.'/tpl/flaggedpackages.php';
 };
 

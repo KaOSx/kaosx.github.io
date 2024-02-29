@@ -51,7 +51,19 @@ If you use the linux-next kernel:
 sudo pacman -S nvidia nvidia-next
 ```
 
-If you have an older card (GeForce 400/500 series cards `NVCx and NVDx` from around 2010-2011):
+If you have an older card (GeForce 600 - 900 series cards `NVSx and Tesla`):
+
+```
+sudo pacman -S nvidia-470xx
+```
+
+If you use the linux-next kernel add:
+
+```
+sudo pacman -S nvidia-470xx-next
+```
+
+If you have an even older card (GeForce 400/500 series cards `NVCx and NVDx` from around 2010-2011):
 
 ```
 sudo pacman -S nvidia-390xx-next
@@ -63,7 +75,7 @@ If you use the linux-next kernel add:
 sudo pacman -S nvidia-390xx
 ```
 
-This will automatically install the needed nvidia-utils version too. If you want to use the GUI for nvidia, add nvidia-settings to what you install, this pulls in gtk2, so it is packaged separately.
+This will automatically install the needed nvidia-utils version too. If you want to use the GUI for nvidia, add nvidia-settings to what you install, this pulls in GTK, so it is packaged separately.
 
 After all is installed, reboot to load the new driver.
 

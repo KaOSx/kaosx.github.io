@@ -3,13 +3,14 @@
 function getParameters()
 {
     $form = [
-        'sortby'  => (isset($_GET['sortby'])) ? $_GET['sortby'] : '',
-        'sortdir' => (isset($_GET['sortdir'])) ? $_GET['sortdir'] : '',
-        'flagged' => (isset($_GET['flagged'])) ? $_GET['flagged'] : '',
-        'page'    => (isset($_GET['page'])) ? $_GET['page'] : '',
-        'search'  => (isset($_GET['search'])) ? $_GET['search'] : '',
-        'repo'    => (isset($_GET['repo'])) ? $_GET['repo'] : '',
-        'exact'   => (isset($_GET['exact'])) ? $_GET['exact'] : '',
+        'sortby'  => $_GET['sortby'] ?? '',
+        'sortdir' => $_GET['sortdir'] ?? '',
+        'flagged' => $_GET['flagged'] ?? '',
+        'page'    => $_GET['page'] ?? '',
+        'search'  => $_GET['search'] ?? '',
+        'repo'    => $_GET['repo'] ?? '',
+        'exact'   => $_GET['exact'] ?? '',
+        'limit'   => $_GET['limit'] ?? '',
     ];
     return $form;
 }
@@ -21,7 +22,7 @@ function renderForm(array $form, $form_title = 'Repositories list', $form_descri
 
 function execRequest($req, $args = [], $method = 'POST')
 {
-    $url = APIURL.$req;
+    $url  = APIURL.$req;
     $curl = curl_init();
     switch ($method) {
         case "POST":

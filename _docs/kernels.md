@@ -21,7 +21,7 @@ comments: []
 ---
 {:toc}
 
-KaOS does not fully roll the stable kernel, once a new kernel is tested well and makes it to stable, it usually stays at the same version for about six weeks. It only is updated once a new major version reaches about 4.xx.7 or 4.xx.8. The kernel is about the biggest cause for breakage in a rolling distribution, that is why this policy. That does not mean you can't have the latest kernel in KaOS, linux-next is fully rolling and is always at the latest version. Please follow these instructions to add this kernel to your install (and you will be helping to get the next stable kernel up in as good a shape as possible):
+KaOS does not fully roll the stable kernel, once a new kernel is tested well and makes it to stable, it usually stays at the same version for about six weeks. It only is updated once a new major version reaches about 6.xx.7 or 6.xx.8. The kernel is about the biggest cause for breakage in a rolling distribution, that is why this policy. That does not mean you can't have the latest kernel in KaOS, linux-next is fully rolling and is always at the latest version. Please follow these instructions to add this kernel to your install (and you will be helping to get the next stable kernel up in as good a shape as possible):
 
 ### Linux-next
 
