@@ -24,9 +24,11 @@ comments: []
 
 ![USB stick](/wp-content/uploads/2013/07/Drive-USB-150x150.png){: .alignleft .size-thumbnail}
 
-In order to put a KaOS ISO image onto an USB flash drive, you will need a drive capable of storing 3.3 Gb, a system with USB ports and some specialized software.
+In order to put a KaOS ISO image onto an USB flash drive, you will need a drive capable of storing 8 Gb, a system with USB ports and some specialized software.
 
-Make sure the system where you will boot the USB flash drive from, has USB ports and can boot USB flash drives.  Before following any steps, make sure the device is plugged in but not mounted.
+Make sure the system where you will boot the USB flash drive from, has functional USB ports and can boot USB flash drives.  Before following any steps, make sure the device is plugged in but not mounted.
+
+Some UEFI implementations struggle with USB3/USB2 compatability mode. Its best to use USB 2 sticks on USB 2 ports, and vice versa. 
 
 ```fix
 Unetbootin and Rufus are NOT compatible with KaOS.
