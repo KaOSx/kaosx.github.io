@@ -31,11 +31,7 @@ The built-in kernel modesetting driver might provide direct rendering (DRI2 and 
 $ cat /var/log/Xorg.0.log|grep DRI
 
 ```
-If you don't see any driver name (iHD, i965, radeonsi) then DRI is not working and you need to install a driver.
-
-For Intel graphics, install media-driver. If you see problems when playing videos then remove media-driver and install libva-intel-driver.
-
-For AMD and ATI, install libva-mesa-driver.
+If you don't see any driver name (iHD, i965, radeonsi) then DRI is not working and you need to install media-driver. If you see problems when playing videos with Intel graphics then remove media-driver and install libva-intel-driver.
 
 To verify if VA-API works, install libva-utils and run:
 
@@ -51,4 +47,4 @@ $ LIBGL_DEBUG=verbose glxinfo | grep libgl
 ```
 
 More info see:
-[https://wiki.archlinux.org/title/Hardware_video_acceleration)
+[https://wiki.archlinux.org/title/Hardware_video_acceleration]
