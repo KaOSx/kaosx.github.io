@@ -2,7 +2,7 @@
 layout: docs
 status: publish
 published: true
-title: hardware video acceleration
+title: Hardware Video Acceleration
 permalink: /docs/hw_accel/
 author:
   display_name: Even Becker
@@ -20,10 +20,7 @@ tags: []
 comments: []
 ---
 
-
-**hardware video acceleration**
-
-The video card can decode/encode video and render KDE Plasma effects. It reduces CPU usage and save power. Hardware video acceleration does not work out of the box. This short tutorial focus on VA-API, which is the  most commonly used method for Intel and AMD/ATI GPUs.
+The video card can decode/encode video and render KDE Plasma effects. It reduces CPU usage and save power. Hardware video acceleration does not work out of the box for intel cards. This short tutorial focus on VA-API, which is the  most commonly used method for Intel.
 
 The built-in kernel modesetting driver might provide direct rendering (DRI2 and DRI3) out of the box via the Glamor accelmethod. To check it, run:
 

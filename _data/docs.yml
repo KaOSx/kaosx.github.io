@@ -18,6 +18,7 @@
   - hybrid_gfx
   - moving_home
   - print
+  - hw_accel
 
 - title: Security
   docs:
