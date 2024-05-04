@@ -47,6 +47,7 @@ sudo systemctl enable --now systemd-resolved
 
 ```
 Then edit the following file: /etc/systemd/resolved.conf
+
 For example, to use Google’s DNS server, copy these lines:
 ```
 [Resolve]
