@@ -47,4 +47,4 @@ $ LIBGL_DEBUG=verbose glxinfo | grep libgl
 ```
 
 More info see:
-[https://en.wikipedia.org/wiki/Graphics_processing_unit#GPU_accelerated_video_decoding_and_encoding)
+[https://en.wikipedia.org/wiki/Graphics_processing_unit#GPU_accelerated_video_decoding_and_encoding](https://en.wikipedia.org/wiki/Graphics_processing_unit#GPU_accelerated_video_decoding_and_encoding)
