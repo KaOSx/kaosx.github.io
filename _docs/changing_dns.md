@@ -59,8 +59,7 @@ If you want further security/privacy, you can use Quad9’s DNS server with:
 DNS=9.9.9.9#dns.quad9.net 149.112.112.112#dns.quad9.net
 ```
 
-Quad9 has an exceptionally large list of known malicious domains and block them to help prevent users’ computers and smart devices from connecting to malware-ridden and phishing websites. In addition, Quad9 does not collect or sell user data. More info see:
-[https://www.quad9.net/news/blog/why-should-i-switch-to-a-security-and-privacy-focused-dns-server/](https://www.quad9.net/news/blog/why-should-i-switch-to-a-security-and-privacy-focused-dns-server/)
+Quad9 has an exceptionally large list of known malicious domains and block them to help prevent users’ computers and smart devices from connecting to malware-ridden and phishing websites. In addition, Quad9 does not collect or sell user data. More info see this [Quad9 article](https://www.quad9.net/news/blog/why-should-i-switch-to-a-security-and-privacy-focused-dns-server/)
 
 ### DNS Encryption
 {: .offset}
