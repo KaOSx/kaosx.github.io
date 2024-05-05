@@ -43,5 +43,4 @@ Sometimes only DRI2 works. To check DRI3, run:
 $ LIBGL_DEBUG=verbose glxinfo | grep libgl
 ```
 
-More info see:
-[https://en.wikipedia.org/wiki/Graphics_processing_unit#GPU_accelerated_video_decoding_and_encoding]
+More info see [wikipedia](https://en.wikipedia.org/wiki/Graphics_processing_unit#GPU_accelerated_video_decoding_and_encoding)
