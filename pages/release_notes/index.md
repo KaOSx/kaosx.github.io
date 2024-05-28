@@ -20,34 +20,27 @@ tags: []
 comments: []
 ---
 
-### KaOS - 2024.03
+### KaOS - 2024.05
 
-KaOS is pleased to announce the availability of the March release of a new stable ISO.
+It is a great pleasure to present to you the May release of a new stable ISO.
 
-[Plasma 6.0 (stable release)](https://kde.org/announcements/megarelease/6/){:target="_blank"} is of course to focal point of this release.  Highlights of this new version include two major upgrades: a transition to the latest version of our application framework, Qt, and a migration to the modern Linux graphics platform, Wayland. These under-the-hood upgrades benefit Plasma's security, efficiency, and performance, and improve support for modern hardware. Plasma on Wayland now has partial support for High Dynamic Range (HDR). On supported monitors and software, this will provide you with richer and deeper colors for your games, videos, and visual creations.
+For the Plasma desktop, the latest Plasma (6.0.5), [KDE Gear (24.05.0)](https://kde.org/announcements/gear/24.05.0/){:target="_blank"}, and Frameworks (6.2.0) are included. All built on **Qt 6.7.1**. Among the many changes included in KDE Gear 24.05 are, Dolphin provides a more tailored and informative insights into specific folders by default, so when browsing through recently used files and folders, users will find modification times listed by default and have streamlined access to the most recent items. Itinerary now shows more information about your train and coach facilities. This includes general comfort features such as air conditioning or Wi-Fi, as well as things specifically relevant if you are traveling with young children, a bicycle or a wheelchair. Kdenlive 24.05 added group effects, effects that can be added to clips grouped together all at the same time.
 
-**New defaults** (configurable to whatever you prefer):
- * Files and folders are now selected with a single-click and opened with a double-click
- * Touchpad tap-to-click is enabled by default on Wayland
- * Wayland is the default graphical session
- * `Thumbnail Grid` is the new default Task Switcher style
- * Clicking on the scrollbar track now scrolls to the clicked location
- * Scrolling on the desktop no longer switches virtual desktops
- * Panels float by default
+More applications are now ready to use Qt6 and Frameworks 6 including Gcompris, Calligra, KWave, and Kaffeine
 
-On many settings pages, buttons have been relocated to the toolbar, enhancing consistency with our other applications and creating additional space for the actual content.
+Support has been added for the all-new filesystem **bcachefs**, it is still in experimental stage but is included in the kernel build, and the needed bcachefs-tools are available in the repositories.
 
-You now have the option to customize your sound theme, and a new default sound theme named `Ocean` has been introduced to replace the `Oxygen` sound theme.
+A new Phonon sound backend is added.  So far VLC was used, but there is no Qt6 porting for VLC yet.  Using **phonon-mpv** as default now, gives a fully Qt 6 ready backend.
 
-The Look & Feel is also updated for the Plasma 6 move, with the Midna theme, exclusive to KaOS, fully redone.
+New for this ISO  is to no longer include the kernel modesetting for all graphics cards, thus shaving roughly 700 Mb of the ISO size.
 
-For the rest of the Plasma 6 desktop, KDE Gear 24.02.0 and Frameworks 6.0.0 are included. Changes included in **KDE Gear 24.02** are KOrganizer now lets you send encrypted and signed email invitations — important if your work requires confidentiality. KMail now supports a few offline and open source AI features.  Kdenlive added support for replacing the audio or the video of a clip in a timeline and further enhanced its subtitle feature, allowing you to incorporate multiple subtitles onto a single track. All built on **Qt 6.6.2**.
+Four years after being end of life, **GTK2 is finally removed from the KaOS repositories**.  The one major application left that still required GTK2 was Ardour, but with 8.4.0, an internal YTK is used, thus GTK2 is now gone.
+
+Updates to the base of the system included a move to Python 3.11, Glib2 2.80 stack, kernel moved to Linux 6.8.10, Systemd 253.19, ZFS 2.2.4, KMod 32, OpenSSL 3.3, FFMPEG 6.1, OpenJDK 17 and Mesa 24.0.7.
+
+Among the new packages included is **Marknote**, a nicely in Plasma 6 integrated note management application.
 
 Four years after being end of life, **GTK2 is finally removed from the KaOS repositories**.  The one major application left that had still required GTK2 was Ardour, but with 8.4.0, an internal YTK is used, thus GTK2 is now gone.
-
-Updates to the base of the system included a move to a **GCC 13.2.1, Glibc 2.39 & Binutils 2.42 based toolchain**, Opencv 4.9.0, kernel moved to Linux 6.7.9, Systemd 253.17, ZFS 2.2.3, KMod 32, OpenSSL 3.2, Gstreamer 1.24.0, and Mesa 24.0.2.
-
-Among the new packages included is **Systemdgenie**, a nicely in Plasma 6 integrated GUI to manage systemd.
 
 SDDM 0.20.0 added the option to run this display manager in Wayland mode, so KaOS is one step closer to being ready to move away from X11. The shell used to run in Wayland mode is kwin_wayland (upstream default is using Weston).
 
@@ -82,12 +75,12 @@ To learn more about the goals and ideas behind KaOS, please read the [Home](http
 
 To avoid any misunderstanding and confusion, KaOS is **not based upon, derived of, or inspired by** any one particular distribution. It is completely independent, build entirely from scratch with its own repositories. To read more about this see [Based](https://kaosx.us/about/based/). A **rolling release distribution** never has a `final` release, every ISO is merely a snapshot of the current status of the repositories. An idea what is currently available:
 
-The ISO ships with **Frameworks 6.0.0, Plasma 6.0.2, KDE Applications 24.02.0**, Linux 6.7.9, Systemd 253.17, Kmod 32, NetworkManager 1.46.0, LibreOffice 24.2.1, Elisa, Xorg-Server 1.21.11, Mesa 24.0.2, Glibc 2.39, GCC 13.2.1, non-free Nvidia 550 and Python3 3.10.13 to name a few.
+The ISO ships with **Frameworks 6.2.0, Plasma 6.0.5, KDE Applications 24.05.0**, Linux 6.8.11, Systemd 253.19, Kmod 32, NetworkManager 1.46.0, LibreOffice 24.2.3, Elisa, Xorg-Server 1.21.13, Mesa 24.0.8, Glibc 2.39, GCC 13.2.1, non-free Nvidia 550 and Python3 3.11.9 to name a few.
 
-The package manager is **Pacman 6.0.2**, with the simple but powerful Octopi 0.15.0 as GUI frontend. Falkon is the default, Qt based, web browser. **GFXboot** is included with KaOS artwork, Grub theme is Midna, Look &amp; Feel is a KaOS exclusive version Midna.
+The package manager is **Pacman 6.0.2**, with the simple but powerful Octopi 0.16.0 as GUI frontend. Falkon is the default, Qt based, web browser. **GFXboot** is included with KaOS artwork, Grub theme is Midna, Look &amp; Feel is a KaOS exclusive version Midna.
 
 **Repositories** of KaOS will stay limited in size and expect it to stay at the current maximum of about 2100-2200 packages. A gist of what is available, besides the stable kernel there is Linux-next 6.7, Calligra 3.2.1, VLC, Vokoscreen, Blender, Kodi, Calibre, Sigil, Vulkan packages, a few games like 0ad and Knights.  
-A limited number of the most well-known GTK applications are available, for example, Firefox 123, Chrome 123, Ardour 8.4.0, Inkscape 1.3, GIMP 2.99.18 and Thunderbird 115. Complete language packs are available for KDE, Calligra, Firefox, LibreOffice and Thunderbird. For IM, Fcitx 4.2.9.9 is available as a rather complete group.
+A limited number of the most well-known GTK applications are available, for example, Firefox 126, Chrome 127, Ardour 8.6.0, Inkscape 1.3, GIMP 2.99.18 and Thunderbird 125. Complete language packs are available for KDE, Calligra, Firefox, LibreOffice and Thunderbird. For IM, Fcitx 4.2.9.9 is available as a rather complete group.
 
 **Known issues:**
 
