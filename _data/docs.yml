@@ -25,6 +25,7 @@
   - ufw
   - tomoyo
   - dm_crypt-luks
+  - changing_dns
 
 - title: Packaging & KCP
   docs:
