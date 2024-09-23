@@ -1,8 +1,5 @@
-/*
- @license DOMPurify | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.0.8/LICENSE */
-'use strict';
 (function() {
-    var LIB_VERSION = 138;
+    var LIB_VERSION = 119;
     window.Transifex = window.Transifex || {};
     window.Transifex.live = window.Transifex.live || {};
     window.Transifex.live._ = window.Transifex.live._ || {};
@@ -15,7 +12,6 @@
     TXLIVE_PRIVATE.removeCommentsRegex =
         /\x3c!--([\s\S]*?)--\x3e/g;
     TXLIVE_PRIVATE.manifest_ready = false;
-    TXLIVE_PRIVATE.language_views_tracked_onload = false;
     if (TXLIVE.loaded && TXLIVE.lib_version && TXLIVE.lib_version >= LIB_VERSION) return;
     TXLIVE.loaded = true;
     TXLIVE.ready = false;
@@ -33,10 +29,10 @@
         dynamic: true
     };
 
-    function setSettings(options,
-        override) {
+    function setSettings(options, override) {
         if (!options) return;
-        var k, i;
+        var k,
+            i;
         if (override)
             for (k in options) TXLIVE.settings[k] = options[k];
         else
@@ -46,35 +42,29 @@
         TXLIVE.settings.prerender = Boolean(TXLIVE.settings.prerender | 0);
         TXLIVE.settings.dynamic = Boolean(TXLIVE.settings.dynamic | 0);
         TXLIVE.settings.rtl_layout = Boolean(TXLIVE.settings.rtl_layout | 0);
-        TXLIVE.settings.xss_protect = Boolean(TXLIVE.settings.xss_protect |
+        TXLIVE.settings.xss_protect = Boolean(TXLIVE.settings.xss_protect | 0);
+        TXLIVE.settings.manual_init = Boolean(TXLIVE.settings.manual_init |
             0);
-        TXLIVE.settings.manual_init = Boolean(TXLIVE.settings.manual_init | 0);
-        TXLIVE.settings.reload_on_language_picker = Boolean(TXLIVE.settings.reload_on_language_picker | 0);
         TXLIVE.settings.translate_urls = Boolean(TXLIVE.settings.translate_urls | 0);
         TXLIVE.settings.ignore_databind = Boolean(TXLIVE.settings.ignore_databind | 0);
         TXLIVE.settings.staging = Boolean(TXLIVE.settings.staging | 0);
         TXLIVE.settings.cdn = TXLIVE.settings.cdn || "//cdn.transifex.com/";
-        TXLIVE.settings.autocollect_url = TXLIVE.settings.autocollect_url ||
-            "//live-detector.svc.transifex.net";
+        TXLIVE.settings.autocollect_url = TXLIVE.settings.autocollect_url || "//live-detector.svc.transifex.net";
         TXLIVE.settings.sidebar_base_url = TXLIVE.settings.sidebar_base_url || "https://app.transifex.com";
-        TXLIVE.settings.assets_base_url = TXLIVE.settings.assets_base_url || TXLIVE.settings.sidebar_base_url;
+        TXLIVE.settings.assets_base_url =
+            TXLIVE.settings.assets_base_url || TXLIVE.settings.sidebar_base_url;
         TXLIVE.settings.sidebar_lang = TXLIVE.settings.sidebar_lang || "en";
-        TXLIVE.settings.telemetry_url = TXLIVE.settings.telemetry_url || "https://telemetry.svc.transifex.net/live/integration";
-        if ("ping_telemetry" in TXLIVE.settings) TXLIVE.settings.ping_telemetry = !!TXLIVE.settings.ping_telemetry;
-        else TXLIVE.settings.ping_telemetry = true;
         if (TXLIVE.settings.detectlang && typeof TXLIVE.settings.detectlang === "string") TXLIVE.settings.detectlang = Boolean(TXLIVE.settings.detectlang | 0);
         if (TXLIVE.settings.parse_attr && TXLIVE.settings.parse_attr.length)
             for (i = 0; i < TXLIVE.settings.parse_attr.length; ++i) TXLIVE.settings.parse_attr[i] = TXLIVE.settings.parse_attr[i].toLowerCase();
         if (TXLIVE.settings.enable_tags && TXLIVE.settings.enable_tags.length)
-            for (i = 0; i < TXLIVE.settings.enable_tags.length; ++i) TXLIVE.settings.enable_tags[i] =
-                (TXLIVE.settings.enable_tags[i] || "").toUpperCase();
+            for (i =
+                0; i < TXLIVE.settings.enable_tags.length; ++i) TXLIVE.settings.enable_tags[i] = (TXLIVE.settings.enable_tags[i] || "").toUpperCase();
         if (TXLIVE.settings.ignore_tags && TXLIVE.settings.ignore_tags.length)
             for (i = 0; i < TXLIVE.settings.ignore_tags.length; ++i) TXLIVE.settings.ignore_tags[i] = (TXLIVE.settings.ignore_tags[i] || "").toUpperCase();
         if (TXLIVE.settings.ignore_class && TXLIVE.settings.ignore_class.length)
-            for (i = 0; i < TXLIVE.settings.ignore_class.length; ++i) TXLIVE.settings.ignore_class[i] = (TXLIVE.settings.ignore_class[i] || "").toLowerCase();
-        if (TXLIVE.settings.tags_as_blocks && TXLIVE.settings.tags_as_blocks.length)
-            for (i =
-                0; i < TXLIVE.settings.tags_as_blocks.length; ++i) TXLIVE.settings.tags_as_blocks[i] = (TXLIVE.settings.tags_as_blocks[i] || "").toUpperCase()
+            for (i = 0; i < TXLIVE.settings.ignore_class.length; ++i) TXLIVE.settings.ignore_class[i] = (TXLIVE.settings.ignore_class[i] ||
+                "").toLowerCase()
     }(function() {
         var _prevDOMPurify = window.DOMPurify;
         ! function(e, t) {
@@ -86,17 +76,17 @@
                 r = Object.freeze,
                 o = Object.seal,
                 i = Object.create,
-                a = "undefined" != typeof Reflect &&
-                Reflect,
+                a = "undefined" != typeof Reflect && Reflect,
                 l = a.apply,
                 c = a.construct;
             l || (l = function(e, t, n) {
                 return e.apply(t, n)
             }), r || (r = function(e) {
                 return e
-            }), o || (o = function(e) {
-                return e
-            }), c || (c = function(e, t) {
+            }), o || (o =
+                function(e) {
+                    return e
+                }), c || (c = function(e, t) {
                 return new(Function.prototype.bind.apply(e, [null].concat(function(e) {
                     if (Array.isArray(e)) {
                         for (var t = 0, n = Array(e.length); t < e.length; t++) n[t] = e[t];
@@ -114,10 +104,11 @@
                 h = T(String.prototype.indexOf),
                 g = T(String.prototype.trim),
                 v = T(RegExp.prototype.test),
-                b = (s = TypeError, function() {
-                    for (var e = arguments.length, t = Array(e), n = 0; n < e; n++) t[n] = arguments[n];
-                    return c(s, t)
-                });
+                b = (s = TypeError,
+                    function() {
+                        for (var e = arguments.length, t = Array(e), n = 0; n < e; n++) t[n] = arguments[n];
+                        return c(s, t)
+                    });
 
             function T(e) {
                 return function(t) {
@@ -145,30 +136,31 @@
                 for (r in t) l(e, t, [r]) && (n[r] = t[r]);
                 return n
             }
-            var S = r(["a", "abbr", "acronym", "address", "area", "article", "aside", "audio", "b", "bdi", "bdo", "big", "blink", "blockquote", "body", "br", "button", "canvas", "caption", "center", "cite", "code", "col", "colgroup", "content", "data", "datalist", "dd", "decorator", "del", "details", "dfn", "dir", "div", "dl", "dt", "element", "em", "fieldset", "figcaption", "figure", "font", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "head", "header", "hgroup", "hr", "html", "i", "img", "input", "ins", "kbd", "label",
-                    "legend", "li", "main", "map", "mark", "marquee", "menu", "menuitem", "meter", "nav", "nobr", "ol", "optgroup", "option", "output", "p", "picture", "pre", "progress", "q", "rp", "rt", "ruby", "s", "samp", "section", "select", "shadow", "small", "source", "spacer", "span", "strike", "strong", "style", "sub", "summary", "sup", "table", "tbody", "td", "template", "textarea", "tfoot", "th", "thead", "time", "tr", "track", "tt", "u", "ul", "var", "video", "wbr"
+            var S = r(["a", "abbr", "acronym", "address", "area", "article",
+                    "aside", "audio", "b", "bdi", "bdo", "big", "blink", "blockquote", "body", "br", "button", "canvas", "caption", "center", "cite", "code", "col", "colgroup", "content", "data", "datalist", "dd", "decorator", "del", "details", "dfn", "dir", "div", "dl", "dt", "element", "em", "fieldset", "figcaption", "figure", "font", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "head", "header", "hgroup", "hr", "html", "i", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "map", "mark", "marquee", "menu", "menuitem", "meter", "nav", "nobr", "ol", "optgroup",
+                    "option", "output", "p", "picture", "pre", "progress", "q", "rp", "rt", "ruby", "s", "samp", "section", "select", "shadow", "small", "source", "spacer", "span", "strike", "strong", "style", "sub", "summary", "sup", "table", "tbody", "td", "template", "textarea", "tfoot", "th", "thead", "time", "tr", "track", "tt", "u", "ul", "var", "video", "wbr"
                 ]),
-                k = r(["svg", "a", "altglyph", "altglyphdef", "altglyphitem", "animatecolor", "animatemotion", "animatetransform",
-                    "audio", "canvas", "circle", "clippath", "defs", "desc", "ellipse", "filter", "font", "g", "glyph", "glyphref", "hkern", "image", "line", "lineargradient", "marker", "mask", "metadata", "mpath", "path", "pattern", "polygon", "polyline", "radialgradient", "rect", "stop", "style", "switch", "symbol", "text", "textpath", "title", "tref", "tspan", "video", "view", "vkern"
+                k = r(["svg", "a", "altglyph", "altglyphdef", "altglyphitem", "animatecolor", "animatemotion", "animatetransform", "audio", "canvas", "circle", "clippath", "defs", "desc", "ellipse", "filter", "font", "g", "glyph",
+                    "glyphref", "hkern", "image", "line", "lineargradient", "marker", "mask", "metadata", "mpath", "path", "pattern", "polygon", "polyline", "radialgradient", "rect", "stop", "style", "switch", "symbol", "text", "textpath", "title", "tref", "tspan", "video", "view", "vkern"
                 ]),
-                _ = r(["feBlend", "feColorMatrix", "feComponentTransfer", "feComposite", "feConvolveMatrix", "feDiffuseLighting", "feDisplacementMap", "feDistantLight", "feFlood", "feFuncA", "feFuncB",
-                    "feFuncG", "feFuncR", "feGaussianBlur", "feMerge", "feMergeNode", "feMorphology", "feOffset", "fePointLight", "feSpecularLighting", "feSpotLight", "feTile", "feTurbulence"
+                _ = r(["feBlend", "feColorMatrix", "feComponentTransfer", "feComposite", "feConvolveMatrix", "feDiffuseLighting", "feDisplacementMap", "feDistantLight", "feFlood", "feFuncA", "feFuncB", "feFuncG", "feFuncR", "feGaussianBlur", "feMerge", "feMergeNode", "feMorphology", "feOffset",
+                    "fePointLight", "feSpecularLighting", "feSpotLight", "feTile", "feTurbulence"
                 ]),
                 D = r(["math", "menclose", "merror", "mfenced", "mfrac", "mglyph", "mi", "mlabeledtr", "mmultiscripts", "mn", "mo", "mover", "mpadded", "mphantom", "mroot", "mrow", "ms", "mspace", "msqrt", "mstyle", "msub", "msup", "msubsup", "mtable", "mtd", "mtext", "mtr", "munder", "munderover"]),
                 E = r(["#text"]),
-                L = r(["accept", "action", "align", "alt", "autocapitalize", "autocomplete",
-                    "autopictureinpicture", "autoplay", "background", "bgcolor", "border", "capture", "cellpadding", "cellspacing", "checked", "cite", "class", "clear", "color", "cols", "colspan", "controls", "controlslist", "coords", "crossorigin", "datetime", "decoding", "default", "dir", "disabled", "disablepictureinpicture", "disableremoteplayback", "download", "draggable", "enctype", "enterkeyhint", "face", "for", "headers", "height", "hidden", "high", "href", "hreflang", "id", "inputmode", "integrity", "ismap", "kind", "label", "lang", "list", "loading", "loop",
-                    "low", "max", "maxlength", "media", "method", "min", "minlength", "multiple", "muted", "name", "noshade", "novalidate", "nowrap", "open", "optimum", "pattern", "placeholder", "playsinline", "poster", "preload", "pubdate", "radiogroup", "readonly", "rel", "required", "rev", "reversed", "role", "rows", "rowspan", "spellcheck", "scope", "selected", "shape", "size", "sizes", "span", "srclang", "start", "src", "srcset", "step", "style", "summary", "tabindex", "title", "translate", "type", "usemap", "valign", "value", "width", "xmlns"
+                L = r(["accept", "action", "align", "alt", "autocapitalize", "autocomplete", "autopictureinpicture", "autoplay", "background", "bgcolor", "border", "capture", "cellpadding",
+                    "cellspacing", "checked", "cite", "class", "clear", "color", "cols", "colspan", "controls", "controlslist", "coords", "crossorigin", "datetime", "decoding", "default", "dir", "disabled", "disablepictureinpicture", "disableremoteplayback", "download", "draggable", "enctype", "enterkeyhint", "face", "for", "headers", "height", "hidden", "high", "href", "hreflang", "id", "inputmode", "integrity", "ismap", "kind", "label", "lang", "list", "loading", "loop", "low", "max", "maxlength", "media", "method", "min", "minlength", "multiple", "muted", "name",
+                    "noshade", "novalidate", "nowrap", "open", "optimum", "pattern", "placeholder", "playsinline", "poster", "preload", "pubdate", "radiogroup", "readonly", "rel", "required", "rev", "reversed", "role", "rows", "rowspan", "spellcheck", "scope", "selected", "shape", "size", "sizes", "span", "srclang", "start", "src", "srcset", "step", "style", "summary", "tabindex", "title", "translate", "type", "usemap", "valign", "value", "width", "xmlns"
                 ]),
-                w = r(["accent-height",
-                    "accumulate", "additive", "alignment-baseline", "ascent", "attributename", "attributetype", "azimuth", "basefrequency", "baseline-shift", "begin", "bias", "by", "class", "clip", "clippathunits", "clip-path", "clip-rule", "color", "color-interpolation", "color-interpolation-filters", "color-profile", "color-rendering", "cx", "cy", "d", "dx", "dy", "diffuseconstant", "direction", "display", "divisor", "dur", "edgemode", "elevation", "end", "fill", "fill-opacity", "fill-rule", "filter", "filterunits", "flood-color", "flood-opacity", "font-family",
-                    "font-size", "font-size-adjust", "font-stretch", "font-style", "font-variant", "font-weight", "fx", "fy", "g1", "g2", "glyph-name", "glyphref", "gradientunits", "gradienttransform", "height", "href", "id", "image-rendering", "in", "in2", "k", "k1", "k2", "k3", "k4", "kerning", "keypoints", "keysplines", "keytimes", "lang", "lengthadjust", "letter-spacing", "kernelmatrix", "kernelunitlength", "lighting-color", "local", "marker-end", "marker-mid", "marker-start", "markerheight", "markerunits", "markerwidth", "maskcontentunits", "maskunits",
-                    "max", "mask", "media", "method", "mode", "min", "name", "numoctaves", "offset", "operator", "opacity", "order", "orient", "orientation", "origin", "overflow", "paint-order", "path", "pathlength", "patterncontentunits", "patterntransform", "patternunits", "points", "preservealpha", "preserveaspectratio", "primitiveunits", "r", "rx", "ry", "radius", "refx", "refy", "repeatcount", "repeatdur", "restart", "result", "rotate", "scale", "seed", "shape-rendering", "specularconstant", "specularexponent", "spreadmethod", "startoffset", "stddeviation",
-                    "stitchtiles", "stop-color", "stop-opacity", "stroke-dasharray", "stroke-dashoffset", "stroke-linecap", "stroke-linejoin", "stroke-miterlimit", "stroke-opacity", "stroke", "stroke-width", "style", "surfacescale", "systemlanguage", "tabindex", "targetx", "targety", "transform", "text-anchor", "text-decoration", "text-rendering", "textlength", "type", "u1", "u2", "unicode", "values", "viewbox", "visibility", "version", "vert-adv-y", "vert-origin-x", "vert-origin-y", "width", "word-spacing", "wrap", "writing-mode", "xchannelselector", "ychannelselector",
-                    "x", "x1", "x2", "xmlns", "y", "y1", "y2", "z", "zoomandpan"
+                w = r(["accent-height", "accumulate", "additive", "alignment-baseline", "ascent", "attributename", "attributetype",
+                    "azimuth", "basefrequency", "baseline-shift", "begin", "bias", "by", "class", "clip", "clippathunits", "clip-path", "clip-rule", "color", "color-interpolation", "color-interpolation-filters", "color-profile", "color-rendering", "cx", "cy", "d", "dx", "dy", "diffuseconstant", "direction", "display", "divisor", "dur", "edgemode", "elevation", "end", "fill", "fill-opacity", "fill-rule", "filter", "filterunits", "flood-color", "flood-opacity", "font-family", "font-size", "font-size-adjust", "font-stretch", "font-style", "font-variant", "font-weight",
+                    "fx", "fy", "g1", "g2", "glyph-name", "glyphref", "gradientunits", "gradienttransform", "height", "href", "id", "image-rendering", "in", "in2", "k", "k1", "k2", "k3", "k4", "kerning", "keypoints", "keysplines", "keytimes", "lang", "lengthadjust", "letter-spacing", "kernelmatrix", "kernelunitlength", "lighting-color", "local", "marker-end", "marker-mid", "marker-start", "markerheight", "markerunits", "markerwidth", "maskcontentunits", "maskunits", "max", "mask", "media", "method", "mode", "min", "name", "numoctaves", "offset", "operator", "opacity",
+                    "order", "orient", "orientation", "origin", "overflow", "paint-order", "path", "pathlength", "patterncontentunits", "patterntransform", "patternunits", "points", "preservealpha", "preserveaspectratio", "primitiveunits", "r", "rx", "ry", "radius", "refx", "refy", "repeatcount", "repeatdur", "restart", "result", "rotate", "scale", "seed", "shape-rendering", "specularconstant", "specularexponent", "spreadmethod", "startoffset", "stddeviation", "stitchtiles", "stop-color", "stop-opacity", "stroke-dasharray", "stroke-dashoffset", "stroke-linecap",
+                    "stroke-linejoin", "stroke-miterlimit", "stroke-opacity", "stroke", "stroke-width", "style", "surfacescale", "systemlanguage", "tabindex", "targetx", "targety", "transform", "text-anchor", "text-decoration", "text-rendering", "textlength", "type", "u1", "u2", "unicode", "values", "viewbox", "visibility", "version", "vert-adv-y", "vert-origin-x", "vert-origin-y", "width", "word-spacing", "wrap", "writing-mode", "xchannelselector", "ychannelselector", "x", "x1", "x2", "xmlns", "y", "y1", "y2", "z", "zoomandpan"
                 ]),
-                M = r(["accent", "accentunder", "align", "bevelled", "close", "columnsalign", "columnlines", "columnspan", "denomalign", "depth", "dir", "display", "displaystyle", "encoding", "fence", "frame", "height", "href", "id", "largeop", "length", "linethickness", "lspace", "lquote", "mathbackground", "mathcolor", "mathsize", "mathvariant", "maxsize", "minsize", "movablelimits", "notation", "numalign", "open", "rowalign", "rowlines", "rowspacing", "rowspan", "rspace", "rquote", "scriptlevel",
-                    "scriptminsize", "scriptsizemultiplier", "selection", "separator", "separators", "stretchy", "subscriptshift", "supscriptshift", "symmetric", "voffset", "width", "xmlns"
+                M = r(["accent", "accentunder",
+                    "align", "bevelled", "close", "columnsalign", "columnlines", "columnspan", "denomalign", "depth", "dir", "display", "displaystyle", "encoding", "fence", "frame", "height", "href", "id", "largeop", "length", "linethickness", "lspace", "lquote", "mathbackground", "mathcolor", "mathsize", "mathvariant", "maxsize", "minsize", "movablelimits", "notation", "numalign", "open", "rowalign", "rowlines", "rowspacing", "rowspan", "rspace", "rquote", "scriptlevel", "scriptminsize", "scriptsizemultiplier", "selection", "separator", "separators", "stretchy",
+                    "subscriptshift", "supscriptshift", "symmetric", "voffset", "width", "xmlns"
                 ]),
                 O = r(["xlink:href", "xml:id", "xlink:title", "xml:space", "xmlns:xlink"]),
                 N = o(/\{\{[\s\S]*|[\s\S]*\}\}/gm),
@@ -178,7 +170,8 @@
                 H = o(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i),
                 z = o(/^(?:\w+script|data):/i),
                 I = o(/[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g),
-                j = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
+                j = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ?
+                function(e) {
                     return typeof e
                 } : function(e) {
                     return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
@@ -197,7 +190,8 @@
                 W = function(e, t) {
                     if ("object" !== (void 0 === e ? "undefined" : j(e)) || "function" != typeof e.createPolicy) return null;
                     var n = null;
-                    t.currentScript && t.currentScript.hasAttribute("data-tt-policy-suffix") && (n = t.currentScript.getAttribute("data-tt-policy-suffix"));
+                    t.currentScript && t.currentScript.hasAttribute("data-tt-policy-suffix") &&
+                        (n = t.currentScript.getAttribute("data-tt-policy-suffix"));
                     var r = "dompurify" + (n ? "#" + n : "");
                     try {
                         return e.createPolicy(r, {
@@ -205,7 +199,7 @@
                                 return e
                             }
                         })
-                    } catch (e) {
+                    } catch (e$0) {
                         return console.warn("TrustedTypes policy " + r + " could not be created."), null
                     }
                 };
@@ -242,7 +236,7 @@
                     re = {};
                 try {
                     re = x(i).documentMode ? i.documentMode : {}
-                } catch (e) {}
+                } catch (e$1) {}
                 var oe = {};
                 n.isSupported = J && void 0 !== J.createHTMLDocument && 9 !== re;
                 var ie = N,
@@ -273,8 +267,8 @@
                     Me = !0,
                     Oe = !1,
                     Ne = {},
-                    Re = A({}, ["annotation-xml", "audio", "colgroup", "desc", "foreignobject", "head", "iframe", "math", "mi", "mn", "mo", "ms", "mtext", "noembed", "noframes",
-                        "plaintext", "script", "style", "svg", "template", "thead", "title", "video", "xmp"
+                    Re = A({}, ["annotation-xml", "audio", "colgroup", "desc", "foreignobject", "head", "iframe", "math", "mi", "mn", "mo", "ms", "mtext", "noembed", "noframes", "plaintext", "script", "style", "svg", "template", "thead", "title",
+                        "video", "xmp"
                     ]),
                     Fe = null,
                     Ce = A({}, ["audio", "video", "img", "source", "image", "track"]),
@@ -283,10 +277,9 @@
                     Ie = null,
                     je = i.createElement("form"),
                     Ue = function(e) {
-                        Ie && Ie === e || (e && "object" === (void 0 === e ? "undefined" : j(e)) || (e = {}), e = x(e), fe = "ALLOWED_TAGS" in e ? A({}, e.ALLOWED_TAGS) : pe, me = "ALLOWED_ATTR" in e ? A({}, e.ALLOWED_ATTR) : ye, He = "ADD_URI_SAFE_ATTR" in
-                            e ? A(x(ze), e.ADD_URI_SAFE_ATTR) : ze, Fe = "ADD_DATA_URI_TAGS" in e ? A(x(Ce), e.ADD_DATA_URI_TAGS) : Ce, he = "FORBID_TAGS" in e ? A({}, e.FORBID_TAGS) : {}, ge = "FORBID_ATTR" in e ? A({}, e.FORBID_ATTR) : {}, Ne = "USE_PROFILES" in e && e.USE_PROFILES, ve = !1 !== e.ALLOW_ARIA_ATTR, be = !1 !== e.ALLOW_DATA_ATTR, Te = e.ALLOW_UNKNOWN_PROTOCOLS || !1, Ae = e.SAFE_FOR_TEMPLATES || !1, xe = e.WHOLE_DOCUMENT || !1, _e = e.RETURN_DOM || !1, De = e.RETURN_DOM_FRAGMENT || !1, Ee = e.RETURN_DOM_IMPORT || !1, Le = e.RETURN_TRUSTED_TYPE || !1, ke = e.FORCE_BODY || !1, we = !1 !== e.SANITIZE_DOM,
-                            Me = !1 !== e.KEEP_CONTENT, Oe = e.IN_PLACE || !1, de = e.ALLOWED_URI_REGEXP || de, Ae && (be = !1), De && (_e = !0), Ne && (fe = A({}, [].concat(U(E))), me = [], !0 === Ne.html && (A(fe, S), A(me, L)), !0 === Ne.svg && (A(fe, k), A(me, w), A(me, O)), !0 === Ne.svgFilters && (A(fe, _), A(me, w), A(me, O)), !0 === Ne.mathMl && (A(fe, D), A(me, M), A(me, O))), e.ADD_TAGS && (fe === pe && (fe = x(fe)), A(fe, e.ADD_TAGS)), e.ADD_ATTR && (me === ye && (me = x(me)), A(me, e.ADD_ATTR)), e.ADD_URI_SAFE_ATTR && A(He, e.ADD_URI_SAFE_ATTR), Me && (fe["#text"] = !0), xe && A(fe, ["html", "head", "body"]), fe.table &&
-                            (A(fe, ["tbody"]), delete he.tbody), r && r(e), Ie = e)
+                        Ie && Ie === e || (e && "object" === (void 0 === e ? "undefined" : j(e)) || (e = {}), e = x(e), fe = "ALLOWED_TAGS" in e ? A({}, e.ALLOWED_TAGS) : pe, me = "ALLOWED_ATTR" in e ? A({}, e.ALLOWED_ATTR) : ye, He = "ADD_URI_SAFE_ATTR" in e ? A(x(ze), e.ADD_URI_SAFE_ATTR) : ze, Fe = "ADD_DATA_URI_TAGS" in
+                            e ? A(x(Ce), e.ADD_DATA_URI_TAGS) : Ce, he = "FORBID_TAGS" in e ? A({}, e.FORBID_TAGS) : {}, ge = "FORBID_ATTR" in e ? A({}, e.FORBID_ATTR) : {}, Ne = "USE_PROFILES" in e && e.USE_PROFILES, ve = !1 !== e.ALLOW_ARIA_ATTR, be = !1 !== e.ALLOW_DATA_ATTR, Te = e.ALLOW_UNKNOWN_PROTOCOLS || !1, Ae = e.SAFE_FOR_TEMPLATES || !1, xe = e.WHOLE_DOCUMENT || !1, _e = e.RETURN_DOM || !1, De = e.RETURN_DOM_FRAGMENT || !1, Ee = e.RETURN_DOM_IMPORT || !1, Le = e.RETURN_TRUSTED_TYPE || !1, ke = e.FORCE_BODY || !1, we = !1 !== e.SANITIZE_DOM, Me = !1 !== e.KEEP_CONTENT, Oe = e.IN_PLACE || !1, de = e.ALLOWED_URI_REGEXP ||
+                            de, Ae && (be = !1), De && (_e = !0), Ne && (fe = A({}, [].concat(U(E))), me = [], !0 === Ne.html && (A(fe, S), A(me, L)), !0 === Ne.svg && (A(fe, k), A(me, w), A(me, O)), !0 === Ne.svgFilters && (A(fe, _), A(me, w), A(me, O)), !0 === Ne.mathMl && (A(fe, D), A(me, M), A(me, O))), e.ADD_TAGS && (fe === pe && (fe = x(fe)), A(fe, e.ADD_TAGS)), e.ADD_ATTR && (me === ye && (me = x(me)), A(me, e.ADD_ATTR)), e.ADD_URI_SAFE_ATTR && A(He, e.ADD_URI_SAFE_ATTR), Me && (fe["#text"] = !0), xe && A(fe, ["html", "head", "body"]), fe.table && (A(fe, ["tbody"]), delete he.tbody), r && r(e), Ie = e)
                     },
                     Pe = function(e) {
                         f(n.removed, {
@@ -294,7 +287,7 @@
                         });
                         try {
                             e.parentNode.removeChild(e)
-                        } catch (t) {
+                        } catch (t$2) {
                             e.outerHTML = $
                         }
                     },
@@ -304,7 +297,7 @@
                                 attribute: t.getAttributeNode(e),
                                 from: t
                             })
-                        } catch (e) {
+                        } catch (e$3) {
                             f(n.removed, {
                                 attribute: null,
                                 from: t
@@ -323,11 +316,11 @@
                         var o = X ? X.createHTML(e) : e;
                         try {
                             t = (new K).parseFromString(o, "text/html")
-                        } catch (e) {}
+                        } catch (e$4) {}
                         if (!t || !t.documentElement) {
-                            var a =
-                                (t = J.createHTMLDocument("")).body;
-                            a.parentNode.removeChild(a.parentNode.firstElementChild), a.outerHTML = o
+                            var a = (t = J.createHTMLDocument("")).body;
+                            a.parentNode.removeChild(a.parentNode.firstElementChild),
+                                a.outerHTML = o
                         }
                         return e && n && t.body.insertBefore(i.createTextNode(n), t.body.childNodes[0] || null), ee.call(t, xe ? "html" : "body")[0]
                     },
@@ -337,8 +330,8 @@
                         }, !1)
                     },
                     qe = function(e) {
-                        return !(e instanceof G || e instanceof q) && !("string" == typeof e.nodeName && "string" == typeof e.textContent && "function" == typeof e.removeChild &&
-                            e.attributes instanceof B && "function" == typeof e.removeAttribute && "function" == typeof e.setAttribute && "string" == typeof e.namespaceURI)
+                        return !(e instanceof G || e instanceof q) && !("string" == typeof e.nodeName && "string" == typeof e.textContent && "function" == typeof e.removeChild && e.attributes instanceof B && "function" == typeof e.removeAttribute && "function" == typeof e.setAttribute &&
+                            "string" == typeof e.namespaceURI)
                     },
                     Ke = function(e) {
                         return "object" === (void 0 === c ? "undefined" : j(c)) ? e instanceof c : e && "object" === (void 0 === e ? "undefined" : j(e)) && "number" == typeof e.nodeType && "string" == typeof e.nodeName
@@ -351,23 +344,23 @@
                     Ye = function(e) {
                         var t = void 0;
                         if (Ve("beforeSanitizeElements", e, null), qe(e)) return Pe(e), !0;
-                        if (m(e.nodeName, /[\u0080-\uFFFF]/)) return Pe(e),
-                            !0;
+                        if (m(e.nodeName, /[\u0080-\uFFFF]/)) return Pe(e), !0;
                         var r = p(e.nodeName);
                         if (Ve("uponSanitizeElement", e, {
                                 tagName: r,
                                 allowedTags: fe
-                            }), ("svg" === r || "math" === r) && 0 !== e.querySelectorAll("p, br").length) return Pe(e), !0;
+                            }), ("svg" ===
+                                r || "math" === r) && 0 !== e.querySelectorAll("p, br").length) return Pe(e), !0;
                         if (!Ke(e.firstElementChild) && (!Ke(e.content) || !Ke(e.content.firstElementChild)) && v(/<[!/\w]/g, e.innerHTML) && v(/<[!/\w]/g, e.textContent)) return Pe(e), !0;
                         if (!fe[r] || he[r]) {
                             if (Me && !Re[r] && "function" == typeof e.insertAdjacentHTML) try {
                                 var o = e.innerHTML;
                                 e.insertAdjacentHTML("AfterEnd", X ? X.createHTML(o) : o)
-                            } catch (e) {}
+                            } catch (e$5) {}
                             return Pe(e), !0
                         }
-                        return "noscript" !==
-                            r && "noembed" !== r || !v(/<\/no(script|embed)/i, e.innerHTML) ? (Ae && 3 === e.nodeType && (t = e.textContent, t = y(t, ie, " "), t = y(t, ae, " "), e.textContent !== t && (f(n.removed, {
+                        return "noscript" !== r && "noembed" !== r || !v(/<\/no(script|embed)/i, e.innerHTML) ? (Ae && 3 === e.nodeType && (t = e.textContent,
+                            t = y(t, ie, " "), t = y(t, ae, " "), e.textContent !== t && (f(n.removed, {
                                 element: e.cloneNode()
                             }), e.textContent = t)), Ve("afterSanitizeElements", e, null), !1) : (Pe(e), !0)
                     },
@@ -379,8 +372,7 @@
                             if (!me[t] || ge[t]) return !1;
                             if (He[t]);
                             else if (v(de, y(n, ue, "")));
-                            else if ("src" !== t && "xlink:href" !== t && "href" !== t || "script" === e || 0 !== h(n,
-                                    "data:") || !Fe[e])
+                            else if ("src" !== t && "xlink:href" !== t && "href" !== t || "script" === e || 0 !== h(n, "data:") || !Fe[e])
                                 if (Te && !v(se, y(n, ue, "")));
                                 else {
                                     if (n) return !1
@@ -390,7 +382,8 @@
                         return !0
                     },
                     $e = function(e) {
-                        var t = void 0,
+                        var t =
+                            void 0,
                             r = void 0,
                             o = void 0,
                             i = void 0;
@@ -408,14 +401,14 @@
                                     s = c.name,
                                     u = c.namespaceURI;
                                 if (r = g(t.value), o = p(s), l.attrName = o, l.attrValue = r, l.keepAttr = !0, l.forceKeepAttr = void 0, Ve("uponSanitizeAttribute", e, l), r = l.attrValue, !l.forceKeepAttr && (We(s, e), l.keepAttr))
-                                    if (v(/\/>/i,
-                                            r)) We(s, e);
+                                    if (v(/\/>/i, r)) We(s, e);
                                     else {
                                         Ae && (r = y(r, ie, " "), r = y(r, ae, " "));
                                         var f = e.nodeName.toLowerCase();
                                         if (Xe(f, o, r)) try {
-                                            u ? e.setAttributeNS(u, s, r) : e.setAttribute(s, r), d(n.removed)
-                                        } catch (e) {}
+                                            u ?
+                                                e.setAttributeNS(u, s, r) : e.setAttribute(s, r), d(n.removed)
+                                        } catch (e$6) {}
                                     }
                             }
                             Ve("afterSanitizeAttributes", e, null)
@@ -432,8 +425,7 @@
                         l = void 0,
                         s = void 0,
                         u = void 0,
-                        d =
-                        void 0;
+                        d = void 0;
                     if (e || (e = "\x3c!--\x3e"), "string" != typeof e && !Ke(e)) {
                         if ("function" != typeof e.toString) throw b("toString is not a function");
                         if ("string" != typeof(e = e.toString())) throw b("dirty is not a string, aborting");
@@ -446,10 +438,10 @@
                         return e
                     }
                     if (Se || Ue(r), n.removed = [], "string" == typeof e && (Oe = !1), Oe);
-                    else if (e instanceof c) 1 === (l = (i = Be("\x3c!----\x3e")).ownerDocument.importNode(e,
-                        !0)).nodeType && "BODY" === l.nodeName || "HTML" === l.nodeName ? i = l : i.appendChild(l);
+                    else if (e instanceof c) 1 === (l = (i = Be("\x3c!----\x3e")).ownerDocument.importNode(e, !0)).nodeType && "BODY" === l.nodeName || "HTML" === l.nodeName ? i = l : i.appendChild(l);
                     else {
-                        if (!_e && !Ae && !xe && -1 === e.indexOf("<")) return X && Le ? X.createHTML(e) : e;
+                        if (!_e && !Ae &&
+                            !xe && -1 === e.indexOf("<")) return X && Le ? X.createHTML(e) : e;
                         if (!(i = Be(e))) return _e ? null : $
                     }
                     i && ke && Pe(i.firstChild);
@@ -464,7 +456,8 @@
                     var p = xe ? i.outerHTML : i.innerHTML;
                     return Ae && (p = y(p, ie, " "), p = y(p, ae, " ")), X && Le ? X.createHTML(p) : p
                 }, n.setConfig = function(e) {
-                    Ue(e), Se = !0
+                    Ue(e),
+                        Se = !0
                 }, n.clearConfig = function() {
                     Ie = null, Se = !1
                 }, n.isValidAttribute = function(e, t, n) {
@@ -509,7 +502,8 @@
         },
         error: function(err) {
             var output = "[TXLIVE][ERROR] " + TXLIVE.logger.serialize(err);
-            if (window.liveSettings.debug && console && console.log) console.log(output);
+            if (window.liveSettings.debug &&
+                console && console.log) console.log(output);
             return output
         }
     };
@@ -554,16 +548,17 @@
             try {
                 var isFrame = window.frameElement != null
             } catch (e) {}
-            if (document.documentElement.doScroll && !isFrame) {
-                function tryScroll() {
+            if (document.documentElement.doScroll &&
+                !isFrame) {
+                var tryScroll = function() {
                     if (called) return;
                     try {
                         document.documentElement.doScroll("left");
                         ready()
-                    } catch (e) {
+                    } catch (e$7) {
                         setTimeout(tryScroll, 10)
                     }
-                }
+                };
                 tryScroll()
             }
             document.attachEvent("onreadystatechange", function() {
@@ -582,30 +577,9 @@
     }
 
     function bindLoad(handler) {
-        if (window.addEventListener) window.addEventListener("load", handler, false);
+        if (window.addEventListener) window.addEventListener("load",
+            handler, false);
         else if (window.attachEvent) window.attachEvent("onload", handler)
-    }
-
-    function bindNavigate(handler) {
-        try {
-            (function(history) {
-                var pushState = history.pushState;
-                history.pushState = function(state) {
-                    if (typeof history.onpushstate == "function") history.onpushstate({
-                        state: state
-                    });
-                    var path = arguments && arguments.length > 2 ? arguments[2] : null;
-                    if (path) handler(path);
-                    return pushState.apply(history, arguments)
-                }
-            })(window.history);
-            window.addEventListener("popstate", function(e) {
-                var url = new URL(document.location);
-                if (url && url.pathname) handler(url.pathname)
-            })
-        } catch (err) {
-            TXLIVE.logger.error(err)
-        }
     }
 
     function callFunctionArray(fcallarray, param) {
@@ -620,8 +594,7 @@
         if (is_dynamic_on) TXLIVE.dynamicPageOn()
     }
 
-    function removeFromFunctionArray(fcallarray,
-        fcall) {
+    function removeFromFunctionArray(fcallarray, fcall) {
         if (!fcallarray) return;
         try {
             var index = fcallarray.indexOf(fcall);
@@ -646,8 +619,7 @@
     };
     TXLIVE.assetUrl = function(url, default_host) {
         if (!url || !default_host) return url;
-        var locase_url =
-            url.toLowerCase().trim();
+        var locase_url = url.toLowerCase().trim();
         if (locase_url.indexOf("http://") === 0 || locase_url.indexOf("https://") === 0 || locase_url.indexOf("//") === 0) return url;
         return default_host + (default_host.slice(-1) == "/" ? "" : "/") + (url.indexOf("/") === 0 ? url.slice(1) : url)
     };
@@ -658,7 +630,8 @@
         var script = document.createElement("script");
         script.type = "text/javascript";
         if (script.readyState) script.onreadystatechange = function() {
-            if (script.readyState === "loaded" || script.readyState === "complete") {
+            if (script.readyState ===
+                "loaded" || script.readyState === "complete") {
                 script.onreadystatechange = null;
                 if (callback) callback()
             }
@@ -674,34 +647,35 @@
         }
         attributes = attributes || [];
         for (var i = attributes.length; i--;) script[attributes[i].name] = attributes[i].value;
-        if (text) script.text =
-            text;
+        if (text) script.text = text;
         if (url) script.src = url;
         document.getElementsByTagName("head")[0].appendChild(script)
     };
-    TXLIVE_PRIVATE.getBrowserLocale = function() {
-        var i, code;
-        if (navigator.languages && navigator.languages.length)
-            for (i = 0; i < navigator.languages.length; ++i) {
-                code = TXLIVE.normalizeLangCode(navigator.languages[i]);
+    TXLIVE_PRIVATE.getBrowserLocale =
+        function() {
+            var i, code;
+            if (navigator.languages && navigator.languages.length)
+                for (i = 0; i < navigator.languages.length; ++i) {
+                    code = TXLIVE.normalizeLangCode(navigator.languages[i]);
+                    if (TXLIVE.hasLanguageCode(code)) return code;
+                    code = TXLIVE.matchLanguageCode(navigator.languages[i]);
+                    if (code) return code
+                }
+            if (navigator.userLanguage) {
+                code = TXLIVE.normalizeLangCode(navigator.userLanguage);
                 if (TXLIVE.hasLanguageCode(code)) return code;
-                code = TXLIVE.matchLanguageCode(navigator.languages[i]);
+                code = TXLIVE.matchLanguageCode(navigator.userLanguage);
                 if (code) return code
             }
-        if (navigator.userLanguage) {
-            code = TXLIVE.normalizeLangCode(navigator.userLanguage);
-            if (TXLIVE.hasLanguageCode(code)) return code;
-            code = TXLIVE.matchLanguageCode(navigator.userLanguage);
-            if (code) return code
-        }
-        if (navigator.language) {
-            code = TXLIVE.normalizeLangCode(navigator.language);
-            if (TXLIVE.hasLanguageCode(code)) return code;
-            code = TXLIVE.matchLanguageCode(navigator.language);
-            if (code) return code
-        }
-        return null
-    };
+            if (navigator.language) {
+                code =
+                    TXLIVE.normalizeLangCode(navigator.language);
+                if (TXLIVE.hasLanguageCode(code)) return code;
+                code = TXLIVE.matchLanguageCode(navigator.language);
+                if (code) return code
+            }
+            return null
+        };
 
     function mergeArrays(array1, array2) {
         var i = array2.length,
@@ -726,7 +700,8 @@
     }
 
     function decodeString(str) {
-        return str.replace(/&nbsp;/g, "\u00a0")
+        return str.replace(/&nbsp;/g,
+            "\u00a0")
     }
     TXLIVE_PRIVATE.stripWhitespace = function(str) {
         if (!str || !str.trim().length) return null;
@@ -738,8 +713,7 @@
     TXLIVE_PRIVATE.getElementsByClassName = function(node, classname) {
         if (!node) return [];
         var a = [];
-        var re = new RegExp("(^| )" + classname +
-            "( |$)");
+        var re = new RegExp("(^| )" + classname + "( |$)");
         var els = node.getElementsByTagName("*");
         for (var i = 0, j = els.length; i < j; i++)
             if (re.test(els[i].className)) a.push(els[i]);
@@ -758,12 +732,12 @@
     };
     TXLIVE_PRIVATE.removeClass = function(node, cls) {
         if (TXLIVE_PRIVATE.hasClass(node, cls)) {
-            var reg =
-                new RegExp("(\\s|^)" + cls + "(\\s|$)");
+            var reg = new RegExp("(\\s|^)" + cls + "(\\s|$)");
             node.className = node.className.replace(reg, " ")
         }
     };
-    TXLIVE_PRIVATE.addClass = function(node, cls) {
+    TXLIVE_PRIVATE.addClass = function(node,
+        cls) {
         if (!TXLIVE_PRIVATE.hasClass(node, cls) && node.className !== undefined && node.className.baseVal === undefined) node.className = (node.className || "") + " " + cls
     };
     TXLIVE_PRIVATE.removeNodeByID = function(id) {
@@ -773,12 +747,12 @@
     TXLIVE_PRIVATE.getClosestByTag = function(el, tag) {
         tag = tag.toUpperCase();
         do
-            if (el.nodeName ===
-                tag) return el; while (el = el.parentNode);
+            if (el.nodeName === tag) return el; while (el = el.parentNode);
         return null
     };
     TXLIVE_PRIVATE.escapeLanguageCode = function(code) {
-        return code.replace(/-/g, "_").replace(/[.@]/g, "__")
+        return code.replace(/-/g,
+            "_").replace(/[.@]/g, "__")
     };
     TXLIVE_PRIVATE.constructPath = function(pathname, search) {
         search = search || "";
@@ -791,14 +765,14 @@
             search = search_params.join("&");
             if (search) search = "?" + search
         }
-        return pathname +
-            search
+        return pathname + search
     };
     TXLIVE_PRIVATE.getWindowLocation = function() {
         return window.location
     };
     TXLIVE_PRIVATE.getWindowPath = function() {
-        return TXLIVE_PRIVATE.constructPath(window.location.pathname, window.location.search)
+        return TXLIVE_PRIVATE.constructPath(window.location.pathname,
+            window.location.search)
     };
     TXLIVE_PRIVATE.getWindowHost = function() {
         return document.location.host
@@ -813,7 +787,8 @@
     TXLIVE.doCORSRequest = function(url, method, data, callback, errback) {
         var req, invoke_cb = true;
         if (window.XMLHttpRequest) {
-            req = new XMLHttpRequest;
+            req =
+                new XMLHttpRequest;
             if ("withCredentials" in req) {
                 req.open(method, url, true);
                 if (errback) req.onerror = function(err) {
@@ -824,15 +799,15 @@
                     if (req.readyState === 4 && invoke_cb) {
                         if (req.status >= 200 && req.status < 400) {
                             if (callback) callback(req.responseText)
-                        } else if (errback) errback(new Error("doCORSRequest failed with status " +
-                            req.status + " for: " + TXLIVE_PRIVATE.getWindowLocation().href), req.status);
+                        } else if (errback) errback(new Error("doCORSRequest failed with status " + req.status + " for: " + TXLIVE_PRIVATE.getWindowLocation().href), req.status);
                         invoke_cb = false
                     }
                 };
                 req.send(data)
             }
         } else if (window.XDomainRequest) {
-            req = new XDomainRequest;
+            req =
+                new XDomainRequest;
             req.open(method, url);
             if (errback) req.onerror = function(err) {
                 if (invoke_cb && errback) errback(err);
@@ -846,13 +821,13 @@
         } else if (errback) errback(new Error("doCORSRequest: CORS not supported by browser"))
     };
     TXLIVE_PRIVATE.md5 = function() {
-        var rotateLeft =
-            function(lValue, iShiftBits) {
-                return lValue << iShiftBits | lValue >>> 32 - iShiftBits
-            };
+        var rotateLeft = function(lValue, iShiftBits) {
+            return lValue << iShiftBits | lValue >>> 32 - iShiftBits
+        };
         var addUnsigned = function(lX, lY) {
             var lX4, lY4, lX8, lY8, lResult;
-            lX8 = lX & 2147483648;
+            lX8 =
+                lX & 2147483648;
             lY8 = lY & 2147483648;
             lX4 = lX & 1073741824;
             lY4 = lY & 1073741824;
@@ -867,8 +842,7 @@
             return x & y | ~x & z
         };
         var G = function(x, y, z) {
-            return x & z |
-                y & ~z
+            return x & z | y & ~z
         };
         var H = function(x, y, z) {
             return x ^ y ^ z
@@ -877,7 +851,8 @@
             return y ^ (x | ~z)
         };
         var FF = function(a, b, c, d, x, s, ac) {
-            a = addUnsigned(a, addUnsigned(addUnsigned(F(b, c, d), x), ac));
+            a = addUnsigned(a, addUnsigned(addUnsigned(F(b,
+                c, d), x), ac));
             return addUnsigned(rotateLeft(a, s), b)
         };
         var GG = function(a, b, c, d, x, s, ac) {
@@ -889,13 +864,13 @@
             return addUnsigned(rotateLeft(a, s), b)
         };
         var II = function(a, b, c, d, x, s, ac) {
-            a = addUnsigned(a,
-                addUnsigned(addUnsigned(I(b, c, d), x), ac));
+            a = addUnsigned(a, addUnsigned(addUnsigned(I(b, c, d), x), ac));
             return addUnsigned(rotateLeft(a, s), b)
         };
         var convertToWordArray = function(string) {
             var lWordCount;
-            var lMessageLength = string.length;
+            var lMessageLength =
+                string.length;
             var lNumberOfWordsTempOne = lMessageLength + 8;
             var lNumberOfWordsTempTwo = (lNumberOfWordsTempOne - lNumberOfWordsTempOne % 64) / 64;
             var lNumberOfWords = (lNumberOfWordsTempTwo + 1) * 16;
@@ -904,12 +879,12 @@
             var lByteCount = 0;
             while (lByteCount < lMessageLength) {
                 lWordCount = (lByteCount - lByteCount % 4) / 4;
-                lBytePosition = lByteCount %
-                    4 * 8;
+                lBytePosition = lByteCount % 4 * 8;
                 lWordArray[lWordCount] = lWordArray[lWordCount] | string.charCodeAt(lByteCount) << lBytePosition;
                 lByteCount++
             }
-            lWordCount = (lByteCount - lByteCount % 4) / 4;
+            lWordCount = (lByteCount - lByteCount % 4) /
+                4;
             lBytePosition = lByteCount % 4 * 8;
             lWordArray[lWordCount] = lWordArray[lWordCount] | 128 << lBytePosition;
             lWordArray[lNumberOfWords - 2] = lMessageLength << 3;
@@ -921,8 +896,7 @@
                 WordToHexValueTemp = "",
                 lByte, lCount;
             for (lCount = 0; lCount <= 3; lCount++) {
-                lByte = lValue >>> lCount * 8 &
-                    255;
+                lByte = lValue >>> lCount * 8 & 255;
                 WordToHexValueTemp = "0" + lByte.toString(16);
                 WordToHexValue = WordToHexValue + WordToHexValueTemp.substr(WordToHexValueTemp.length - 2, 2)
             }
@@ -939,8 +913,7 @@
                     output += String.fromCharCode(c & 63 | 128)
                 } else {
                     output += String.fromCharCode(c >> 12 | 224);
-                    output += String.fromCharCode(c >>
-                        6 & 63 | 128);
+                    output += String.fromCharCode(c >> 6 & 63 | 128);
                     output += String.fromCharCode(c & 63 | 128)
                 }
             }
@@ -950,7 +923,8 @@
             var x = Array();
             var k, AA, BB, CC, DD, a, b, c, d;
             var S11 = 7,
-                S12 = 12,
+                S12 =
+                12,
                 S13 = 17,
                 S14 = 22;
             var S21 = 5,
@@ -1065,7 +1039,8 @@
 
     function _storage_set_localStorage(key, value) {
         try {
-            window.localStorage.setItem(key, JSON.stringify(value))
+            window.localStorage.setItem(key,
+                JSON.stringify(value))
         } catch (err) {
             TXLIVE.logger.error(err);
             _storage_set_emu(key, value)
@@ -1085,8 +1060,7 @@
 
     function _storage_set_sessionStorage(key, value) {
         try {
-            window.sessionStorage.setItem(key,
-                JSON.stringify(value))
+            window.sessionStorage.setItem(key, JSON.stringify(value))
         } catch (err) {
             TXLIVE.logger.error(err);
             _storage_set_emu(key, value)
@@ -1095,7 +1069,8 @@
 
     function _storage_get_sessionStorage(key) {
         try {
-            var value = window.sessionStorage.getItem(key);
+            var value =
+                window.sessionStorage.getItem(key);
             if (value) return JSON.parse(value);
             return null
         } catch (err) {
@@ -1109,13 +1084,13 @@
     TXLIVE_PRIVATE.session_get = _session_get_emu;
     try {
         if (window.localStorage && window.localStorage.setItem) {
-            window.localStorage.setItem("txlive",
-                "1");
+            window.localStorage.setItem("txlive", "1");
             TXLIVE_PRIVATE.storage_set = _storage_set_localStorage;
-            TXLIVE_PRIVATE.storage_get = _storage_get_localStorage;
+            TXLIVE_PRIVATE.storage_get =
+                _storage_get_localStorage;
             TXLIVE.settings.has_storage = true
         }
-    } catch (err) {
+    } catch (err$8) {
         try {
             if (window.sessionStorage && window.sessionStorage.setItem) {
                 window.sessionStorage.setItem("txlive", "1");
@@ -1127,13 +1102,13 @@
     }
     try {
         if (window.sessionStorage && window.sessionStorage.setItem) {
-            window.sessionStorage.setItem("txlive",
-                "1");
+            window.sessionStorage.setItem("txlive", "1");
             TXLIVE_PRIVATE.session_set = _storage_set_sessionStorage;
-            TXLIVE_PRIVATE.session_get = _storage_get_sessionStorage;
+            TXLIVE_PRIVATE.session_get =
+                _storage_get_sessionStorage;
             TXLIVE.settings.has_session = true
         }
-    } catch (err) {}
+    } catch (err$9) {}
     TXLIVE_PRIVATE.apiScopedKey = function(key) {
         return TXLIVE.settings.api_key + "@" + key
     };
@@ -1150,38 +1125,39 @@
         TXLIVE_PRIVATE.addPicker(picker);
         TXLIVE.dynamicPageOn()
     }
-    var added_picker_css = false;
+    var added_picker_css =
+        false;
     TXLIVE_PRIVATE.addPicker = function(picker) {
         if (!added_picker_css) {
             added_picker_css = true;
             try {
-                var css = ".txlive-langselector { position:fixed;z-index:999999;min-width: 120px;line-height:32px;background-color:rgba( 0,0,0,0.75 );box-shadow: 0 0 4px rgba( 0,0,0,0.3 );font-size: 14px;font-family: inherit; }";
+                var css = ".txlive-langselector { position:fixed;z-index:999999;min-width: 120px;line-height:32px;background-color:#fcfcfc;box-shadow: 0 0 0px #CCD6E4;color: #3c5675;font-size: 14px;font-family: inherit; }";
                 css += ".txlive-langselector * { margin: 0;padding: 0;border: 0;font-size: 100%;font: inherit;vertical-align: baseline;border-radius: 0;-moz-border-radius:0;-webkit-border-radius:0;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-border-radius:0;opacity:1; }";
                 css += ".txlive-langselector.txlive-langselector-topleft { top:0;left:0;right:auto;bottom:auto;border-radius: 0 0 2px 0;-moz-border-radius: 0 0 2px 0;-webkit-border-radius: 0 0 2px 0; }";
                 css += ".txlive-langselector.txlive-langselector-topright { top:0;left:auto;right:0;bottom:auto;border-radius: 0 2px 0 0;-moz-border-radius: 0 2px 0 0;-webkit-border-radius: 0 2px 0 0; }";
                 css += ".txlive-langselector.txlive-langselector-bottomleft { top:auto;left:0;right:auto;bottom:0;border-radius: 0 2px 0 0;-moz-border-radius: 0 2px 0 0;-webkit-border-radius: 0 2px 0 0; }";
                 css += ".txlive-langselector.txlive-langselector-bottomright { top:auto;left:auto;right:0;bottom:0;border-radius: 2px 0 0 0;-moz-border-radius: 2px 0 0 0;-webkit-border-radius: 2px 0 0 0; }";
                 css += ".txlive-langselector .txlive-langselector-toggle { overflow: hidden;display: block;padding:2px 16px;width: 100%;height:36px;cursor:pointer;cursor:hand; }";
-                css += ".txlive-langselector.txlive-langselector-topleft .txlive-langselector-toggle { overflow: hidden;display: block;border-top:2px solid #006f9f;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
-                css += ".txlive-langselector.txlive-langselector-topright .txlive-langselector-toggle { overflow: hidden;display: block;border-top:2px solid #006f9f;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
-                css += ".txlive-langselector.txlive-langselector-bottomleft .txlive-langselector-toggle { overflow: hidden;display: block;border-bottom:2px solid #006f9f;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
-                css += ".txlive-langselector.txlive-langselector-bottomright .txlive-langselector-toggle { overflow: hidden;display: block;border-bottom:2px solid #006f9f;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
+                css += ".txlive-langselector.txlive-langselector-topleft .txlive-langselector-toggle { overflow: hidden;display: block;border-top:2px solid #CCD6E4;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
+                css += ".txlive-langselector.txlive-langselector-topright .txlive-langselector-toggle { overflow: hidden;display: block;border-top:2px solid #CCD6E4;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
+                css += ".txlive-langselector.txlive-langselector-bottomleft .txlive-langselector-toggle { overflow: hidden;display: block;border-bottom:2px solid #CCD6E4;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
+                css += ".txlive-langselector.txlive-langselector-bottomright .txlive-langselector-toggle { overflow: hidden;display: block;border-bottom:2px solid #CCD6E4;border-radius: 6px;padding:2px 16px;height:36px;line-height:32px;cursor:pointer;cursor:hand; }";
                 css += ".txlive-langselector .txlive-langselector-current { float: left;padding: 0;max-width: 200px;overflow:hidden;white-space: nowrap;text-overflow:ellipsis; }";
                 css += ".txlive-langselector .txlive-langselector-marker { float: right;display: block;position:relative;width:0;height:0;margin-left:8px;margin-top: 13px;border-right:4px dashed transparent;border-left:4px dashed transparent;}";
                 css += ".txlive-langselector-topright .txlive-langselector-marker,";
                 css += ".txlive-langselector-topleft .txlive-langselector-marker {border-top:4px solid #fff;}";
                 css += ".txlive-langselector-bottomright .txlive-langselector-marker,";
-                css += ".txlive-langselector-bottomleft .txlive-langselector-marker {border-bottom:4px solid #fff;}";
-                css += ".txlive-langselector-list { position:absolute;width: 100%;margin:0;padding:10px 0;display:none;background-color:#eaf1f7;box-shadow: 0 0 4px rgba( 0,0,0,0.3 );color:#666;list-style-type:none; }";
-                css += ".txlive-langselector-list.txlive-langselector-list-opened { display:block;max-height:315px;overflow:auto; }";
-                css += ".txlive-langselector-list > li button {padding:0 16px;width:100%;overflow:hidden;white-space: nowrap;text-overflow:ellipsis; text-align: left;}";
-                css += ".txlive-langselector-list > li button:hover {background-color:#b0b9c1;color:#fff;cursor:pointer;cursor:hand;}";
+                css += ".txlive-langselector-bottomleft .txlive-langselector-marker {border-bottom:4px solid #3c5675;}";
+                css += ".txlive-langselector-list { position:absolute;width: 100%;margin:0;padding:10px 0;display:none;background-color:#EFF2F6;box-shadow: 0 0 0px #CCD6E4;color:#666;list-style-type:none; }";
+                css += ".txlive-langselector-list.txlive-langselector-list-opened { display:block;max-height:500px;overflow:auto; }";
+                css += ".txlive-langselector-list > li {padding:0 16px;width:100%;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;}";
+                css += ".txlive-langselector-list > li:hover {background-color:#31A3DD;color:#fff;cursor:pointer;cursor:hand;}";
                 css += ".txlive-langselector-topright > .txlive-langselector-list {top:40px;left:auto;right:0;bottom:auto;border-bottom: 1px solid #f4f7f9;}";
                 css += ".txlive-langselector-topleft > .txlive-langselector-list {top:40px;left:0;right:auto;bottom:auto;border-bottom: 1px solid #f4f7f9;}";
-                css += ".txlive-langselector-bottomright > .txlive-langselector-list {top:auto;left:auto;right:0;bottom:40px;border-top: 1px solid #f4f7f9;}";
+                css += ".txlive-langselector-bottomright > .txlive-langselector-list {top:auto;left:auto;right:0;bottom:40px;border-top: 2px solid #CCD6E4;border-bottom: 2px solid #CCD6E4;border-left: 2px solid #CCD6E4;}";
                 css += ".txlive-langselector-bottomleft > .txlive-langselector-list {top:auto;left:0;right:auto;bottom:40px;border-top: 1px solid #f4f7f9;}";
                 css += ".txlive-langselector-topright > .txlive-langselector-list,";
-                css += ".txlive-langselector-bottomright > .txlive-langselector-list {border-radius: 2px 0 0 2px;-moz-border-radius: 2px 0 0 2px;-webkit-border-radius: 2px 0 0 2px;}";
+                css += ".txlive-langselector-bottomright > .txlive-langselector-list {border-radius: 6px 0 0 6px;-moz-border-radius: 6px 0 0 6px;-webkit-border-radius: 6px 0 0 6px;}";
                 css += ".txlive-langselector-topleft > .txlive-langselector-list,";
                 css += ".txlive-langselector-bottomleft > .txlive-langselector-list {border-radius: 0 2px 2px 0;-moz-border-radius: 0 2px 2px 0;-webkit-border-radius: 0 2px 2px 0;}";
                 var head = document.head || document.getElementsByTagName("head")[0];
@@ -1190,26 +1166,47 @@
                 if (style.styleSheet) style.styleSheet.cssText = css;
                 else style.appendChild(document.createTextNode(css));
                 head.appendChild(style)
-            } catch (err) {
-                TXLIVE.logger.error(err)
+            } catch (err$10) {
+                TXLIVE.logger.error(err$10)
             }
         }
         try {
-            var html = '<button data-navigation-toggle aria-expanded="false" style="background: transparent;letter-spacing: normal;color: #fff;text-transform: none;" class="txlive-langselector-toggle notranslate" id="tx-live-lang-toggle"><span class="txlive-langselector-current" id="tx-live-lang-current">' +
-                TXLIVE.languages.source.name + "</span>";
-            html += '<span class="txlive-langselector-marker"></span></button>';
-            html += '<ul data-navigation-list id="tx-live-lang-picker" class="txlive-langselector-list notranslate">';
+            var pick_lang = function(element) {
+                close_picker();
+                if (element && element.getAttribute) {
+                    var lang = element.getAttribute("data-value");
+                    if (lang) TXLIVE.translateTo(lang)
+                }
+            };
+            var close_picker = function() {
+                var toggler =
+                    document.getElementById("tx-live-lang-picker");
+                if (toggler) toggler.className = toggler.className.replace(open_class, "")
+            };
+            var open_picker = function() {
+                var toggler = document.getElementById("tx-live-lang-picker");
+                if (toggler) toggler.className += " " + open_class
+            };
+            var is_picker_open = function() {
+                var toggler = document.getElementById("tx-live-lang-picker");
+                return toggler && toggler.className.indexOf(open_class) >= 0
+            };
+            var html = '<ul id="tx-live-lang-picker" class="txlive-langselector-list notranslate">';
             for (var i = 0; i < TXLIVE.denormalized_languages.length; ++i) {
-                var l = TXLIVE.denormalized_languages[i];
-                html += "<li>" + '<button data-navigation-list-item data-value="' + l.code + '" aria-label="Toggle language to ' + l.name + '">' + l.name + "</button>" + "</li>"
+                var l =
+                    TXLIVE.denormalized_languages[i];
+                html += '<li data-value="' + l.code + '">' + l.name + "</li>"
             }
             html += "</ul>";
+            html += '<div class="txlive-langselector-toggle notranslate" id="tx-live-lang-toggle"><span class="txlive-langselector-current" id="tx-live-lang-current">' + TXLIVE.languages.source.name + "</span>";
+            html += '<span class="txlive-langselector-marker"></span></div>';
             if (picker[0] === "#") {
                 var elem = document.getElementById(picker.substr(1));
                 if (!elem) return;
                 elem.innerHTML = TXLIVE_PRIVATE.xssProtect(html)
             } else {
-                var div = document.getElementById("tx-live-lang-container");
+                var div =
+                    document.getElementById("tx-live-lang-container");
                 if (!div) {
                     div = document.createElement("div");
                     div.id = "tx-live-lang-container"
@@ -1232,8 +1229,8 @@
                         return
                 }
                 div.className = csstext;
-                div.innerHTML = TXLIVE_PRIVATE.xssProtect(html);
-                div.setAttribute("data-navigation", "");
+                div.innerHTML =
+                    TXLIVE_PRIVATE.xssProtect(html);
                 document.body.appendChild(div)
             }
             if (TXLIVE.getSelectedLanguageCode()) {
@@ -1243,109 +1240,32 @@
             }
             var el = document.getElementById("tx-live-lang-toggle");
             var open_class = "txlive-langselector-list-opened";
-
-            function is_picker_open() {
-                var toggler = document.getElementById("tx-live-lang-picker");
-                return toggler && toggler.className.indexOf(open_class) >= 0
-            }
-
-            function handleKeydown(e) {
-                var nav = document.querySelector("[data-navigation]");
-                var focusableElements = nav.querySelectorAll("button");
-                var focusedElement = document.activeElement;
-                var focusedIndex = Array.from(focusableElements).findIndex(function(item) {
-                    return item === focusedElement
-                });
-                if (e.key === "Tab" && !e.shiftKey) {
-                    e.preventDefault();
-                    var nextIndex = (focusedIndex + 1) % focusableElements.length;
-                    focusableElements[nextIndex].focus()
-                }
-                if (e.key === "Tab" && e.shiftKey) {
-                    e.preventDefault();
-                    var prevIndex = (focusedIndex - 1) % focusableElements.length;
-                    if (prevIndex === -1) focusableElements[focusableElements.length - 1].focus();
-                    else focusableElements[prevIndex].focus()
-                }
-                if (e.key === "Enter") pick_lang(focusedElement)
-            }
-
-            function navigationFocus() {
-                var nav = document.querySelector("[data-navigation]");
-                if (nav) nav.addEventListener("keydown", handleKeydown)
-            }
-
-            function handleEscape() {
-                document.addEventListener("keyup", function(e) {
-                    var escape =
-                        e.key;
-                    var navList = document.querySelector("[data-navigation-list]");
-                    var nav = document.querySelector("[data-navigation]");
-                    if (escape === "Escape" && navList && navList.classList.contains("txlive-langselector-list-opened")) {
-                        nav.focus();
-                        nav.removeEventListener("keydown", handleKeydown);
-                        close_picker()
-                    }
-                })
-            }
-
-            function open_picker() {
-                var toggler = document.getElementById("tx-live-lang-picker");
-                var button = document.getElementById("tx-live-lang-toggle");
-                button.setAttribute("aria-expanded", "true");
-                if (toggler) toggler.className +=
-                    " " + open_class;
-                try {
-                    navigationFocus();
-                    handleEscape()
-                } catch (e) {}
-            }
-
-            function close_picker() {
-                var toggler = document.getElementById("tx-live-lang-picker");
-                var button = document.getElementById("tx-live-lang-toggle");
-                button.setAttribute("aria-expanded", "false");
-                if (toggler) toggler.className = toggler.className.replace(open_class, "")
-            }
-
-            function pick_lang(element) {
-                close_picker();
-                if (element && element.getAttribute) {
-                    var lang = element.getAttribute("data-value");
-                    if (lang)
-                        if (TXLIVE.settings.reload_on_language_picker) {
-                            TXLIVE_PRIVATE.storage_set("txlive:selectedlang",
-                                lang);
-                            window.location.reload()
-                        } else TXLIVE.translateTo(lang)
-                }
-            }
             if (el) TXLIVE_PRIVATE.bindClick(el, function() {
                 if (is_picker_open()) close_picker();
                 else open_picker()
             });
-            var navList = document.querySelector("[data-navigation-list]");
-            if (navList) {
-                navList = navList.querySelectorAll("[data-navigation-list-item]") || [];
-                for (var j = 0; j < navList.length; ++j) TXLIVE_PRIVATE.bindClick(navList[j], pick_lang)
+            el = document.getElementById("tx-live-lang-picker");
+            if (el) {
+                el = el.getElementsByTagName("li") || [];
+                for (var j = 0; j < el.length; ++j) TXLIVE_PRIVATE.bindClick(el[j], pick_lang)
             }
-        } catch (err) {
-            TXLIVE.logger.error(err)
+        } catch (err$11) {
+            TXLIVE.logger.error(err$11)
         }
     };
     var LOCQUANT_TYPES = ["currency", "number", "date"];
-    TXLIVE_PRIVATE.parse_locquant_string =
-        function(lstring) {
-            var ret = {};
-            var re = /#([\s\S])#*0([\s\S])0/;
-            var markers = re.exec(lstring);
-            ret.group = markers[1];
-            ret.decimal = markers[2];
-            ret.currency_on_the_left = lstring.indexOf("\u00a4") === 0;
-            if (ret.currency_on_the_left) ret.cspace = /\u00a4(\s*)#/.exec(lstring)[1];
-            else ret.cspace = /0(\s*)\u00a4/.exec(lstring)[1];
-            return ret
-        };
+    TXLIVE_PRIVATE.parse_locquant_string = function(lstring) {
+        var ret = {};
+        var re = /#([\s\S])#*0([\s\S])0/;
+        var markers = re.exec(lstring);
+        ret.group = markers[1];
+        ret.decimal = markers[2];
+        ret.currency_on_the_left = lstring.indexOf("\u00a4") === 0;
+        if (ret.currency_on_the_left) ret.cspace =
+            /\u00a4(\s*)#/.exec(lstring)[1];
+        else ret.cspace = /0(\s*)\u00a4/.exec(lstring)[1];
+        return ret
+    };
     TXLIVE_PRIVATE.LOCQUANT_LOCALE = {
         ja: "\u00a4#,##0.00",
         zh: "\u00a4 #,##0.00",
@@ -1379,7 +1299,8 @@
     for (var i in TXLIVE_PRIVATE.LOCQUANT_LOCALE) TXLIVE_PRIVATE.LOCQUANT_LOCALE[i] = TXLIVE_PRIVATE.parse_locquant_string(TXLIVE_PRIVATE.LOCQUANT_LOCALE[i]);
     TXLIVE_PRIVATE.get_locale_spec = function(langcode) {
         langcode = langcode.toLowerCase().replace("-", "_");
-        return TXLIVE_PRIVATE.LOCQUANT_LOCALE[langcode] || TXLIVE_PRIVATE.LOCQUANT_LOCALE[langcode.substr(0, 2)]
+        return TXLIVE_PRIVATE.LOCQUANT_LOCALE[langcode] || TXLIVE_PRIVATE.LOCQUANT_LOCALE[langcode.substr(0,
+            2)]
     };
     var _parseDecimal = function(value, format) {
         var decimal, fractionPart, integerPart, number, pattern, result, thousands;
@@ -1390,12 +1311,12 @@
             value = value.replace(/\s/g, "").replace(decimal, ".");
             return parseFloat(value)
         }
-        pattern = new RegExp("^\\s*((?:\\d{1,3}(?:\\" +
-            thousands + "\\d{3})+)|\\d*)(?:\\" + decimal + "(\\d*))?\\s*$");
+        pattern = new RegExp("^\\s*((?:\\d{1,3}(?:\\" + thousands + "\\d{3})+)|\\d*)(?:\\" + decimal + "(\\d*))?\\s*$");
         result = value.match(pattern);
         if (!result || result.length !== 3) return NaN;
         integerPart = result[1].replace(new RegExp("\\" + thousands, "g"), "");
-        fractionPart = result[2];
+        fractionPart =
+            result[2];
         number = parseFloat("" + integerPart + "." + fractionPart);
         return number
     };
@@ -1404,12 +1325,12 @@
             splitNumber = numberString.split("."),
             splitFloats = "";
         if (splitNumber[1]) splitFloats = decimalDelimiter + splitNumber[1];
-        return splitNumber[0].split(/(?=(?:\d{3})+$)/g).join(delimiter) +
-            splitFloats
+        return splitNumber[0].split(/(?=(?:\d{3})+$)/g).join(delimiter) + splitFloats
     };
     TXLIVE_PRIVATE.parseDecimal = function(value, format) {
         if (format) return _parseDecimal(value, format);
-        var sourcelang_code = TXLIVE.getSourceLanguageCode() || "en";
+        var sourcelang_code = TXLIVE.getSourceLanguageCode() ||
+            "en";
         var spec = TXLIVE_PRIVATE.get_locale_spec(sourcelang_code);
         if (!spec) {
             var ret = _parseDecimal(value, ".,");
@@ -1437,8 +1358,7 @@
     };
     TXLIVE_PRIVATE.localize_locquant = function(type, text, format) {
         if (TXLIVE.getSelectedLanguageCode() == TXLIVE.getSourceLanguageCode()) return text;
-        return TXLIVE_PRIVATE["localize_locquant_" + type](TXLIVE.getSelectedLanguageCode(),
-            text, format)
+        return TXLIVE_PRIVATE["localize_locquant_" + type](TXLIVE.getSelectedLanguageCode(), text, format)
     };
     TXLIVE_PRIVATE.localize_locquant_number = function(langcode, text, format) {
         var spec = TXLIVE_PRIVATE.get_locale_spec(langcode);
@@ -1450,10 +1370,10 @@
         return spec.unit_on_the_left ? csymbol + cnumber : cnumber + csymbol
     };
     TXLIVE_PRIVATE.localize_locquant_currency = function(langcode, text, format) {
-        var spec =
-            TXLIVE_PRIVATE.get_locale_spec(langcode);
+        var spec = TXLIVE_PRIVATE.get_locale_spec(langcode);
         var csymbol = text.replace(/[\d\s]/g, "").replace(",", "").replace(".", "");
-        var cnumber = text.replace(csymbol, "").trim();
+        var cnumber =
+            text.replace(csymbol, "").trim();
         cnumber = TXLIVE_PRIVATE.parseDecimal(cnumber, format);
         if (!spec || isNaN(cnumber)) return text;
         cnumber = _formatNumber(cnumber, spec.group, spec.decimal);
@@ -1463,11 +1383,11 @@
         return text
     };
     TXLIVE_PRIVATE.escape_regex = function(string) {
-        return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g,
-            "\\$1")
+        return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1")
     };
     TXLIVE_PRIVATE.ignorePath = function(filters, path) {
-        if (!filters || !path) return false;
+        if (!filters ||
+            !path) return false;
         var i = filters.length;
         while (i--)
             if (filters[i].action == "ignore") {
@@ -1486,7 +1406,8 @@
                 re = "^" + path;
                 break;
             case "ends":
-                re = path + "$";
+                re =
+                    path + "$";
                 break;
             case "contains":
                 re = path;
@@ -1534,7 +1455,8 @@
     var SKIP_CLASS = {
         "notranslate": true,
         "txlive-meta": true,
-        "facebook_container": true
+        "facebook_container": true,
+        "twitter_container": true
     };
     var SKIP_TAGS_CONTENT = {
         TEXTAREA: true
@@ -1577,8 +1499,7 @@
         NOSCRIPT: true,
         SCRIPT: true,
         IFRAME: true,
-        TEXTAREA: true,
-        PICTURE: true
+        TEXTAREA: true
     };
     var NEW_SEGMENTS_DICT = null;
 
@@ -1599,8 +1520,8 @@
     }
 
     function hasDataBinding(node) {
-        return node.nodeType ===
-            1 && node.className && (" " + node.className).indexOf(" ng-") != -1 || node.nodeType === 8 && node.nodeValue && node.nodeValue.indexOf("react-") != -1
+        return node.nodeType === 1 && node.className && (" " +
+            node.className).indexOf(" ng-") != -1 || node.nodeType === 8 && node.nodeValue && node.nodeValue.indexOf("react-") != -1
     }
 
     function isSkipTag(tagName) {
@@ -1631,10 +1552,6 @@
         return false
     }
 
-    function isBlockTag(tagName) {
-        return (TXLIVE.settings.tags_as_blocks || []).indexOf(tagName) != -1
-    }
-
     function SET_TEXT(item, text) {
         text = decodeString(text);
         item.node.nodeValue = item.head + text + item.tail
@@ -1644,7 +1561,8 @@
         return item.node.nodeValue
     }
 
-    function SET_FRAGMENT(item, text) {
+    function SET_FRAGMENT(item,
+        text) {
         text = decodeString(text);
         for (var i = 0; i < item.block_args.length; ++i) {
             var arg = item.block_args[i];
@@ -1652,13 +1570,13 @@
             else if (arg.type === "LQ") text = text.replace("{{" + i + "}}", TXLIVE_PRIVATE.localize_locquant(arg.ltype, arg.inner, arg.format))
         }
         var node = item.snode_before ? item.snode_before.nextSibling : item.snode_after.parentNode.firstChild;
-        while (node &&
-            node != item.snode_after) {
+        while (node && node != item.snode_after) {
             var to_delete = node;
             node = node.nextSibling;
             to_delete.parentNode.removeChild(to_delete)
         }
-        var tmp = document.createElement("div");
+        var tmp =
+            document.createElement("div");
         tmp.innerHTML = TXLIVE_PRIVATE.xssProtect(item.head + text + item.tail);
         var frag = document.createDocumentFragment();
         var child;
@@ -1683,8 +1601,7 @@
             if (arg.type === "VAR") text = text.replace("{{" + i + "}}", arg.html);
             else if (arg.type === "LQ") text = text.replace("{{" + i + "}}", TXLIVE_PRIVATE.localize_locquant(arg.ltype, arg.inner, arg.format))
         }
-        item.node.innerHTML = TXLIVE_PRIVATE.xssProtect(item.head +
-            text + item.tail)
+        item.node.innerHTML = TXLIVE_PRIVATE.xssProtect(item.head + text + item.tail)
     }
 
     function GET_BLOCK(item, text) {
@@ -1692,7 +1609,8 @@
     }
 
     function SET_ATTR(item, text) {
-        text = decodeString(text);
+        text =
+            decodeString(text);
         item.node.setAttribute(item.attribute, item.head + text + item.tail)
     }
 
@@ -1735,10 +1653,10 @@
         if (/<[a-z][\s\S]*>/i.test(text)) {
             var node = document.createElement("div");
             node.innerHTML = text;
-            PARSE_ARGS(node.firstChild,
-                args);
+            PARSE_ARGS(node.firstChild, args);
             for (var i = 0; i < args.length; ++i)
-                if (args[i].type === "VAR" || args[i].type === "LQ") text = text.replace(args[i].html, "{{" + i + "}}")
+                if (args[i].type === "VAR" || args[i].type ===
+                    "LQ") text = text.replace(args[i].html, "{{" + i + "}}")
         }
         if (PARSER_OPTIONS.isset(options, PARSER_OPTIONS.URLS_AS_VARS) && /\s(src|href)/i.test(text)) {
             var match, regex = /(<a[^>]*href\s*=\s*)("[^"]*"|'[^']*')|(<img[^>]*src\s*=\s*)("[^"]*"|'[^']*')/ig;
@@ -1753,7 +1671,8 @@
                         html: match[2].substring(1, match[2].length - 1)
                     })
                 } else {
-                    result += match[3] + match[4][0] + "{{" + args.length + "}}" + match[4][0];
+                    result += match[3] +
+                        match[4][0] + "{{" + args.length + "}}" + match[4][0];
                     args.push({
                         type: "VAR",
                         html: match[4].substring(1, match[4].length - 1)
@@ -1767,13 +1686,13 @@
         return text
     }
 
-    function CRAWL_FRAGMENT(snode_before, snode_after, tags, options, string_group, skip_trim_whitespaces) {
-        if ((!snode_before || snode_before && snode_before.txbefore_detected === true) && (!snode_after || snode_after && snode_after.txafter_detected ===
-                true)) return;
+    function CRAWL_FRAGMENT(snode_before, snode_after, tags, options) {
+        if ((!snode_before || snode_before && snode_before.txbefore_detected === true) && (!snode_after || snode_after && snode_after.txafter_detected === true)) return;
         try {
             if (snode_before) snode_before.txbefore_detected = true;
-            if (snode_after) snode_after.txafter_detected = true
-        } catch (err) {}
+            if (snode_after) snode_after.txafter_detected =
+                true
+        } catch (err$12) {}
         var node = document.createElement("div");
         var next = snode_before ? snode_before.nextSibling : snode_after.parentNode.firstChild;
         while (next && next != snode_after) {
@@ -1782,11 +1701,11 @@
         }
         var raw_text = node.innerHTML;
         var text = TXLIVE_PRIVATE.removeComments(raw_text);
-        if (!skip_trim_whitespaces) text = TXLIVE_PRIVATE.stripWhitespace(text);
+        text = TXLIVE_PRIVATE.stripWhitespace(text);
         if (!text) return;
         var args = [];
         text = PARSE_VARIABLES(text, args, options);
-        var key = TXLIVE_PRIVATE.md5(text + string_group);
+        var key = TXLIVE_PRIVATE.md5(text);
         var segments = TXLIVE.segments;
         var segment = segments[key];
         if (!segment) {
@@ -1807,27 +1726,27 @@
             set: SET_FRAGMENT,
             get: GET_FRAGMENT,
             block_args: args,
-            head: raw_text.indexOf(" ") ===
-                0 ? " " : "",
+            head: raw_text.indexOf(" ") === 0 ? " " : "",
             tail: raw_text.indexOf(" ", raw_text.length - 1) >= 0 ? " " : ""
         });
         if (NEW_SEGMENTS_DICT) NEW_SEGMENTS_DICT[key] = segment
     }
 
-    function CRAWL_BLOCK(node, tags, options, string_group, skip_trim_whitespces) {
-        if (node.txblock_detected === true) return;
+    function CRAWL_BLOCK(node, tags, options) {
+        if (node.txblock_detected ===
+            true) return;
         try {
             node.txblock_detected = true
-        } catch (err) {}
+        } catch (err$13) {}
         if (TXLIVE_PRIVATE.process_locquant(node)) return;
         if (isSkipTagContent(node.tagName)) return;
         var raw_text = node.innerHTML;
         var text = TXLIVE_PRIVATE.removeComments(raw_text);
-        if (!skip_trim_whitespces) text = TXLIVE_PRIVATE.stripWhitespace(text);
+        text = TXLIVE_PRIVATE.stripWhitespace(text);
         if (!text || TXLIVE_PRIVATE.isNotTextualRegex.test(text)) return;
         var args = [];
         text = PARSE_VARIABLES(text, args, options);
-        var key = TXLIVE_PRIVATE.md5(text + string_group);
+        var key = TXLIVE_PRIVATE.md5(text);
         var segments = TXLIVE.segments;
         var segment = segments[key];
         if (!segment) {
@@ -1848,24 +1767,24 @@
             get: GET_BLOCK,
             block_args: args,
             head: raw_text.indexOf(" ") === 0 ? " " : "",
-            tail: raw_text.indexOf(" ",
-                raw_text.length - 1) >= 0 ? " " : ""
+            tail: raw_text.indexOf(" ", raw_text.length - 1) >= 0 ? " " : ""
         });
         try {
             node.txsegment = segment
-        } catch (err) {}
+        } catch (err$14) {}
         if (NEW_SEGMENTS_DICT) NEW_SEGMENTS_DICT[key] = segment
     }
 
-    function CRAWL_TEXT(node, tags, options, string_group) {
+    function CRAWL_TEXT(node, tags, options) {
         if (node.txtext_detected === true) return;
         try {
             node.txtext_detected = true
-        } catch (err) {}
-        var raw_text = node.nodeValue;
+        } catch (err$15) {}
+        var raw_text =
+            node.nodeValue;
         var text = TXLIVE_PRIVATE.stripWhitespace(raw_text);
         if (text && text.length && !TXLIVE_PRIVATE.isNotTextualRegex.test(text)) {
-            var key = TXLIVE_PRIVATE.md5(text + string_group);
+            var key = TXLIVE_PRIVATE.md5(text);
             var segments = TXLIVE.segments;
             var segment = segments[key];
             if (!segment) {
@@ -1885,21 +1804,21 @@
                 set: SET_TEXT,
                 get: GET_TEXT,
                 head: raw_text.indexOf(" ") === 0 ? " " : "",
-                tail: raw_text.indexOf(" ", raw_text.length - 1) >= 0 ? " " : ""
+                tail: raw_text.indexOf(" ",
+                    raw_text.length - 1) >= 0 ? " " : ""
             });
             try {
                 node.txsegment = segment
-            } catch (err) {}
+            } catch (err$16) {}
             if (NEW_SEGMENTS_DICT) NEW_SEGMENTS_DICT[key] = segment
         }
     }
 
-    function CRAWL_ATTR(node, attr, tags, options, string_group) {
-        var raw_text = node.getAttribute(attr) ||
-            "";
+    function CRAWL_ATTR(node, attr, tags, options) {
+        var raw_text = node.getAttribute(attr) || "";
         var text = TXLIVE_PRIVATE.stripWhitespace(raw_text);
         if (text && text.length && !TXLIVE_PRIVATE.isNotTextualRegex.test(text)) {
-            var key = TXLIVE_PRIVATE.md5(text + string_group);
+            var key = TXLIVE_PRIVATE.md5(text);
             var segments = TXLIVE.segments;
             var segment = segments[key];
             if (!segment) {
@@ -1909,7 +1828,8 @@
                     tags: [],
                     elements: []
                 };
-                segments[key] = segment
+                segments[key] =
+                    segment
             }
             if (tags.length) mergeArrays(segment.tags, tags);
             segment.elements.push({
@@ -1919,13 +1839,12 @@
                 set: SET_ATTR,
                 get: GET_ATTR,
                 attribute: attr,
-                head: raw_text.indexOf(" ") ===
-                    0 ? " " : "",
+                head: raw_text.indexOf(" ") === 0 ? " " : "",
                 tail: raw_text.indexOf(" ", raw_text.length - 1) >= 0 ? " " : ""
             });
             try {
                 node.txsegment = segment
-            } catch (err) {}
+            } catch (err$17) {}
             if (NEW_SEGMENTS_DICT) NEW_SEGMENTS_DICT[key] = segment
         }
     }
@@ -1946,11 +1865,6 @@
                     list.push("srcset")
                 }
                 break;
-            case "AREA":
-                list.push("title");
-                list.push("alt");
-                list.push("href");
-                break;
             case "META": {
                 var name = node.getAttribute("name");
                 if (name) {
@@ -1960,7 +1874,8 @@
                 var social_tags = node.getAttribute("property");
                 if (social_tags) {
                     social_tags = social_tags.toLowerCase();
-                    if (social_tags === "og:title" || social_tags === "og:description") list.push("content")
+                    if (social_tags === "og:title" ||
+                        social_tags === "og:description") list.push("content")
                 }
                 var googleplus_tags = node.getAttribute("itemprop");
                 if (googleplus_tags) {
@@ -2005,14 +1920,13 @@
         return list
     }
 
-    function PARSE_ATTR(node, tags, options, string_group) {
+    function PARSE_ATTR(node, tags, options) {
         if (node.txattr_detected === true) return;
         try {
-            node.txattr_detected =
-                true
-        } catch (err) {}
+            node.txattr_detected = true
+        } catch (err$18) {}
         var attrs = DETECT_i18n_ATTR(node, options);
-        for (var i = 0; i < attrs.length; ++i) CRAWL_ATTR(node, attrs[i], tags, options, string_group)
+        for (var i = 0; i < attrs.length; ++i) CRAWL_ATTR(node, attrs[i], tags, options)
     }
 
     function IS_IN_DOCUMENT(node) {
@@ -2034,12 +1948,11 @@
         return node.shadowRoot
     }
 
-    function PARSE_DOM(node,
-        parent_tags, options, parent_string_group, skip_trim_whitespaces) {
+    function PARSE_DOM(node, parent_tags, options) {
         if (node)
             if (!isSkipTag(node.tagName))
                 if (node.nodeType === 3) {
-                    if (PARSER_OPTIONS.isunset(options, PARSER_OPTIONS.DO_NOT_COLLECT)) CRAWL_TEXT(node, parent_tags, options, parent_string_group)
+                    if (PARSER_OPTIONS.isunset(options, PARSER_OPTIONS.DO_NOT_COLLECT)) CRAWL_TEXT(node, parent_tags, options)
                 } else if (node.nodeType === 1 && !isSkipClass(node.className)) {
             var tags = parent_tags;
             var tag_attr = node.getAttribute("tx-tags");
@@ -2048,50 +1961,35 @@
                 tag_attr = tag_attr.split(",");
                 var i = tag_attr.length;
                 while (i--) {
-                    var a = tag_attr[i].trim().toLowerCase();
+                    var a =
+                        tag_attr[i].trim().toLowerCase();
                     if (a && a.length && tags.indexOf(a) < 0) tags.push(a)
                 }
             }
             var content_attr = node.getAttribute("tx-content"),
                 is_block = false,
                 _options = options;
-            if (isBlockTag(node.tagName)) {
-                _options = PARSER_OPTIONS.unset(_options, PARSER_OPTIONS.DO_NOT_COLLECT);
-                is_block = true
-            }
             if (content_attr && content_attr.length) {
                 content_attr = content_attr.toLowerCase();
-                if (/\bexclude\b/.test(content_attr)) {
-                    _options = PARSER_OPTIONS.set(_options, PARSER_OPTIONS.DO_NOT_COLLECT);
-                    is_block = false
-                } else if (/\binclude\b/.test(content_attr)) _options = PARSER_OPTIONS.unset(_options,
-                    PARSER_OPTIONS.DO_NOT_COLLECT);
+                if (/\bexclude\b/.test(content_attr)) _options = PARSER_OPTIONS.set(_options, PARSER_OPTIONS.DO_NOT_COLLECT);
+                else if (/\binclude\b/.test(content_attr)) _options = PARSER_OPTIONS.unset(_options, PARSER_OPTIONS.DO_NOT_COLLECT);
                 else if (/\bblock\b/.test(content_attr)) {
-                    _options = PARSER_OPTIONS.unset(_options, PARSER_OPTIONS.DO_NOT_COLLECT);
+                    _options =
+                        PARSER_OPTIONS.unset(_options, PARSER_OPTIONS.DO_NOT_COLLECT);
                     is_block = true
                 }
-                if (/\bnotranslate_urls\b/.test(content_attr)) {
-                    _options = PARSER_OPTIONS.set(_options, PARSER_OPTIONS.URLS_AS_VARS);
-                    is_block = false
-                } else if (/\btranslate_urls\b/.test(content_attr)) {
-                    _options = PARSER_OPTIONS.unset(_options, PARSER_OPTIONS.URLS_AS_VARS);
-                    is_block = false
-                }
+                if (/\bnotranslate_urls\b/.test(content_attr)) _options = PARSER_OPTIONS.set(_options, PARSER_OPTIONS.URLS_AS_VARS);
+                else if (/\btranslate_urls\b/.test(content_attr)) _options = PARSER_OPTIONS.unset(_options, PARSER_OPTIONS.URLS_AS_VARS)
             }
-            var string_group = node.getAttribute("tx-string-group");
-            if (!string_group || !string_group.length)
-                if (parent_string_group &&
-                    parent_string_group.length) string_group = parent_string_group;
-                else string_group = "";
             if (TXLIVE.settings.translate_urls)
                 if (content_attr && content_attr.length) {
                     if (!/\bnotranslate_urls\b/.test(content_attr)) _options = PARSER_OPTIONS.unset(_options, PARSER_OPTIONS.URLS_AS_VARS)
-                } else _options = PARSER_OPTIONS.unset(_options, PARSER_OPTIONS.URLS_AS_VARS);
+                } else _options =
+                    PARSER_OPTIONS.unset(_options, PARSER_OPTIONS.URLS_AS_VARS);
             var _collect = PARSER_OPTIONS.isunset(_options, PARSER_OPTIONS.DO_NOT_COLLECT);
-            if (_collect) PARSE_ATTR(node, tags, _options, string_group);
+            if (_collect) PARSE_ATTR(node, tags, _options);
             if (!is_block && node.childNodes.length) {
-                var all_text_nodes =
-                    true;
+                var all_text_nodes = true;
                 for (var j = node.childNodes.length - 1; j >= 0; --j)
                     if (node.childNodes[j].nodeType !== 3) {
                         all_text_nodes = false;
@@ -2099,35 +1997,28 @@
                     } if (all_text_nodes) is_block = true
             }
             if (is_block) {
-                if (_collect) CRAWL_BLOCK(node, tags, _options, string_group);
-                if (NODE_HOSTS_SHADOW_DOM(node)) {
-                    var shadowchildnode = node.shadowRoot.firstChild;
-                    while (shadowchildnode) {
-                        PARSE_DOM(shadowchildnode, tags, _options, string_group);
-                        shadowchildnode = shadowchildnode.nextSibling
-                    }
-                }
+                if (_collect) CRAWL_BLOCK(node, tags, _options)
             } else {
-                var childnode = NODE_HOSTS_SHADOW_DOM(node) ? node.shadowRoot.firstChild : node.firstChild;
-                if (node.tagName.toLowerCase() == "pre") skip_trim_whitespaces = true;
+                var childnode = NODE_HOSTS_SHADOW_DOM(node) ? node.shadowRoot.firstChild :
+                    node.firstChild;
                 while (childnode)
                     if (isBlockElement(childnode)) {
-                        PARSE_DOM(childnode, tags, _options, string_group, skip_trim_whitespaces);
+                        PARSE_DOM(childnode, tags, _options);
                         childnode = childnode.nextSibling
                     } else {
                         var nextnode = childnode.nextSibling;
                         if (!nextnode || nextnode && isBlockElement(nextnode)) {
-                            PARSE_DOM(childnode, tags, _options, string_group, skip_trim_whitespaces);
+                            PARSE_DOM(childnode, tags, _options);
                             childnode = childnode.nextSibling
                         } else {
                             var snode_before = childnode.previousSibling;
                             var snode_after = null;
                             var snode = childnode;
-                            var has_text =
-                                false,
+                            var has_text = false,
                                 has_databinding = false;
                             while (snode) {
-                                if (isTextElement(snode) && snode.nodeValue && snode.nodeValue.trim().length) has_text = true;
+                                if (isTextElement(snode) && snode.nodeValue && snode.nodeValue.trim().length) has_text =
+                                    true;
                                 else if (!TXLIVE.settings.ignore_databind && hasDataBinding(snode)) {
                                     has_databinding = true;
                                     break
@@ -2139,14 +2030,13 @@
                             }
                             if (!has_text || has_databinding)
                                 while (childnode && childnode != snode_after) {
-                                    PARSE_DOM(childnode, tags, _options, string_group, skip_trim_whitespaces);
+                                    PARSE_DOM(childnode, tags, _options);
                                     childnode = childnode.nextSibling
                                 } else if (snode_before || snode_after) {
-                                    if (_collect) CRAWL_FRAGMENT(snode_before,
-                                        snode_after, tags, _options, string_group, skip_trim_whitespaces);
+                                    if (_collect) CRAWL_FRAGMENT(snode_before, snode_after, tags, _options);
                                     childnode = snode_after
                                 } else {
-                                    if (_collect) CRAWL_BLOCK(node, tags, _options, string_group, skip_trim_whitespaces);
+                                    if (_collect) CRAWL_BLOCK(node, tags, _options);
                                     childnode = null
                                 }
                         }
@@ -2177,7 +2067,7 @@
             if (node.txtext_detected) delete node.txtext_detected;
             if (node.txattr_detected) delete node.txattr_detected;
             if (node.txsegment) delete node.txsegment
-        } catch (err) {}
+        } catch (err$19) {}
         if (children) {
             node = node.firstChild;
             while (node) {
@@ -2194,11 +2084,12 @@
         try {
             document.getElementsByTagName("html")[0].setAttribute("lang", langcode.toLowerCase().replace("_", "-"));
             if (TXLIVE.settings.rtl_layout) {
-                var dir = TXLIVE.getLanguageDirection(langcode);
+                var dir =
+                    TXLIVE.getLanguageDirection(langcode);
                 if (dir == "rtl" || dir == "ltr" && document.dir == "rtl") document.dir = dir
             }
-        } catch (err) {
-            TXLIVE.logger.error(err)
+        } catch (err$20) {
+            TXLIVE.logger.error(err$20)
         }
     };
 
@@ -2218,7 +2109,7 @@
                             item.set(item, s.source_string);
                             item.modified = false
                         }
-                    } catch (err) {}
+                    } catch (err$21) {}
                 }
                 delete s.translation_string
             }
@@ -2234,8 +2125,7 @@
         LAST_TRANSLATION_JSON = null;
         LAST_TRANSLATION_LANG = null;
         callFunctionArray(TXLIVE.__onaftertranslate);
-        callFunctionArray(TXLIVE.__ontranslatepage,
-            langcode);
+        callFunctionArray(TXLIVE.__ontranslatepage, langcode);
         TXLIVE.dynamicPageOn()
     }
 
@@ -2259,9 +2149,8 @@
                         item.set(item, s.source_string);
                         item.modified = false
                     }
-                } catch (err) {
-                    s.elements.splice(j,
-                        1)
+                } catch (err$22) {
+                    s.elements.splice(j, 1)
                 }
             }
             s.translation_string = string || s.source_string
@@ -2283,7 +2172,8 @@
         autocollect_processing = false;
 
     function autocollectConsume() {
-        if (!TXLIVE.autocollect_ready || !autocollect_queue.length || autocollect_processing) return;
+        if (!TXLIVE.autocollect_ready || !autocollect_queue.length ||
+            autocollect_processing) return;
         var source_lang = TXLIVE.getSourceLanguageCode() || "";
         var target_lang = TXLIVE.getSelectedLanguageCode() || "";
         if (!TXLIVE_PRIVATE.manifest_ready) {
@@ -2296,22 +2186,19 @@
         }
         var json = autocollect_queue.shift();
         autocollect_processing = true;
-        TXLIVE.doCORSRequest(TXLIVE.settings.autocollect_url,
-            "POST", JSON.stringify(json),
-            function() {
-                autocollect_processing = false;
-                autocollectConsume()
-            },
-            function(err, status_code) {
-                autocollect_processing = false;
-                if (status_code !== 0 && status_code !== 404) TXLIVE.logger.error(err);
-                autocollectConsume()
-            })
+        TXLIVE.doCORSRequest(TXLIVE.settings.autocollect_url, "POST", JSON.stringify(json), function() {
+            autocollect_processing = false;
+            autocollectConsume()
+        }, function(err, status_code) {
+            autocollect_processing =
+                false;
+            if (status_code !== 0 && status_code !== 404) TXLIVE.logger.error(err);
+            autocollectConsume()
+        })
     }
 
     function autoCollect(custom_segments) {
-        if (TXLIVE_PRIVATE.extractDomain(TXLIVE.settings.domain) !== TXLIVE_PRIVATE.extractDomain(TXLIVE_PRIVATE.getWindowLocation().href) || TXLIVE_SIDEBAR.loaded || !TXLIVE.settings.has_session || !TXLIVE.settings.autocollect || TXLIVE.settings.autocollected &&
-            !custom_segments) return;
+        if (TXLIVE_PRIVATE.extractDomain(TXLIVE.settings.domain) !== TXLIVE_PRIVATE.extractDomain(TXLIVE_PRIVATE.getWindowLocation().href) || TXLIVE_SIDEBAR.loaded || !TXLIVE.settings.has_session || !TXLIVE.settings.autocollect || TXLIVE.settings.autocollected && !custom_segments) return;
         TXLIVE.settings.autocollected = !custom_segments;
         try {
             var segments = custom_segments || TXLIVE.segments,
@@ -2343,8 +2230,8 @@
             };
             autocollect_queue.push(json);
             autocollectConsume()
-        } catch (err) {
-            TXLIVE.logger.error(err)
+        } catch (err$23) {
+            TXLIVE.logger.error(err$23)
         }
     }
     var mutation_nodes = [],
@@ -2360,8 +2247,7 @@
         var node_list = [];
         for (var i = 0; i < mutation_nodes.length; ++i)
             if (IS_IN_DOCUMENT(mutation_nodes[i]))
-                if (node_list.indexOf(mutation_nodes[i]) ==
-                    -1) node_list.push(mutation_nodes[i]);
+                if (node_list.indexOf(mutation_nodes[i]) == -1) node_list.push(mutation_nodes[i]);
         mutation_nodes = [];
         if (node_list.length) TXLIVE.translateNodes(node_list)
     }
@@ -2381,9 +2267,9 @@
                 if (mutation.removedNodes.length)
                     for (var i = 0; i < mutation.removedNodes.length; ++i) REMOVE_NODE(mutation.removedNodes[i], true);
                 REMOVE_NODE(mutation.target);
-                if (mutation.target.childNodes.length ||
-                    mutation.type == "attributes") mutation_nodes.push(mutation.target);
-                else if (isTextElement(mutation.target) && mutation.target.parentNode) {
+                if (mutation.target.childNodes.length || mutation.type == "attributes") mutation_nodes.push(mutation.target);
+                else if (isTextElement(mutation.target) &&
+                    mutation.target.parentNode) {
                     REMOVE_NODE(mutation.target.parentNode);
                     mutation_nodes.push(mutation.target.parentNode)
                 }
@@ -2399,8 +2285,7 @@
         mutators_on = true;
         if (observer) {
             var attributeFilter = ["value", "placeholder", "title"];
-            if (TXLIVE.settings.translate_urls) attributeFilter.push("href",
-                "src", "srcset");
+            if (TXLIVE.settings.translate_urls) attributeFilter.push("href", "src");
             observer.observe(document.body, {
                 childList: true,
                 subtree: true,
@@ -2419,8 +2304,7 @@
         if (observer) observer.disconnect();
         else {
             document.removeEventListener("DOMNodeInserted", __dom_inserted_cb);
-            document.removeEventListener("DOMNodeRemoved",
-                __dom_removed_cb)
+            document.removeEventListener("DOMNodeRemoved", __dom_removed_cb)
         }
     };
 
@@ -2441,8 +2325,7 @@
         if (langcode === "zh-Hans" || langcode === "zh-Hant") return langcode;
         langcode = langcode.replace("-", "_");
         var extra = null,
-            tokens,
-            lang, country;
+            tokens, lang, country;
         if (langcode.indexOf("@") >= 0) {
             tokens = langcode.split("@");
             langcode = tokens[0];
@@ -2461,8 +2344,7 @@
         if (!TXLIVE.languages) return false;
         var languages = TXLIVE.languages;
         for (var i = 0; i < languages.translation.length; ++i)
-            if (languages.translation[i].code ===
-                langcode) return true;
+            if (languages.translation[i].code === langcode) return true;
         return false
     };
     TXLIVE.translateTo = function(langcode) {
@@ -2481,9 +2363,6 @@
             var languages = TXLIVE.languages;
             if (TXLIVE.getSelectedLanguageCode() === langcode)
                 if (languages.source.code === langcode && !LAST_TRANSLATION_LANG || LAST_TRANSLATION_LANG && LAST_TRANSLATION_JSON && LAST_TRANSLATION_LANG === langcode) {
-                    TXLIVE_PRIVATE.language_views_tracked_onload =
-                        true;
-                    TXLIVE.trackLanguageView();
                     __ready__();
                     return
                 } if (languages.source.code === langcode) {
@@ -2500,58 +2379,42 @@
                     __ready__();
                     return
                 }
-                var json = LOCAL_TRANSLATION_STORAGE[langcode];
+                var key = TXLIVE_PRIVATE.apiScopedKey(langcode + "@" + languages.timestamp);
+                var json = TXLIVE_PRIVATE.storage_get(key);
+                if (!json) json = LOCAL_TRANSLATION_STORAGE[langcode];
                 if (json) {
-                    translateSegments(langcode,
-                        json);
+                    translateSegments(langcode, json);
                     __ready__()
-                } else __loadlanguage__(langcode, lang_url, function(data) {
-                    if (data) {
-                        if (langcode === TXLIVE.getSelectedLanguageCode()) {
-                            translateSegments(langcode, data);
-                            __ready__()
-                        }
-                    } else __ready__()
-                })
+                } else __loadlanguage__(langcode,
+                    lang_url,
+                    function(data) {
+                        if (data) {
+                            TXLIVE_PRIVATE.storage_set(key, data);
+                            if (langcode === TXLIVE.getSelectedLanguageCode()) {
+                                translateSegments(langcode, data);
+                                __ready__()
+                            }
+                        } else __ready__()
+                    })
             }
             TXLIVE.setSelectedLanguageCode(langcode);
-            TXLIVE_PRIVATE.storage_set("txlive:selectedlang", langcode);
-            TXLIVE.trackLanguageView()
-        } catch (err) {
-            TXLIVE.logger.error(err)
+            TXLIVE_PRIVATE.storage_set("txlive:selectedlang", langcode)
+        } catch (err$24) {
+            TXLIVE.logger.error(err$24)
         }
     };
-    TXLIVE.trackLanguageView = function(path) {
-        if (TXLIVE.ready || TXLIVE_PRIVATE.manifest_ready) TXLIVE.callTelemetry(true, path)
-    };
-    TXLIVE.callTelemetry =
-        function(shouldTrackLanguageView, path) {
-            if (typeof shouldTrackLanguageView === "undefined") shouldTrackLanguageView = false;
-            var data = {
-                api_key: TXLIVE.settings.api_key,
-                integration: TXLIVE.settings.integration || "live"
-            };
-            if (shouldTrackLanguageView) {
-                data.lang_code = TXLIVE.getSelectedLanguageCode();
-                data.path = path || window.location.pathname
-            }
-            TXLIVE.doCORSRequest(TXLIVE.settings.telemetry_url, "post", JSON.stringify({
-                data: data
-            }))
-        };
 
     function setLanguages(languages) {
         try {
-            if (!languages || !languages.timestamp || !languages.translation ||
-                !languages.source) return;
+            if (!languages || !languages.timestamp || !languages.translation || !languages.source) return;
             if (TXLIVE.languages && TXLIVE.languages.timestamp === languages.timestamp) {
                 setupPicker();
                 return
             }
             if (isString(languages.translation)) try {
                 languages.translation = JSON.parse(languages.translation) || []
-            } catch (err) {
-                TXLIVE.logger.error(err);
+            } catch (err$25) {
+                TXLIVE.logger.error(err$25);
                 languages.translation = []
             }
             TXLIVE.denormalized_languages = [{
@@ -2569,60 +2432,59 @@
             TXLIVE.setSelectedLanguageCode(languages.source.code);
             callFunctionArray(TXLIVE.__onfetchlanguages, TXLIVE.denormalized_languages);
             setupPicker()
-        } catch (err) {
-            TXLIVE.logger.error(err)
+        } catch (err$26) {
+            TXLIVE.logger.error(err$26)
         }
     }
     TXLIVE.isPageFiltered = function() {
-        return TXLIVE.settings && TXLIVE.settings.filters && TXLIVE_PRIVATE.ignorePath(TXLIVE.settings.filters,
-            window.location.pathname)
+        return TXLIVE.settings && TXLIVE.settings.filters && TXLIVE_PRIVATE.ignorePath(TXLIVE.settings.filters, window.location.pathname)
     };
-    TXLIVE.detectLanguage = function() {
-        try {
-            var detect_lang = TXLIVE.settings.detectlang,
-                code;
-            if (detect_lang && isFunction(detect_lang)) {
-                detect_lang = detect_lang();
-                if (detect_lang !== true && detect_lang !== false) return detect_lang
-            }
-            if (!detect_lang) return TXLIVE_PRIVATE.storage_get("txlive:selectedlang");
-            var url = TXLIVE_PRIVATE.getWindowLocation().href.split("?");
-            if (url.length == 2) {
-                var params = url[1].split("&");
-                for (var i = 0; i < params.length; ++i) {
-                    var keyvalue = params[i].split("=");
-                    if (keyvalue.length ==
-                        2 && keyvalue[0].toLowerCase() == "lang") {
-                        code = TXLIVE.normalizeLangCode(keyvalue[1]);
-                        if (TXLIVE.hasLanguageCode(code)) return code;
-                        break
+    TXLIVE.detectLanguage =
+        function() {
+            try {
+                var detect_lang = TXLIVE.settings.detectlang,
+                    code;
+                if (detect_lang && isFunction(detect_lang)) {
+                    detect_lang = detect_lang();
+                    if (detect_lang !== true && detect_lang !== false) return detect_lang
+                }
+                if (!detect_lang) return TXLIVE_PRIVATE.storage_get("txlive:selectedlang");
+                var url = TXLIVE_PRIVATE.getWindowLocation().href.split("?");
+                if (url.length == 2) {
+                    var params = url[1].split("&");
+                    for (var i = 0; i < params.length; ++i) {
+                        var keyvalue = params[i].split("=");
+                        if (keyvalue.length == 2 && keyvalue[0].toLowerCase() == "lang") {
+                            code =
+                                TXLIVE.normalizeLangCode(keyvalue[1]);
+                            if (TXLIVE.hasLanguageCode(code)) return code;
+                            break
+                        }
                     }
                 }
+                url = TXLIVE_PRIVATE.getWindowLocation().host.split(".");
+                if (url.length > 0) {
+                    code = TXLIVE.normalizeLangCode(url[0]);
+                    if (TXLIVE.hasLanguageCode(code)) return code
+                }
+                url = TXLIVE_PRIVATE.getWindowLocation().pathname.split("/");
+                if (url.length > 1) {
+                    code = TXLIVE.normalizeLangCode(url[1]);
+                    if (TXLIVE.hasLanguageCode(code)) return code
+                }
+                return TXLIVE_PRIVATE.storage_get("txlive:selectedlang") || TXLIVE_PRIVATE.getBrowserLocale()
+            } catch (err$27) {
+                TXLIVE.logger.error(err$27)
             }
-            url = TXLIVE_PRIVATE.getWindowLocation().host.split(".");
-            if (url.length > 0) {
-                code = TXLIVE.normalizeLangCode(url[0]);
-                if (TXLIVE.hasLanguageCode(code)) return code
-            }
-            url = TXLIVE_PRIVATE.getWindowLocation().pathname.split("/");
-            if (url.length > 1) {
-                code = TXLIVE.normalizeLangCode(url[1]);
-                if (TXLIVE.hasLanguageCode(code)) return code
-            }
-            return TXLIVE_PRIVATE.storage_get("txlive:selectedlang") ||
-                TXLIVE_PRIVATE.getBrowserLocale()
-        } catch (err) {
-            TXLIVE.logger.error(err)
-        }
-    };
+        };
     TXLIVE.getLanguageName = function(langcode) {
         try {
             if (!TXLIVE.denormalized_languages) return;
             var d = TXLIVE.denormalized_languages;
             for (var i = 0; i < d.length; ++i)
                 if (d[i].code === langcode) return d[i].name
-        } catch (err) {
-            TXLIVE.logger.error(err)
+        } catch (err$28) {
+            TXLIVE.logger.error(err$28)
         }
     };
     TXLIVE.hasLanguageCode = function(langcode) {
@@ -2630,9 +2492,9 @@
             var i;
             if (!TXLIVE.denormalized_languages) {
                 if (TXLIVE_PRIVATE.manifest && TXLIVE_PRIVATE.manifest.languages && TXLIVE_PRIVATE.manifest.languages.translation) {
-                    var languages =
-                        TXLIVE_PRIVATE.manifest.languages.translation;
-                    for (i = 0; i < languages.length; ++i)
+                    var languages = TXLIVE_PRIVATE.manifest.languages.translation;
+                    for (i = 0; i <
+                        languages.length; ++i)
                         if (languages[i].code === langcode) return true
                 }
                 return false
@@ -2641,35 +2503,34 @@
             for (i = 0; i < d.length; ++i)
                 if (d[i].code === langcode) return true;
             return false
-        } catch (err) {
-            TXLIVE.logger.error(err)
+        } catch (err$29) {
+            TXLIVE.logger.error(err$29)
         }
     };
     TXLIVE.getLanguageDirection = function(langcode) {
         if (!TXLIVE.languages) return;
         if (TXLIVE.languages.source.code == langcode) return TXLIVE.languages.source.rtl ? "rtl" : "ltr";
         for (var i = 0; i < TXLIVE.languages.translation.length; ++i) {
-            var lang =
-                TXLIVE.languages.translation[i];
-            if (lang.code == langcode) return lang.rtl ? "rtl" : "ltr"
+            var lang = TXLIVE.languages.translation[i];
+            if (lang.code ==
+                langcode) return lang.rtl ? "rtl" : "ltr"
         }
     };
     TXLIVE.matchLanguageCode = function(fuzzy_langcode) {
         try {
-            if (!TXLIVE.denormalized_languages) return;
-
-            function stripCode(code) {
+            var stripCode = function(code) {
                 code = code || "";
                 if (code.indexOf("-") >= 0) code = code.split("-")[0];
                 else if (code.indexOf("_") >= 0) code = code.split("_")[0];
                 return code.toLowerCase()
-            }
+            };
+            if (!TXLIVE.denormalized_languages) return;
             fuzzy_langcode = stripCode(fuzzy_langcode);
             var d = TXLIVE.denormalized_languages;
             for (var i = 0; i < d.length; ++i)
                 if (stripCode(d[i].code) === fuzzy_langcode) return d[i].code
-        } catch (err) {
-            TXLIVE.logger.error(err)
+        } catch (err$30) {
+            TXLIVE.logger.error(err$30)
         }
     };
     TXLIVE.getAllLanguages = function() {
@@ -2750,9 +2611,9 @@
         for (i = 0; i < node_array.length; ++i) {
             var node = node_array[i];
             try {
-                if (!IS_SKIP_PARENT(node)) PARSE_DOM(node, [], PARSER_OPTIONS.DEFAULT, "")
-            } catch (err) {
-                TXLIVE.logger.error(err)
+                if (!IS_SKIP_PARENT(node)) PARSE_DOM(node, [], PARSER_OPTIONS.DEFAULT)
+            } catch (err$31) {
+                TXLIVE.logger.error(err$31)
             }
         }
         var new_segments = [];
@@ -2776,7 +2637,7 @@
                                 item.set(item, s.source_string);
                                 item.modified = false
                             }
-                        } catch (err) {
+                        } catch (err$32) {
                             s.elements.splice(j, 1)
                         }
                     }
@@ -2861,9 +2722,9 @@
         root.innerHTML = html;
         NEW_SEGMENTS_DICT = {};
         try {
-            PARSE_DOM(root, [], PARSER_OPTIONS.DEFAULT, "")
-        } catch (err) {
-            TXLIVE.logger.error(err)
+            PARSE_DOM(root, [], PARSER_OPTIONS.DEFAULT)
+        } catch (err$33) {
+            TXLIVE.logger.error(err$33)
         }
         var segments =
             NEW_SEGMENTS_DICT;
@@ -2903,7 +2764,7 @@
                     var item = s.elements[j];
                     try {
                         item.set(item, string)
-                    } catch (err) {}
+                    } catch (err$34) {}
                 }
             }
         return parsed_content.root.innerHTML
@@ -2915,8 +2776,7 @@
         else domain = url.split("/")[0];
         return domain
     };
-    TXLIVE.group =
-        TXLIVE_PRIVATE.md5(document.title || "default");
+    TXLIVE.group = TXLIVE_PRIVATE.md5(document.title || "default");
     try {
         var metas = document.getElementsByTagName("meta");
         for (i = 0; i < metas.length; ++i) {
@@ -2926,8 +2786,8 @@
                 break
             }
         }
-    } catch (err) {
-        TXLIVE.logger.error(err)
+    } catch (err$35) {
+        TXLIVE.logger.error(err$35)
     }
     TXLIVE.version = "latest";
     TXLIVE.selected_lang = "";
@@ -2940,9 +2800,9 @@
         showDom();
         autoCollect();
         try {
-            TXLIVE.load_msec = (new Date).getTime() -
-                benchmark
-        } catch (err) {}
+            TXLIVE.load_msec =
+                (new Date).getTime() - benchmark
+        } catch (err$36) {}
         callFunctionArray(TXLIVE.__onready, TXLIVE.load_msec);
         TXLIVE.__onready = null;
         if (TXLIVE.settings.prerender) window.prerenderReady = true;
@@ -2958,7 +2818,8 @@
         timeout: 8
     };
     TXLIVE_SIDEBAR.setCookie = function(name, value, hours) {
-        var expires = "",
+        var expires =
+            "",
             sameSite = "";
         if (hours) {
             var date = new Date;
@@ -3016,8 +2877,7 @@
             var scripts = [].slice.call(div.getElementsByTagName("script"));
             var i;
             for (i = scripts.length; i--;)
-                if (scripts[i].getAttribute("type") === "text/javascript" || scripts[i].getAttribute("type") ===
-                    null) scripts[i].parentNode.removeChild(scripts[i]);
+                if (scripts[i].getAttribute("type") == "text/javascript") scripts[i].parentNode.removeChild(scripts[i]);
                 else scripts.splice(i, 1);
             var links = [].slice.call(div.getElementsByTagName("link")),
                 head = document.head || document.getElementsByTagName("head")[0];
@@ -3028,14 +2888,14 @@
                 head.appendChild(links[i].parentNode.removeChild(links[i]))
             }
             while (div.firstChild) {
-                var child =
-                    div.firstChild;
+                var child = div.firstChild;
                 div.removeChild(child);
                 document.body.appendChild(child)
             }
 
             function consume_scripts() {
-                var script = scripts.shift();
+                var script =
+                    scripts.shift();
                 if (!script) {
                     if (callback) callback();
                     return
@@ -3051,11 +2911,11 @@
         })
     };
     TXLIVE_SIDEBAR.patchJSON = function() {
-        TXLIVE_PRIVATE._json_stringify =
-            JSON.stringify;
+        TXLIVE_PRIVATE._json_stringify = JSON.stringify;
         JSON.stringify = function(value, replacer, spacer) {
             if (Array.prototype.toJSON !== undefined) {
-                var _array_tojson = Array.prototype.toJSON;
+                var _array_tojson =
+                    Array.prototype.toJSON;
                 delete Array.prototype.toJSON;
                 var r = TXLIVE_PRIVATE._json_stringify(value, replacer, spacer);
                 Array.prototype.toJSON = _array_tojson;
@@ -3067,10 +2927,10 @@
         var paths = [];
         for (; element && (element.nodeType == 1 || element.nodeType == 3); element = element.parentNode) {
             var index = 0;
-            for (var sibling =
-                    element.previousSibling; sibling; sibling = sibling.previousSibling) {
+            for (var sibling = element.previousSibling; sibling; sibling = sibling.previousSibling) {
                 if (sibling.nodeType == 10) continue;
-                if (sibling.nodeName == element.nodeName) ++index
+                if (sibling.nodeName ==
+                    element.nodeName) ++index
             }
             var tagName = element.nodeName.toLowerCase();
             var pathIndex = "[" + (index + 1) + "]";
@@ -3101,21 +2961,20 @@
                     tag = TXLIVE.settings.ignore_tags[i];
                     if (tag.length) SKIP_TAGS_USER[tag] = true
                 }
-        } catch (err) {
-            TXLIVE.logger.error(err)
+        } catch (err$37) {
+            TXLIVE.logger.error(err$37)
         }
         try {
             if (TXLIVE.settings.enable_tags && TXLIVE.settings.enable_tags.length)
                 for (i = 0; i < TXLIVE.settings.enable_tags.length; ++i) {
-                    tag =
-                        TXLIVE.settings.enable_tags[i];
+                    tag = TXLIVE.settings.enable_tags[i];
                     if (tag.length) {
                         delete SKIP_TAGS[tag];
                         delete SKIP_TAGS_USER[tag]
                     }
                 }
-        } catch (err) {
-            TXLIVE.logger.error(err)
+        } catch (err$38) {
+            TXLIVE.logger.error(err$38)
         }
         try {
             SKIP_CLASS_USER = {};
@@ -3124,21 +2983,22 @@
                     var cls = TXLIVE.settings.ignore_class[i];
                     if (cls.length) SKIP_CLASS_USER[cls] = true
                 }
-        } catch (err) {
-            TXLIVE.logger.error(err)
+        } catch (err$39) {
+            TXLIVE.logger.error(err$39)
         }
         try {
             for (key in TXLIVE.segments) delete TXLIVE.segments[key];
             TXLIVE.locquant_segment_list.splice(0, TXLIVE.locquant_segment_list.length);
-            PARSE_DOM(document.head || document.getElementsByTagName("head")[0], [], PARSER_OPTIONS.DEFAULT, "");
-            PARSE_DOM(document.body || document.getElementsByTagName("body")[0], [], PARSER_OPTIONS.DEFAULT, "")
-        } catch (err) {
-            TXLIVE.logger.error(err)
+            PARSE_DOM(document.head || document.getElementsByTagName("head")[0], [], PARSER_OPTIONS.DEFAULT);
+            PARSE_DOM(document.body || document.getElementsByTagName("body")[0],
+                [], PARSER_OPTIONS.DEFAULT)
+        } catch (err$40) {
+            TXLIVE.logger.error(err$40)
         }
         try {
             __init_mutators__()
-        } catch (err) {
-            TXLIVE.logger.error(err)
+        } catch (err$41) {
+            TXLIVE.logger.error(err$41)
         }
     }
 
@@ -3152,7 +3012,8 @@
         __destroy_mutators__();
         TXLIVE.traverse_ready = false;
         CLEAR_FLAGS_DOM(document.head || document.getElementsByTagName("head")[0], true);
-        CLEAR_FLAGS_DOM(document.body || document.getElementsByTagName("body")[0], true);
+        CLEAR_FLAGS_DOM(document.body ||
+            document.getElementsByTagName("body")[0], true);
         __traverseready__();
         if (previous_lang) TXLIVE.translateTo(previous_lang)
     }
@@ -3163,9 +3024,9 @@
         setSettings(window.proxyLiveSettings, true);
         if (!TXLIVE.settings.api_key || TXLIVE.live_noop) return;
         TXLIVE_PRIVATE._load_manifest = true;
-        if (TXLIVE.settings.version) TXLIVE.version =
-            TXLIVE.settings.version;
-        var base_url = (TXLIVE.settings.cdn || "//cdn.transifex.com/") + TXLIVE.settings.api_key + "/" + TXLIVE.version;
+        if (TXLIVE.settings.version) TXLIVE.version = TXLIVE.settings.version;
+        var base_url = (TXLIVE.settings.cdn || "//cdn.transifex.com/") + TXLIVE.settings.api_key +
+            "/" + TXLIVE.version;
         window.transifex_manifest = function(manifest) {
             if (!manifest) {
                 TXLIVE.logger.error("Empty manifest");
@@ -3177,10 +3038,10 @@
                 languages = manifest.languages;
             if (settings) {
                 if (window.liveSettings.staging === undefined) TXLIVE.settings.staging = (settings.staging.domain || "").toLowerCase() === TXLIVE_PRIVATE.getWindowHost().toLowerCase();
-                var _filters =
-                    settings.filters;
+                var _filters = settings.filters;
                 settings = TXLIVE.settings.staging ? settings.staging : settings.production;
-                settings.filters = _filters
+                settings.filters =
+                    _filters
             } else TXLIVE.logger.error("Empty manifest.settings");
             if (languages) languages = TXLIVE.settings.staging ? languages.staging : languages.production;
             else TXLIVE.logger.error("Empty manifest.languages");
@@ -3192,11 +3053,17 @@
                 var detected_langcode = TXLIVE.normalizeLangCode(TXLIVE.detectLanguage());
                 if (detected_langcode)
                     for (var i = 0; i < languages.translation.length; ++i)
-                        if (languages.translation[i].code === detected_langcode) {
-                            __loadlanguage__(detected_langcode, languages.translation[i].url, function(data) {
-                                __init__()
-                            });
-                            return
+                        if (languages.translation[i].code ===
+                            detected_langcode) {
+                            var key = TXLIVE_PRIVATE.apiScopedKey(detected_langcode + "@" + languages.timestamp);
+                            if (TXLIVE_PRIVATE.storage_get(key)) break;
+                            else {
+                                __loadlanguage__(detected_langcode, languages.translation[i].url, function(data) {
+                                    TXLIVE_PRIVATE.storage_set(key, data);
+                                    __init__()
+                                });
+                                return
+                            }
                         }
             }
             TXLIVE_PRIVATE.manifest_ready = true;
@@ -3211,45 +3078,26 @@
     }
 
     function __loadlanguage__(langcode, url, callback) {
-        var lang_loaded = false;
-        window["transifex_lang_" + TXLIVE_PRIVATE.escapeLanguageCode(langcode)] =
-            function(data) {
-                lang_loaded = true;
-                callback(data)
-            };
+        var lang_loaded =
+            false;
+        window["transifex_lang_" + TXLIVE_PRIVATE.escapeLanguageCode(langcode)] = function(data) {
+            lang_loaded = true;
+            callback(data)
+        };
         TXLIVE.loadScript(url, function() {
             if (!lang_loaded && TXLIVE.__onerror) callFunctionArray(TXLIVE.__onerror, "[ERR2] Cannot load translation url: " + url);
             if (!lang_loaded && callback) callback()
         })
     }
 
-    function __ping_telemetry__() {
-        if (TXLIVE.settings.wp) TXLIVE.settings.integration = "wordpress";
-        var shouldPing = false;
-        if (TXLIVE.settings.ping_telemetry && TXLIVE.settings.api_key && TXLIVE.settings.has_storage) {
-            var lastPing = TXLIVE_PRIVATE.storage_get("telemetry_ping");
-            if (lastPing) {
-                lastPing =
-                    parseInt(lastPing, 10);
-                if (!Number.isNaN(lastPing)) {
-                    var now = (new Date).getTime();
-                    shouldPing = now - lastPing > 3 * 60 * 60 * 1E3
-                } else shouldPing = true
-            } else shouldPing = true
-        }
-        if (shouldPing) {
-            TXLIVE.callTelemetry();
-            TXLIVE_PRIVATE.storage_set("telemetry_ping", "" + now)
-        }
-    }
-
     function __init__() {
         if (!TXLIVE_PRIVATE._domready) return;
         try {
             benchmark = (new Date).getTime()
-        } catch (err) {}
+        } catch (err$42) {}
         if (TXLIVE.settings.prerender && !TXLIVE.ready) window.prerenderReady = false;
-        if (!TXLIVE.settings.api_key || TXLIVE.live_noop) {
+        if (!TXLIVE.settings.api_key ||
+            TXLIVE.live_noop) {
             __traverseready__();
             __ready__();
             return
@@ -3265,10 +3113,9 @@
             if (manifest.settings) {
                 TXLIVE_PRIVATE.storage_set(TXLIVE_PRIVATE.apiScopedKey("txlive:settings"), manifest.settings);
                 if (settings) try {
-                    if (JSON.stringify(settings) !==
-                        JSON.stringify(manifest.settings)) reload = true
-                } catch (err) {
-                    TXLIVE.logger.error(err)
+                    if (JSON.stringify(settings) !== JSON.stringify(manifest.settings)) reload = true
+                } catch (err$43) {
+                    TXLIVE.logger.error(err$43)
                 }
             }
             if (manifest.languages) TXLIVE_PRIVATE.storage_set(TXLIVE_PRIVATE.apiScopedKey("txlive:languages"), manifest.languages);
@@ -3288,7 +3135,6 @@
             __traverseready__();
             __ready__()
         }
-        __ping_telemetry__()
     }
     TXLIVE.init = function() {
         TXLIVE_PRIVATE._domready = true;
@@ -3302,10 +3148,5 @@
         TXLIVE.autocollect_ready = true;
         autocollectConsume()
     });
-    bindNavigate(function(url) {
-        if (!TXLIVE_PRIVATE.language_views_tracked_onload && url) TXLIVE.trackLanguageView(url);
-        TXLIVE_PRIVATE.language_views_tracked_onload = false
-    });
-    setTimeout(__loadManifest__,
-        0)
+    setTimeout(__loadManifest__, 0)
 })();
