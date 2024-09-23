@@ -20,25 +20,29 @@ tags: []
 comments: []
 ---
 
-### KaOS - 2024.07
+### KaOS - 2024.09
 
-KaOS is pleased to announce the availability of the July release of a new stable ISO.
+It is a great pleasure to present to you the September release of a new stable ISO.
 
-For the Plasma desktop, the latest [Plasma (6.1.3)](https://kde.org/announcements/plasma/6/6.1.0/){:target="_blank"}, KDE Gear (24.05.2), and Frameworks (6.4.0) are included. All built on **Qt 6.7.2**. Among the many changes included in Plasma 6.1, is that you can now start up a remote desktop directly from the System Settings app, once enabled, you can connect to the remote desktop using a client such as KRDC. For customizing the visual aspect of Edit Mode has been overhauled and you will now see a slick animation when you activate it. The entire desktop zooms out smoothly, giving you a better overview of what is going on and allowing you to make your changes with ease. On Wayland now has a feature that *remembers* what you were doing in your last session like it did under X11.
+For the Plasma desktop, the latest [KDE Gear (24.08.1)](https://kde.org/announcements/gear/24.08.0/){:target="_blank"}, Plasma (6.1.5), and Frameworks (6.6.0) are included. All built on **Qt 6.7.2**. Among the many changes included in KDE Gear 24.08:
+ * New features in Dolphin are designed to make it easier to access and manage files and folders that require administrative privileges
+ * Konsole: if you need to bookmark something important in a long output, double-click the scroll bar to set a position marker. You can then quickly scroll back and locate it later.
+ * Kdenlive: brand new keyframe curve editor to customize effects, and easing methods (Cubic in/out and Exponential in/out) for fades.
 
-More applications are now ready to use Qt6 and Frameworks 6 including Kooka, Qdirstat, KWave and Kaffeine
+More application are now ready to use Qt6 and Frameworks 6, the big one now being Calligra.  Since Calligra is again actively maintained and developed, it has returned to being the default office suite for KaOS.  Another one that is now Qt6-based is Virtualbox.
 
-Support has been added **to install with the all new filesystem bcachefs**, it is still in experimental stage, but is included in the kernel build, and the needed bcachefs-tools are available in the repositories.  Calamares can use bcachefs when used in manual mode, though no specific settings for this filesystem have been implemented yet.
+The UI of the installer has been updated for quite a few pages.  this includes an option to choose either Calligra or LibreOffice as the preferred office suite.  You will also see that the bootloader selection page and sound backend page are more integrated with Plasma 6 (through kirigami).
 
-Updates to the base of the system included a move to LLVM/Clang 18.1.8, Libgcrypt 1.11.0, Nettle 3.10, kernel moved to Linux 6.9.9, Systemd 253.22, Dracut 103, Pipewire 1.2.1, OpenSSL 3.3, OpenCV 4.10.0, OpenSSH 98.p1 and Mesa 24.1.4.
+There also is now an option in the installer **to install with the all-new filesystem bcachefs**, it is still in experimental stage, but is included in the kernel build, and the needed bcachefs-tools are available in the repositories.  Calamares can use bcachefs when used in manual mode, though no specific settings for this filesystem have been implemented yet.
 
+Among the new packages included is [Zed](https://zed.dev/){:target="_blank"}, a Rust-based code editor, a very fast and capable alternative to vscode.  KaOS is also starting to actively follow the development of a complete independent browser [Ladybird](https://ladybird.org/){:target="_blank"}.  This browser is in pre-alpha state, can be used for simple browsing and will see a monthly build in the repositories.
+
+Updates to the base of the system included a move to Boost 1.85.0/ICU 75.1 stack, Ruby 3.3.5, Perl 5.38, kernel moved to Linux 6.10.11, Systemd 253.25, ZFS 2.2.6, KMod 33, OpenSSL 3.3, FFMPEG 6.1, OpenJDK 17 and Mesa 24.2.3.
 A new Phonon sound backend is in use.  So far VLC was used, but there is no Qt6 porting for VLC yet.  Using **phonon-mpv** as default now, gives a fully Qt 6 ready backend.
 
 New for this ISO  is to no longer include the kernel modesetting for all graphics cards, thus shaving roughly 700 Mb of the ISO size.
 
 Four years after being end of life, **GTK2 is finally removed from the KaOS repositories**.  The one major application left that still required GTK2 was Ardour, but with 8.4.0, an internal YTK is used, thus GTK2 is now gone.
-
-Among the new packages included is **Marknote**, a nicely in Plasma 6 integrated note management application.
 
 Four years after being end of life, **GTK2 is finally removed from the KaOS repositories**.  The one major application left that had still required GTK2 was Ardour, but with 8.4.0, an internal YTK is used, thus GTK2 is now gone.
 
@@ -79,8 +83,8 @@ The ISO ships with **Frameworks 6.4.0, Plasma 6.1.3, KDE Applications 24.05.2**,
 
 The package manager is **Pacman 6.0.2**, with the simple but powerful Octopi 0.16.2 as GUI frontend. Falkon is the default, Qt based, web browser. **GFXboot** is included with KaOS artwork, Grub theme is Midna, Look &amp; Feel is a KaOS exclusive version Midna.
 
-**Repositories** of KaOS will stay limited in size and expect it to stay at the current maximum of about 2100-2200 packages. A gist of what is available, besides the stable kernel there is Linux-next 6.10, Calligra 3.2.1, VLC, Vokoscreen, Blender, Kodi, Calibre, Sigil, Vulkan packages, a few games like 0ad and Knights.  
-A limited number of the most well-known GTK applications are available, for example, Firefox 128, Chrome 128, Ardour 8.6.0, Inkscape 1.3, GIMP 2.99.18 and Thunderbird 128. Complete language packs are available for KDE, Calligra, Firefox, LibreOffice and Thunderbird. For IM, Fcitx 4.2.9.9 is available as a rather complete group.
+**Repositories** of KaOS will stay limited in size and expect it to stay at the current maximum of about 2100-2200 packages. A gist of what is available, besides the stable kernel there is Linux-next 6.11, VLC, Vokoscreen, Blender, Kodi, Calibre, Sigil, Vulkan packages, a few games like 0ad and Knights.  
+A limited number of the most well-known GTK applications are available, for example, Firefox 130, Chrome 131, Ardour 8.7.0, Inkscape 1.3, GIMP 2.99.18 and Thunderbird 128. Complete language packs are available for KDE, Calligra, Firefox, LibreOffice and Thunderbird. For IM, Fcitx 4.2.9.9 is available as a rather complete group.
 
 **Known issues:**
 
