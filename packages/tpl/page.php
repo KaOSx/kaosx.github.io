@@ -16,19 +16,19 @@
     <div id="page">
         <div id="header_wrap">
             <h1 class="Header-brand">
-                <a href="http://kaosx.us"><img src="../img/fla_logo.png" width="130"></a>
+                <a href="https://kaosx.us"><img src="logo.png" width="130"></a>
             </h1>
             <div id="menu">
                 <ul>
-                    <li><a href="http://kaosx.us">Home</a></li>
-                    <li><a href="http://kaosx.us/about">About</a></li>
-                    <li><a href="http://kaosx.us/news">News</a></li>
-                    <li><a href="http://kaosx.us/download">Download</a></li>
-                    <li><a href="http://kaosx.us/docs">Documentation</a></li>
+                    <li><a href="https://kaosx.us">Home</a></li>
+                    <li><a href="https://kaosx.us/about">About</a></li>
+                    <li><a href="https://kaosx.us/news">News</a></li>
+                    <li><a href="https://kaosx.us/download">Download</a></li>
+                    <li><a href="https://kaosx.us/docs">Documentation</a></li>
                     <li><a href="index.php"><font color=#292F34>Packages</font></a></li>
-                    <li><a href="http://kaosx.us/bugs">Bugs</a></li>
-                    <li><a href="http://kaos-community-packages.github.io/">KCP</a></li>
-                    <li><a href="http://forum.kaosx.us/">Forum</a></li>
+                    <li><a href="https://kaosx.us/bugs">Bugs</a></li>
+                    <li><a href="https://kaos-community-packages.github.io/">KCP</a></li>
+                    <li><a href="https://forum.kaosx.us/">Forum</a></li>
                 </ul>
             </div>
         </div>
@@ -51,7 +51,7 @@
             <a href="https://kaosx.us/bugs">Bugs</a>
             <a href="http://kaos-community-packages.github.io/">KCP</a>
             <a href="http://forum.kaosx.us/">Forum</a>
-            Copyright © 2013-<?php echo date('Y'); ?> KaOS
+            Copyright © 2013-<?php echo date("Y"); ?> KaOS
         </div>
     </div>
 </body>
